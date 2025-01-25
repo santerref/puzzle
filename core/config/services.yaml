@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+  Puzzle\Controller\:
+    public: true
+    resource: '../app/Controller/'
+    tags: [ 'controller.service_arguments' ]
+    arguments:
+      - '@twig'
