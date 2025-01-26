@@ -39,7 +39,7 @@ ddev start
 Run Vite in background (new terminal Window):
 
 ```bash
-ddev start
+ddev vite
 ```
 
 Open website https://cms-custom.ddev.site/
