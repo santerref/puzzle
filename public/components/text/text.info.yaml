@@ -1,0 +1,9 @@
+name: Text
+group: content
+root: false
+fields:
+  text:
+    label: Content
+    type: wysiwyg
+    default_value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque in ligula quis iaculis. Morbi congue vestibulum velit, et pharetra leo posuere pharetra. Aliquam in dictum nulla. Donec ipsum elit, sagittis non lobortis et, elementum sed neque. Ut ut metus eget nisl malesuada aliquet sed eu odio. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed quis posuere nulla, vitae faucibus velit.</p><p>Etiam eget mauris arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque egestas fringilla metus, at imperdiet dolor volutpat interdum. Quisque fermentum nulla eu felis imperdiet, at cursus erat eleifend. Phasellus libero nibh, vehicula nec viverra elementum, rhoncus mollis nulla. Nam mollis, tortor non dignissim sagittis, orci neque fermentum purus, ut vehicula neque neque nec massa. Phasellus id massa vitae velit sollicitudin auctor vitae et lacus. Vivamus ultrices tempus eros sit amet ultricies. Nulla dignissim a nibh eget cursus.</p>'
+template: templates/text.html.twig

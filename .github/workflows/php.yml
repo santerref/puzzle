@@ -1,0 +1,33 @@
+name: PHP CI
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    php-tests:
+        name: Run PHPUnit and PHPCS
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v3
+
+            -   name: Set up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.3'
+                    extensions: mbstring, pdo, dom
+
+            -   name: Install dependencies
+                run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+            -   name: Run PHPUnit
+                run: vendor/bin/phpunit
+
+            -   name: Run PHPCS
+                run: vendor/bin/phpcs --standard=phpcs.xml

@@ -1,3 +1,20 @@
 root:
-  path: /
-  controller: Puzzle\Controller\RootController::front
+    path: /
+    controller: Puzzle\Controller\RootController::front
+    methods: GET
+components:
+    path: /api/components
+    controller: Puzzle\Controller\Api\ComponentController::index
+    methods: GET
+components.render:
+    path: /api/components/{id}/render
+    controller: Puzzle\Controller\Api\ComponentController::output
+    methods: GET
+components.update:
+    path: /api/components/{id}/update
+    controller: Puzzle\Controller\Api\ComponentController::update
+    methods: PUT
+components.undo:
+    path: /api/components/{id}/undo
+    controller: Puzzle\Controller\Api\ComponentController::undo
+    methods: PUT

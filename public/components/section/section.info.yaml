@@ -1,0 +1,6 @@
+root: true
+name: Section
+template: templates/section.html.twig
+fields:
+  layout:
+    type: layout
