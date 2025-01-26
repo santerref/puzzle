@@ -1,1 +1,0 @@
-{"version":1,"defects":{"Tests\\BootstrapTest::testBoot":5,"Tests\\BootstrapTest::testBootDispatchEndEvent":7,"Tests\\KernelTest::testHandle":5},"times":{"Tests\\BootstrapTest::testBoot":0.035,"Tests\\BootstrapTest::testBootDispatchEndEvent":0.039,"Tests\\KernelTest::testInit":0.01,"Tests\\KernelTest::testHandle":0}}
