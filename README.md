@@ -22,3 +22,19 @@ data sources.
 ## Seeking Developers 👩‍💻👨‍💻
 
 We're actively looking for developers to join us in making this project even better! Whether you're a seasoned developer or just starting out, your contributions are welcome.
+
+## How to test
+
+Just start the project with DDEV:
+
+```bash
+ddev start
+```
+
+Run Vite in background (new terminal Window):
+
+```bash
+ddev start
+```
+
+Open website https://cms-custom.ddev.site/
