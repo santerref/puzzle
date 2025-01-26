@@ -31,3 +31,20 @@ jobs:
 
             -   name: Run PHPCS
                 run: vendor/bin/phpcs --standard=phpcs.xml
+    eslint:
+        name: Run ESLint
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v3
+
+            -   name: Setup Node.js
+                uses: actions/setup-node@v3
+                with:
+                    node-version: 22  # Change to your preferred Node.js version
+
+            -   name: Install Dependencies
+                run: npm install
+
+            -   name: Run ESLint
+                run: npm run lint

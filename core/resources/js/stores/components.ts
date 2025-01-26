@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import {computed, ref} from "vue"
+import {computed, ref} from 'vue'
 import equal from 'deep-equal'
 import clone from 'clone-deep'
 import {v4 as uuidv4} from 'uuid'
@@ -26,6 +26,7 @@ export const useComponentsStore = defineStore('components', () => {
         try {
             const response = await fetch('/api/components')
             components.value = await response.json()
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
 
         }
@@ -54,18 +55,20 @@ export const useComponentsStore = defineStore('components', () => {
         try {
             const response = await fetch(`/api/components/${id}/render`)
             data = await response.json()
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
 
         }
 
-        let component = data.component
+        const component = data.component
         html = data.html
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [key, value] of Object.entries(component.fields)) {
             value.value = value.default_value
         }
         const weight = editorComponents.value.length + 1
-        let newComponent = {
+        const newComponent = {
             id: uuidv4(),
             original: clone(component),
             user: clone(component),
