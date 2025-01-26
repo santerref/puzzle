@@ -11,7 +11,7 @@ on:
 jobs:
     php-tests:
         name: Run PHPUnit and PHPCS
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         steps:
             -   name: Checkout code
@@ -33,7 +33,7 @@ jobs:
                 run: vendor/bin/phpcs --standard=phpcs.xml
     eslint:
         name: Run ESLint
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v3
