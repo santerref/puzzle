@@ -1,0 +1,12 @@
+#!/bin/bash
+#ddev-generated
+# Remove the line above if you don't want this file to be overwritten when you run
+# ddev get ddev/ddev-mongo
+#
+# This file comes from https://github.com/ddev/ddev-mongo
+#
+## Description: Run mongosh command
+## Usage: mongosh <command>
+## ExecRaw: true
+## Example: "ddev mongosh "mongodb://mongo:27017"
+mongosh "$@"

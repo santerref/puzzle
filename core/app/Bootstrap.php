@@ -5,6 +5,7 @@ namespace Puzzle;
 use Puzzle\ServiceProvider\ComponentServiceProvider;
 use Puzzle\ServiceProvider\EventServiceProvider;
 use Puzzle\ServiceProvider\RoutingServiceProvider;
+use Puzzle\ServiceProvider\StorageServiceProvider;
 use Puzzle\ServiceProvider\TwigServiceProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,6 +29,7 @@ final class Bootstrap
         TwigServiceProvider::register($container);
         RoutingServiceProvider::register($container);
         ComponentServiceProvider::register($container);
+        StorageServiceProvider::register($container);
         EventServiceProvider::register($container);
 
         $container->compile();

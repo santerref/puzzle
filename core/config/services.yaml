@@ -8,3 +8,4 @@ services:
         tags: [ 'controller.service_arguments' ]
         arguments:
             - '@twig'
+            - '@router.url_generator'

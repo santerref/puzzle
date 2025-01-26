@@ -2,16 +2,22 @@
 
 namespace Puzzle\ServiceProvider;
 
+use Puzzle\Listener\AssignStorageListener;
 use Puzzle\Listener\LoadComponentListener;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-final class EventServiceProvider implements ServiceProvider
+final class EventServiceProvider implements ServiceProviderInterface
 {
     private static array $listeners = [
         [
             'event' => 'app.boot_finished',
             'listener' => LoadComponentListener::class,
+            'method' => 'onBootFinished'
+        ],
+        [
+            'event' => 'app.boot_finished',
+            'listener' => AssignStorageListener::class,
             'method' => 'onBootFinished'
         ]
     ];

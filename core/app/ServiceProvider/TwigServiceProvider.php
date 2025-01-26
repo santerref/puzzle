@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-final class TwigServiceProvider implements ServiceProvider
+final class TwigServiceProvider implements ServiceProviderInterface
 {
     public static function register(ContainerBuilder $container): void
     {
@@ -21,6 +21,7 @@ final class TwigServiceProvider implements ServiceProvider
             PUZZLE_ROOT . '/core/resources/templates',
             PUZZLE_ROOT . '/public/components'
         ]);
+        $loader->addPath(PUZZLE_ROOT . '/core/resources/templates', 'core');
         $twig = new Environment($loader, [
             'cache' => false
         ]);

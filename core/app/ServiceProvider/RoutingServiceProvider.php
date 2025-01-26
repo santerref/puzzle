@@ -6,12 +6,14 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
-final class RoutingServiceProvider implements ServiceProvider
+final class RoutingServiceProvider implements ServiceProviderInterface
 {
     public static function register(ContainerBuilder $container): void
     {
@@ -33,8 +35,16 @@ final class RoutingServiceProvider implements ServiceProvider
             ])
             ->setPublic(true);
 
-        $container->register('request.context', RequestContext::class)
-            ->setArguments([])
+        $request = Request::createFromGlobals();
+        $context = new RequestContext();
+        $context->fromRequest($request);
+        $container->set('request.context', $context);
+
+        $urlGeneratorDefinition = new Definition(UrlGenerator::class, [
+            $container->get('router.route_collection'),
+            $container->get('request.context')
+        ]);
+        $container->setDefinition('router.url_generator', $urlGeneratorDefinition)
             ->setPublic(true);
     }
 }

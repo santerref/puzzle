@@ -1,0 +1,11 @@
+name: mongo
+repository: ddev/ddev-mongo
+version: v2.1.0
+install_date: "2025-01-27T04:05:12+07:00"
+project_files:
+    - commands/mongo/mongosh
+    - commands/host/mongo-express
+    - docker-compose.mongo.yaml
+    - docker-compose.mongo_norouter.yaml
+global_files: []
+removal_actions: []
