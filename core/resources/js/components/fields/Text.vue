@@ -7,7 +7,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps(['field', 'component'])
 const model = defineModel()
 </script>

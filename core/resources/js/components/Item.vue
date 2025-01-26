@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref} from "vue";
 import Editor from "./Editor.vue";
 import {useComponentsStore} from '@/stores/components'

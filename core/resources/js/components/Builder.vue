@@ -30,7 +30,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Item from '@/components/Item.vue'
 import {useComponentsStore} from '@/stores/components'
 import {VueDraggable} from 'vue-draggable-plus'
