@@ -4,7 +4,7 @@ namespace Puzzle\Listener;
 
 use Puzzle\Event\BootFinishedEvent;
 use Puzzle\Event\Event;
-use Puzzle\Model\Model;
+use Puzzle\Entity\Model;
 
 class AssignStorageListener
 {

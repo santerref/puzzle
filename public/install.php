@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Puzzle\Bootstrap;
+use Puzzle\Event\InstallerFinishedEvent;
 use Puzzle\Setup\Installer;
 use Puzzle\Storage\Database;
 
@@ -15,5 +16,8 @@ if (!Database::schema()->hasTable('installer_scripts')) {
     });
 }
 
-$installer = new Installer($container->get('event_dispatcher'));
+$eventDispatcher = $container->get('event_dispatcher');
+$installer = new Installer($eventDispatcher);
 $installer->run();
+
+$eventDispatcher->dispatch(new InstallerFinishedEvent(), InstallerFinishedEvent::NAME);

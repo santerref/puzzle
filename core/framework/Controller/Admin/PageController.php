@@ -3,7 +3,7 @@
 namespace Puzzle\Controller\Admin;
 
 use Puzzle\Controller\BaseController;
-use Puzzle\Model\Page;
+use Puzzle\Entity\Page;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
