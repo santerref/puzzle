@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
-final class RoutingServiceProvider implements ServiceProviderInterface
+class RoutingServiceProvider implements ServiceProviderInterface
 {
     public static function register(ContainerBuilder $container): void
     {

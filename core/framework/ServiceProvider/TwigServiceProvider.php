@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-final class TwigServiceProvider implements ServiceProviderInterface
+class TwigServiceProvider implements ServiceProviderInterface
 {
     public static function register(ContainerBuilder $container): void
     {

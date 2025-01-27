@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-final readonly class Kernel
+readonly class Kernel
 {
     public function __construct(private ContainerBuilder $container)
     {

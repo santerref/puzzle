@@ -7,7 +7,7 @@ use Puzzle\Component\Renderer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class ComponentServiceProvider implements ServiceProviderInterface
+class ComponentServiceProvider implements ServiceProviderInterface
 {
     public static function register(ContainerBuilder $container): void
     {

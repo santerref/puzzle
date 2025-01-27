@@ -2,6 +2,7 @@
 
 namespace Puzzle\Model;
 
+use Illuminate\Support\Str;
 use Puzzle\Storage\StorageInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -35,5 +36,23 @@ abstract class Model
     {
         $this->attributes->set($key, $value);
         return $this;
+    }
+
+    public function has($key): bool
+    {
+        return $this->attributes->has($key);
+    }
+
+    public function getAttribute($key, $defaultValue = null): mixed
+    {
+        return $this->attributes->get($key, $defaultValue);
+    }
+
+    public function tableName()
+    {
+        $reflect = new \ReflectionClass($this);
+        $className = $reflect->getShortName();
+
+        return Str::plural(Str::snake($className));
     }
 }

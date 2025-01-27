@@ -3,7 +3,6 @@
 namespace Puzzle\Event;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Contracts\EventDispatcher\Event;
 
 class BootFinishedEvent extends Event
 {

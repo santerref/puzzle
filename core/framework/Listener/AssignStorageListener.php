@@ -3,11 +3,12 @@
 namespace Puzzle\Listener;
 
 use Puzzle\Event\BootFinishedEvent;
+use Puzzle\Event\Event;
 use Puzzle\Model\Model;
 
 class AssignStorageListener
 {
-    public function onBootFinished(BootFinishedEvent $event)
+    public function handle(Event $event): void
     {
         $container = $event->getContainer();
 

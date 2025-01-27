@@ -3,10 +3,11 @@
 namespace Puzzle\Listener;
 
 use Puzzle\Event\BootFinishedEvent;
+use Puzzle\Event\Event;
 
-class LoadComponentListener
+class LoadComponentListener implements ListenerInterface
 {
-    public function onBootFinished(BootFinishedEvent $event)
+    public function handle(Event $event): void
     {
         $container = $event->getContainer();
 
