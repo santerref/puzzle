@@ -4,7 +4,7 @@ services:
         autoconfigure: true
     Puzzle\Controller\:
         public: true
-        resource: '../app/Controller/'
+        resource: '../framework/Controller/'
         tags: [ 'controller.service_arguments' ]
         arguments:
             - '@twig'
