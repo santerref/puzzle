@@ -5,7 +5,6 @@ namespace Puzzle\ServiceProvider;
 use Puzzle\Event\BootFinishedEvent;
 use Puzzle\Event\InstallerFinishedEvent;
 use Puzzle\Event\InstallScriptFinishedEvent;
-use Puzzle\Listener\AssignStorageListener;
 use Puzzle\Listener\LoadComponentListener;
 use Puzzle\Listener\RecordInstallScriptListener;
 use Puzzle\Listener\SeedDatabaseListener;
@@ -17,7 +16,6 @@ class EventServiceProvider implements ServiceProviderInterface
     private static array $listeners = [
         BootFinishedEvent::NAME => [
             LoadComponentListener::class,
-            AssignStorageListener::class,
         ],
         InstallScriptFinishedEvent::NAME => [
             RecordInstallScriptListener::class,

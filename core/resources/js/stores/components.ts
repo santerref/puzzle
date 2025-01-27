@@ -6,6 +6,7 @@ import {v4 as uuidv4} from 'uuid'
 
 export const useComponentsStore = defineStore('components', () => {
     const components = ref([])
+    const pageComponents = ref([])
     const editorComponents = ref([])
 
     const all = computed(() => components.value)
@@ -19,13 +20,20 @@ export const useComponentsStore = defineStore('components', () => {
                 dirty = true
             }
         })
+        if (!dirty && !equal(pageComponents.value, editorComponents.value)) {
+            dirty = true
+        }
         return dirty
     })
 
     async function load() {
         try {
-            const response = await fetch('/api/components')
-            components.value = await response.json()
+            const componentsResponse = await fetch('/api/components')
+            components.value = await componentsResponse.json()
+            const pageResponse = await fetch(`/api/pages/${window.page_id}`)
+            const page = await pageResponse.json()
+            editorComponents.value = page.components
+            pageComponents.value = clone(editorComponents.value)
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
 
@@ -115,6 +123,7 @@ export const useComponentsStore = defineStore('components', () => {
     return {
         components,
         editorComponents,
+        pageComponents,
         isDirty,
         load,
         add,

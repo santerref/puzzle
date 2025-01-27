@@ -2,7 +2,6 @@
 
 namespace Puzzle\Listener;
 
-use Puzzle\Event\BootFinishedEvent;
 use Puzzle\Event\Event;
 
 class LoadComponentListener implements ListenerInterface

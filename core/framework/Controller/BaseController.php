@@ -2,6 +2,7 @@
 
 namespace Puzzle\Controller;
 
+use Puzzle\Entity\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ abstract class BaseController
         return $response;
     }
 
-    protected function json(array $data): Response
+    protected function json(array|Entity $data): Response
     {
         return new JsonResponse($data);
     }

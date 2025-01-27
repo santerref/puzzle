@@ -3,9 +3,6 @@
 namespace Puzzle\ServiceProvider;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Puzzle\Storage\Database;
-use Puzzle\Storage\MySqlStorage;
-use Puzzle\Storage\StorageInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class StorageServiceProvider implements ServiceProviderInterface
@@ -27,8 +24,5 @@ class StorageServiceProvider implements ServiceProviderInterface
 
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
-
-        $container->set('storage', new MySqlStorage());
-        $container->setAlias('storage', StorageInterface::class);
     }
 }

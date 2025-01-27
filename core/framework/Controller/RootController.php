@@ -2,13 +2,14 @@
 
 namespace Puzzle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+use Puzzle\page\Entity\Page;
 use Symfony\Component\HttpFoundation\Response;
 
 class RootController extends BaseController
 {
     public function front(): Response
     {
-        return $this->render('root.html.twig');
+        $page = Page::first();
+        return $this->render('root.html.twig', ['page_id' => $page->id]);
     }
 }

@@ -10,6 +10,10 @@ components.render:
     path: /api/components/{id}/render
     controller: Puzzle\Controller\Api\ComponentController::output
     methods: GET
+api.pages.fetch:
+    path: /api/pages/{uuid}
+    controller: Puzzle\Controller\Api\PageController::fetch
+    methods: GET
 components.update:
     path: /api/components/{id}/update
     controller: Puzzle\Controller\Api\ComponentController::update

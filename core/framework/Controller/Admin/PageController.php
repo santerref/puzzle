@@ -3,7 +3,7 @@
 namespace Puzzle\Controller\Admin;
 
 use Puzzle\Controller\BaseController;
-use Puzzle\Entity\Page;
+use Puzzle\page\Entity\Page;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,7 +21,7 @@ class PageController extends BaseController
 
     public function store(Request $request): Response
     {
-        $page = new Page($request->request->all());
+        $page = Page::create($request->request->all());
         $page->save();
 
         return $this->redirect('admin.pages');
