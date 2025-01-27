@@ -19,7 +19,7 @@ final class TwigServiceProvider implements ServiceProviderInterface
 
         $loader = new FilesystemLoader([
             PUZZLE_ROOT . '/core/resources/templates',
-            PUZZLE_ROOT . '/public/components'
+            PUZZLE_ROOT . '/core/components'
         ]);
         $loader->addPath(PUZZLE_ROOT . '/core/resources/templates', 'core');
         $twig = new Environment($loader, [

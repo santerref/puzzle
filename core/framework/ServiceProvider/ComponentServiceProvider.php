@@ -12,7 +12,7 @@ final class ComponentServiceProvider implements ServiceProviderInterface
     public static function register(ContainerBuilder $container): void
     {
         $container->register('component_discovery', ComponentDiscovery::class)
-            ->addArgument(PUZZLE_ROOT . '/public/components')
+            ->addArgument(PUZZLE_ROOT . '/core/components')
             ->setPublic(true);
         $container->setAlias(ComponentDiscovery::class, 'component_discovery')->setPublic(true);
         $container->register('component.renderer', Renderer::class)
