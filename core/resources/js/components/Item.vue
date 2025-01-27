@@ -1,8 +1,7 @@
 <template>
     <div>
         <div
-            :class="{'bg-teal-100':component.isDirty}"
-            class="bg-blue-100 p-5 relative"
+            class="relative hover:outline-2 hover:outline-stone-200"
             @mouseenter="showToolbar = true"
             @mouseleave="showToolbar = false"
         >
@@ -10,7 +9,7 @@
             <div v-html="component.user.html"/>
             <div
                 v-if="showToolbar"
-                class="bg-red-100 flex gap-4 absolute top-0 left-0 px-4 py-2 shadow"
+                class="bg-stone-100 flex gap-4 absolute -translate-y-full top-0 rounded-tr-md rounded-tl-md left-0 px-4 py-2 shadow"
             >
                 <i class="pi handle pi-arrows-alt hover:cursor-grab"/>
                 <i

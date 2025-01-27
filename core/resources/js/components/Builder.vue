@@ -1,25 +1,25 @@
 <template>
-    <div class="bg-gray-100 w-full p-5 flex justify-end">
+    <div class="bg-stone-100 w-full p-3 flex justify-end">
         <button
             :class="{
                 'cursor-not-allowed opacity-50': !components.isDirty,
                 'cursor-pointer': components.isDirty,
             }"
             :disabled="!components.isDirty"
-            class="text-white bg-teal-500 px-4 py-2 font-bold"
+            class="text-white bg-stone-600 px-4 py-2 font-medium"
         >
-            Publish
+            Save
         </button>
     </div>
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-3 p-4">
-            <ul class="space-y-4">
+            <ul class="grid grid-cols-2 gap-4">
                 <li
                     v-for="(component, key) in components.all"
                     :key="key"
                 >
                     <button
-                        class="bg-gray-100 block w-full py-2 px-4 cursor-pointer"
+                        class=" border border-stone-100 text-stone-600 text-sm font-medium uppercase rounded shadow block w-full py-2 px-4 cursor-pointer min-h-[100px]"
                         @click.prevent="addComponent(key, component)"
                     >
                         {{ component.name }}
@@ -29,13 +29,10 @@
         </div>
         <div class="col-span-9 p-4">
             <div class="container m-auto">
-                <div
-                    :class="{'bg-orange-50':components.isDirty}"
-                    class="border border-dashed border-grey-100 p-5"
-                >
+                <div class="border border-dashed border-stone-400 rounded-2xl p-5">
                     <VueDraggable
+                        v-if="components.allEditor.length > 0"
                         :model-value="components.allEditor"
-                        class="space-y-4"
                         handle=".handle"
                         @update:model-value="components.updateEditors"
                     >
@@ -45,6 +42,14 @@
                             :component="component"
                         />
                     </VueDraggable>
+                    <div
+                        v-else
+                        class="flex items-center"
+                    >
+                        <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
+                            Add your first component.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,3 +3,7 @@
 
 @source "../../components/**/*.{css,scss,html.twig,info.yaml}";
 @source "../templates/**/*.html.twig";
+
+@theme {
+    --font-sans: "DM Sans", "sans-serif";
+}
