@@ -26,8 +26,16 @@
                     class="pi pi-undo hover:cursor-pointer"
                     @click.prevent="undo(component)"
                 />
-                <i class="pi pi-angle-up hover:cursor-pointer"/>
-                <i class="pi pi-angle-down hover:cursor-pointer"/>
+                <i
+                    v-if="component.weight > 1"
+                    class="pi pi-angle-up hover:cursor-pointer"
+                    @click.prevent="components.moveUp(component)"
+                />
+                <i
+                    v-if="component.weight < components.editorComponents.length"
+                    class="pi pi-angle-down hover:cursor-pointer"
+                    @click.prevent="components.moveDown(component)"
+                />
             </div>
         </div>
         <editor

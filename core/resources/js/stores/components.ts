@@ -32,6 +32,33 @@ export const useComponentsStore = defineStore('components', () => {
         }
     }
 
+    function moveUp(component) {
+        const index = editorComponents.value.findIndex(obj => obj.id === component.id)
+        if (index > 0) {
+            const current = editorComponents.value[index]
+            const previous = editorComponents.value[index - 1]
+
+            editorComponents.value[index] = previous
+            editorComponents.value[index - 1] = current
+
+            [current.weight, previous.weight] = [previous.weight, current.weight]
+        }
+    }
+
+    function moveDown(component) {
+        const index = editorComponents.value.findIndex(obj => obj.id === component.id)
+
+        if (index < editorComponents.value.length - 1) { // Ensure there's an element to swap with
+            const current = editorComponents.value[index]
+            const next = editorComponents.value[index + 1]
+
+            editorComponents.value[index] = next
+            editorComponents.value[index + 1] = current
+
+            [current.weight, next.weight] = [next.weight, current.weight]
+        }
+    }
+
     function remove(component) {
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
         editorComponents.value.splice(index, 1)
@@ -100,6 +127,8 @@ export const useComponentsStore = defineStore('components', () => {
         update,
         remove,
         undo,
-        updateEditors
+        updateEditors,
+        moveUp,
+        moveDown
     }
 })
