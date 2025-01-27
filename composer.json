@@ -4,8 +4,9 @@
     "version": "0.0.1",
     "autoload": {
         "psr-4": {
-            "Puzzle\\": "core/framework"
-        }
+            "Puzzle\\": ["core/framework"]
+        },
+        "classmap": ["core/modules/*/src"]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -20,9 +21,9 @@
         "symfony/event-dispatcher": "^7.2",
         "symfony/dependency-injection": "^7.2",
         "symfony/finder": "^7.2",
-        "doctrine/mongodb-odm": "^2.10",
         "doctrine/persistence": "^4.0",
-        "mongodb/mongodb": "^1.20"
+        "illuminate/support": "^11.40",
+        "illuminate/database": "^11.40"
     },
     "require-dev": {
         "symfony/var-dumper": "^7.2",
