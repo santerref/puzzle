@@ -4,19 +4,24 @@ New Open-Source CMS page builder that focuses on components rather than themes.
 
 I am creating Puzzle to simplify building pages with reusable components, addressing challenges I’ve encountered in CMS platforms like Magento 2, WordPress, and Drupal. While these systems are powerful, they often make simple tasks complex and require many modules for small websites. Puzzle focuses on being lightweight and intuitive, offering an easier solution.
 
-Current stack:
+## Stack
 
-* VueJS 3
+### Backend
+
 * Symfony 7
 * Twig
 * PHP 8.3
 * PHPUnit
 * PHPCS
+* DDEV
+
+### Frontend
+
+* VueJS 3
 * TypeScript
 * eslint
-* DDEV
-* Vite
-* TailwindCSS
+* Vite 6
+* TailwindCSS 4
 
 Components will be able to load content from external APIs or internal data sources. Abstraction between component and
 data sources.
