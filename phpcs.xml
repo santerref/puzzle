@@ -2,7 +2,7 @@
 <ruleset name="MyProjectCodingStandard">
     <description>Custom coding standards for Puzzle.</description>
     <rule ref="PSR12"/>
-    <file>core/app</file>
+    <file>core/framework</file>
     <file>tests</file>
     <exclude-pattern>vendor</exclude-pattern>
 </ruleset>
