@@ -2,6 +2,8 @@
 
 namespace Puzzle\Event;
 
+use Symfony\Contracts\EventDispatcher\Event;
+
 class InstallScriptFinishedEvent extends Event
 {
     public const NAME = 'installer.install_script_finished';

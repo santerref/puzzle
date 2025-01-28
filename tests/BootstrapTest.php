@@ -7,8 +7,6 @@ use PHPUnit\Framework\TestCase;
 use Puzzle\Bootstrap;
 use Puzzle\Component\ComponentDiscovery;
 use Puzzle\Component\Renderer;
-use Puzzle\Controller\Api\ComponentController;
-use Puzzle\Controller\RootController;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 #[CoversClass(Bootstrap::class)]
@@ -20,8 +18,6 @@ class BootstrapTest extends TestCase
         $this->assertInstanceOf(ContainerBuilder::class, $container);
         $this->assertTrue($container->has('event_dispatcher'));
         $this->assertTrue($container->has('service_container'));
-        $this->assertTrue($container->has(ComponentController::class));
-        $this->assertTrue($container->has(RootController::class));
         $this->assertTrue($container->has('router.route_collection'));
         $this->assertTrue($container->has('router'));
         $this->assertTrue($container->has('request.context'));

@@ -1,0 +1,6 @@
+services:
+    Puzzle\page\Controller\Api\ComponentController:
+        autoconfigure: true
+        autowire: true
+        public: true
+        tags: [ 'controller.service_arguments' ]

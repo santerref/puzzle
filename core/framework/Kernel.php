@@ -3,6 +3,7 @@
 namespace Puzzle;
 
 use Puzzle\Event\BootFinishedEvent;
+use Puzzle\Event\ResponsePrepareEvent;
 use Puzzle\ThirdParty\Symfony\ServiceResolver;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,6 +31,7 @@ readonly class Kernel
     public function handle(Request $request): Response
     {
         $router = $this->container->get('router');
+        $eventDispatcher = $this->container->get('event_dispatcher');
 
         $controllerResolver = new ContainerControllerResolver($this->container);
         $metadataFactory = new ArgumentMetadataFactory();
@@ -50,6 +52,12 @@ readonly class Kernel
             $arguments = $argumentResolver->getArguments($request, $controller);
 
             $response = call_user_func_array($controller, $arguments);
+            $event = new ResponsePrepareEvent($response, $this->container);
+            $eventDispatcher->dispatch(
+                $event,
+                ResponsePrepareEvent::NAME
+            );
+            $response = $event->getResponse();
         } catch (ResourceNotFoundException $e) {
             $response = new Response('Not Found', 404);
         } catch (Exception $e) {

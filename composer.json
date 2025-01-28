@@ -4,9 +4,19 @@
     "version": "0.0.1",
     "autoload": {
         "psr-4": {
-            "Puzzle\\": ["core/framework"]
+            "Puzzle\\": [
+                "core/framework"
+            ],
+            "Tests\\": [
+                "tests"
+            ]
         },
-        "classmap": ["core/modules/*/src"]
+        "classmap": [
+            "core/modules/*/src"
+        ],
+        "files": [
+            "core/framework/constants.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -24,7 +34,8 @@
         "doctrine/persistence": "^4.0",
         "illuminate/support": "^11.40",
         "illuminate/database": "^11.40",
-        "ramsey/uuid": "^4.7"
+        "ramsey/uuid": "^4.7",
+        "z4kn4fein/php-semver": "^3.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^7.2",

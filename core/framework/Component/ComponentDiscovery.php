@@ -7,13 +7,10 @@ use Symfony\Component\Yaml\Yaml;
 
 class ComponentDiscovery
 {
-    protected string $folder;
-
     protected array $components = [];
 
-    public function __construct($folder)
+    public function __construct(protected array $folder)
     {
-        $this->folder = $folder;
     }
 
     public function discover(): void

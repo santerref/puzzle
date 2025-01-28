@@ -1,0 +1,32 @@
+pages.admin:
+    path: /admin/pages
+    controller: Puzzle\page\Controller\Admin\PageController::index
+    methods: GET
+pages.admin.create:
+    path: /admin/pages/create
+    controller: Puzzle\page\Controller\Admin\PageController::create
+    methods: GET
+pages.admin.store:
+    path: /admin/pages
+    controller: Puzzle\page\Controller\Admin\PageController::store
+    methods: POST
+pages.api.fetch:
+    path: /api/pages/{uuid}
+    controller: Puzzle\page\Controller\Api\PageController::fetch
+    methods: GET
+components:
+    path: /api/components
+    controller: Puzzle\page\Controller\Api\ComponentController::index
+    methods: GET
+components.render:
+    path: /api/components/{id}/render
+    controller: Puzzle\page\Controller\Api\ComponentController::output
+    methods: GET
+components.update:
+    path: /api/components/{id}/update
+    controller: Puzzle\page\Controller\Api\ComponentController::update
+    methods: PUT
+components.undo:
+    path: /api/components/{id}/undo
+    controller: Puzzle\page\Controller\Api\ComponentController::undo
+    methods: PUT

@@ -1,0 +1,4 @@
+root:
+    path: /
+    controller: Puzzle\page_builder\Controller\RootController::front
+    methods: GET

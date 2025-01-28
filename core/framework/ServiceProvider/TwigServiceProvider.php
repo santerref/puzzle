@@ -18,10 +18,10 @@ class TwigServiceProvider implements ServiceProviderInterface
         $pathPackage = new ViteAssetPackage($manifestPath);
 
         $loader = new FilesystemLoader([
-            PUZZLE_ROOT . '/core/resources/templates',
+            PUZZLE_ROOT . '/core/templates',
             PUZZLE_ROOT . '/core/components'
         ]);
-        $loader->addPath(PUZZLE_ROOT . '/core/resources/templates', 'core');
+        $loader->addPath(PUZZLE_ROOT . '/core/templates', 'core');
         $twig = new Environment($loader, [
             'cache' => false
         ]);
