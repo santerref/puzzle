@@ -33,18 +33,6 @@ The project is a work-in-progress and far from alpha, with rapid daily evolution
 
 We're actively looking for developers to join us in making this project even better! Whether you're a seasoned developer or just starting out, your contributions are welcome.
 
-## How to test
+## Getting Started
 
-Just start the project with DDEV:
-
-```bash
-ddev start
-```
-
-Run Vite in background (new terminal Window):
-
-```bash
-ddev vite
-```
-
-Open website https://cms-custom.ddev.site/
+Please follow our guide in the wiki: [Getting Started](https://github.com/santerref/puzzle/wiki/Getting-started)
