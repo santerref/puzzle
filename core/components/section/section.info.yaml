@@ -1,6 +1,17 @@
 root: true
 name: Section
 template: templates/section.html.twig
+css:
+    variables:
+        container: 'container m-auto'
+        fluid: ''
+        narrow: ''
 fields:
-  layout:
-    type: layout
+    layout:
+        label: Layout
+        type: dropdown
+        options:
+            container: Standard
+            fluid: Fluid
+            narrow: Narrow
+        default_value: container

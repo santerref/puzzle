@@ -34,7 +34,7 @@ class GenerateDefaultImage implements EventSubscriberInterface
                 'orientation' => 'landscape'
             ],
             'headers' => [
-                'Authorization' => 'Client-ID MRTo8VBC9JhcViBmokiOHs6dlw_6GOQIMo5tFk-64Eo'
+                'Authorization' => '',
             ]
         ]);
         $data = json_decode($response->getBody()->getContents(), true);

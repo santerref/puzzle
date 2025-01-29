@@ -1,6 +1,7 @@
 name: Heading
 group: content
 root: false
+template: templates/heading.html.twig
 css:
     variables:
         text: 'font-medium'
@@ -26,4 +27,3 @@ fields:
             h5: H5
             h6: H6
         default_value: h2
-template: templates/heading.html.twig
