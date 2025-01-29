@@ -15,7 +15,7 @@ class Bootstrap
     public static function boot(): ContainerBuilder
     {
         $dotEnv = new Dotenv();
-        $dotEnv->load(PUZZLE_ROOT . '/.env');
+        $dotEnv->loadEnv(PUZZLE_ROOT . '/.env');
 
         $container = new ContainerBuilder();
 
