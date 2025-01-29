@@ -6,23 +6,21 @@ import tseslint from 'typescript-eslint'
 import stylisticTs from '@stylistic/eslint-plugin-ts'
 
 export default tseslint.config(
+    {
+        ignores: [
+            '*',
+            '!core',
+            'core/framework',
+            'core/config',
+            'core/templates',
+            '!core/assets/**/*.{js,vue,ts}',
+            '!core/modules/**/*.{js,vue,ts}',
+            '!core/components/**/*.{js,vue,ts}',
+        ],
+    },
     ...tseslint.configs.recommended,
     ...pluginVue.configs['flat/recommended'],
     {
-        files: [
-            'core/resources/js/**/*.{js,vue,ts}'
-        ],
-        ignores: [
-            'vendor/',
-            'nodes_modules/',
-            'public/',
-            'var/',
-            'config/',
-            'core/app/',
-            'core/config/',
-            'core/resources/scss/',
-            'core/resources/templates/'
-        ],
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'module',
