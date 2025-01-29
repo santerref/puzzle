@@ -1,8 +1,8 @@
 #ddev-generated
 additional_hostnames:
-  - vite.cms-custom
+  - vite.puzzle
 web_environment:
-  - VITE_SERVER_URI=https://vite.cms-custom.ddev.site
+  - VITE_SERVER_URI=https://vite.puzzle.ddev.site
   - VITE_PACKAGE_MANAGER=npm
 
 # Enable these lines if you want to expose the vite port to the host system

@@ -25,7 +25,7 @@ class ViteAssetPackage extends PathPackage
     {
         if ($this->isDevMode) {
             return sprintf(
-                'https://vite.cms-custom.ddev.site' . $this->getBasePath() . '%s',
+                'https://vite.puzzle.ddev.site' . $this->getBasePath() . '%s',
                 ltrim($path, '/')
             );
         }
