@@ -1,16 +1,19 @@
-pages.admin:
+welcome:
+    path: /
+    controller: Puzzle\page\Controller\HomeController::welcome
+admin:
     path: /admin/pages
     controller: Puzzle\page\Controller\Admin\PageController::index
     methods: GET
-pages.admin.create:
+admin.create:
     path: /admin/pages/create
     controller: Puzzle\page\Controller\Admin\PageController::create
     methods: GET
-pages.admin.store:
+admin.store:
     path: /admin/pages
     controller: Puzzle\page\Controller\Admin\PageController::store
     methods: POST
-pages.api.fetch:
+api.fetch:
     path: /api/pages/{uuid}
     controller: Puzzle\page\Controller\Api\PageController::fetch
     methods: GET

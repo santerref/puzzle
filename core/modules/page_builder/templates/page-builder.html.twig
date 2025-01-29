@@ -13,13 +13,11 @@
 
     <link href="{{ asset('css/tailwind.css', 'core') }}" rel="stylesheet">
     <link href="{{ asset('css/page-builder.css', 'module_page_builder') }}" rel="stylesheet">
-
-    <script>
-        window.page_id = '{{ page_id }}';
-    </script>
 </head>
 <body>
-<div id="puzzle"></div>
+<div id="puzzle">
+    <Builder page-uuid="{{ page_uui }}"></Builder>
+</div>
 
 <script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
 <script type="module" src="{{ asset('js/page-builder.ts', 'module_page_builder') }}"></script>

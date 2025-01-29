@@ -5,5 +5,5 @@
 @source "../../templates/**/*.html.twig";
 
 @theme {
-    --font-sans: "DM Sans", "sans-serif";
+    --font-sans: "Inter", "sans-serif";
 }

@@ -1,4 +1,4 @@
-root:
-    path: /
-    controller: Puzzle\page_builder\Controller\RootController::front
+admin.launch:
+    path: /admin/page-builder/{uuid}
+    controller: Puzzle\page_builder\Controller\Admin\PageBuilderController::launch
     methods: GET

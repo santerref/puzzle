@@ -29,7 +29,7 @@ export default defineConfig({
     base: './',
     plugins: [
         vue(),
-        tailwindcss(),
+        tailwindcss()
     ],
     publicDir: false,
     build: {
