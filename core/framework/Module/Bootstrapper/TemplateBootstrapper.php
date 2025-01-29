@@ -20,8 +20,8 @@ class TemplateBootstrapper implements ModuleBootstrapperInterface
         $assetsDirectory = $module->getPath() . '/assets';
         if (is_dir($assetsDirectory)) {
             $packages = $container->get('asset.packages');
-            $modulePackage = new ViteAssetPackage('/static/modules/' . $module->getName());
-            $packages->addPackage('/modules/' . $module->getName(), $modulePackage);
+            $modulePackage = new ViteAssetPackage('/core/modules/' . $module->getName() . '/assets');
+            $packages->addPackage('module_' . $module->getName(), $modulePackage);
         }
     }
 }

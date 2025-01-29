@@ -2,9 +2,9 @@
 
 namespace Puzzle\ThirdParty\Symfony;
 
+use Puzzle\ThirdParty\Symfony\Asset\VersionStrategy\ViteManifestVersionStrategy;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy;
 
 class ViteAssetPackage extends PathPackage
 {
@@ -16,7 +16,7 @@ class ViteAssetPackage extends PathPackage
         $manifestPath = PUZZLE_ROOT . '/public/static/manifest.json';
         $versionStrategy = $this->isDevMode
             ? new EmptyVersionStrategy()
-            : new JsonManifestVersionStrategy($manifestPath);
+            : new ViteManifestVersionStrategy($manifestPath);
 
         parent::__construct($basePath, $versionStrategy);
     }
@@ -25,11 +25,19 @@ class ViteAssetPackage extends PathPackage
     {
         if ($this->isDevMode) {
             return sprintf(
-                'https://vite.cms-custom.ddev.site' . str_replace('/assets/', '/', $this->getBasePath()) . '%s',
+                'https://vite.cms-custom.ddev.site' . $this->getBasePath() . '%s',
                 ltrim($path, '/')
             );
         }
 
-        return parent::getUrl($path);
+        if ($this->isDevMode) {
+            return parent::getUrl($path);
+        } else {
+            return 'static/' . preg_replace(
+                '/^' . preg_quote($this->getBasePath(), '/') . '/i',
+                '',
+                parent::getUrl(ltrim($this->getBasePath(), '/') . $path)
+            );
+        }
     }
 }

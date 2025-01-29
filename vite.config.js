@@ -20,21 +20,20 @@ const input = Object.fromEntries(
             .replace(/\/assets\//, '/')
             .replace(/core\/modules\//, 'modules/')
             .replace(/core\/components\//, 'components/'),
-        file // Full path
+        file
     ])
 );
 
-console.log(input)
-
 export default defineConfig({
-    root: 'public',
+    root: '.',
+    base: './',
     plugins: [
         vue(),
         tailwindcss(),
     ],
     publicDir: false,
     build: {
-        outDir: 'static',
+        outDir: 'public/static',
         assetsDir: '.',
         rollupOptions: {
             input
@@ -42,13 +41,7 @@ export default defineConfig({
         manifest: 'manifest.json'
     },
     server: {
-        cors: true,
-        fs: {
-            allow: [
-                path.resolve(__dirname, "core/assets/"),
-                path.resolve(__dirname, "public/static/")
-            ]
-        }
+        cors: true
     },
     resolve: {
         alias: {
