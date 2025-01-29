@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\page\Controller\Api;
+namespace Puzzle\component\Controller\Api;
 
 use Puzzle\Component\ComponentDiscovery;
 use Puzzle\Component\Renderer;

@@ -1,0 +1,16 @@
+components:
+    path: /api/components
+    controller: Puzzle\component\Controller\Api\ComponentController::index
+    methods: GET
+components.render:
+    path: /api/components/{id}/render
+    controller: Puzzle\component\Controller\Api\ComponentController::output
+    methods: GET
+components.update:
+    path: /api/components/{id}/update
+    controller: Puzzle\component\Controller\Api\ComponentController::update
+    methods: PUT
+components.undo:
+    path: /api/components/{id}/undo
+    controller: Puzzle\component\Controller\Api\ComponentController::undo
+    methods: PUT

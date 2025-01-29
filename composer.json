@@ -35,7 +35,9 @@
         "illuminate/support": "^11.40",
         "illuminate/database": "^11.40",
         "ramsey/uuid": "^4.7",
-        "z4kn4fein/php-semver": "^3.0"
+        "z4kn4fein/php-semver": "^3.0",
+        "unsplash/unsplash": "^3.2",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^7.2",

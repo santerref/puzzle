@@ -3,9 +3,8 @@
 namespace Puzzle\ServiceProvider;
 
 use Puzzle\Module\ModuleDiscovery;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ModuleServiceProvider implements ServiceProviderInterface
+class ModuleServiceProvider extends ServiceProvider
 {
     //@TODO: Move this constants into configuration?
     private const MODULE_DIRECTORIES = [
@@ -13,13 +12,19 @@ class ModuleServiceProvider implements ServiceProviderInterface
         PUZZLE_ROOT . '/modules'
     ];
 
-    public static function register(ContainerBuilder $container): void
+    public function register(): void
     {
         $moduleDiscovery = new ModuleDiscovery(
             static::MODULE_DIRECTORIES,
-            $container->get('event_dispatcher'),
-            $container
+            $this->container->get('event_dispatcher'),
+            $this->container
         );
         $moduleDiscovery->discover();
+
+        foreach ($this->container->findTaggedServiceIds('event.event_subscriber') as $id => $attributes) {
+            $this->container->get('event_dispatcher')->addSubscriber(
+                $this->container->get($id)
+            );
+        }
     }
 }

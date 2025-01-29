@@ -2,19 +2,24 @@
 
 namespace Puzzle\Component;
 
+use Puzzle\Event\ComponentPreRender;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Twig\Environment;
 
 class Renderer
 {
-    protected $twig;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        protected Environment $twig,
+        protected EventDispatcher $eventDispatcher
+    ) {
     }
 
     public function render(Component $component, $defaultValue = false): string
     {
-        return $this->twig->render($component->getTemplate(), $component->getArgs(!$defaultValue));
+        $this->eventDispatcher->dispatch(new ComponentPreRender($component), ComponentPreRender::NAME);
+        return $this->twig->render(
+            $component->getTemplate(),
+            $component->getArgs(!$defaultValue)
+        );
     }
 }

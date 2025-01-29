@@ -42,6 +42,16 @@ class Component
         return $this->id . '/' . $this->info['template'];
     }
 
+    public function getInfo(): array
+    {
+        return $this->info;
+    }
+
+    public function setInfo(array $info): void
+    {
+        $this->info = $info;
+    }
+
     public function getArgs($value = false)
     {
         return array_map(

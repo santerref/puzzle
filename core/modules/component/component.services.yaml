@@ -1,0 +1,12 @@
+services:
+    Puzzle\component\Controller\Api\ComponentController:
+        autoconfigure: true
+        autowire: true
+        public: true
+        tags: [ 'controller.service_arguments' ]
+    Puzzle\component\EventSubscriber\GenerateDefaultImage:
+        class: Puzzle\component\EventSubscriber\GenerateDefaultImage
+        public: true
+        tags: [ 'event.event_subscriber' ]
+        arguments:
+            - '@http_client'

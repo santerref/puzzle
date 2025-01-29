@@ -3,11 +3,10 @@
 namespace Puzzle;
 
 use Puzzle\ServiceProvider\ComponentServiceProvider;
+use Puzzle\ServiceProvider\CoreServiceProvider;
 use Puzzle\ServiceProvider\EventServiceProvider;
 use Puzzle\ServiceProvider\ModuleServiceProvider;
 use Puzzle\ServiceProvider\RoutingServiceProvider;
-use Puzzle\ServiceProvider\StorageServiceProvider;
-use Puzzle\ServiceProvider\TwigServiceProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Bootstrap
@@ -16,12 +15,11 @@ class Bootstrap
     {
         $container = new ContainerBuilder();
 
-        TwigServiceProvider::register($container);
-        StorageServiceProvider::register($container);
-        EventServiceProvider::register($container);
-        RoutingServiceProvider::register($container);
-        ComponentServiceProvider::register($container);
-        ModuleServiceProvider::register($container);
+        (new CoreServiceProvider($container))->register();
+        (new EventServiceProvider($container))->register();
+        (new RoutingServiceProvider($container))->register();
+        (new ComponentServiceProvider($container))->register();
+        (new ModuleServiceProvider($container))->register();
 
         $container->compile();
 

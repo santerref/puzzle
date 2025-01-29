@@ -8,25 +8,28 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ComponentServiceProvider implements ServiceProviderInterface
+class ComponentServiceProvider extends ServiceProvider
 {
     //@TODO: Move this constants into configuration?
     private const COMPONENT_DIRECTORIES = [
         PUZZLE_ROOT . '/core/components'
     ];
 
-    public static function register(ContainerBuilder $container): void
+    public function register(): void
     {
         $componentDiscovery = new Definition(ComponentDiscovery::class, [static::COMPONENT_DIRECTORIES]);
-        $container->setDefinition('component_discovery', $componentDiscovery)
+        $this->container->setDefinition('component_discovery', $componentDiscovery)
             ->setPublic(true);
-        $container->setAlias(ComponentDiscovery::class, 'component_discovery')
+        $this->container->setAlias(ComponentDiscovery::class, 'component_discovery')
             ->setPublic(true);
-        $container->get('component_discovery')->discover();
+        $this->container->get('component_discovery')->discover();
 
-        $container->register('component.renderer', Renderer::class)
-            ->addArgument(new Reference('twig'))
+        $this->container->register('component.renderer', Renderer::class)
+            ->setArguments([
+                new Reference('twig'),
+                new Reference('event_dispatcher')
+            ])
             ->setPublic(true);
-        $container->setAlias(Renderer::class, 'component.renderer')->setPublic(true);
+        $this->container->setAlias(Renderer::class, 'component.renderer')->setPublic(true);
     }
 }
