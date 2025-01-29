@@ -57,8 +57,8 @@
 </template>
 
 <script setup lang="ts">
-import Item from '@/js/components/Item.vue'
-import {useComponentsStore} from '@/js/stores/components'
+import Item from '@modules/page_builder/assets/js/components/Item.vue'
+import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
 import {VueDraggable} from 'vue-draggable-plus'
 
 const components = useComponentsStore()

@@ -24,3 +24,9 @@ export type Field = {
     label: string
     options: ?object
 }
+
+declare global {
+    interface Window {
+        page_id: string
+    }
+}

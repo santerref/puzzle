@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import 'primeicons/primeicons.css';
 
 @source "../../components/**/*.{css,scss,html.twig,info.yaml}";
 @source "../../modules/*/templates/**/*.html.twig";

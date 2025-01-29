@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import type {Field} from '@/js/types'
+import type {Field} from '@modules/page_builder/assets/js/types'
 
 defineProps<{
     field: Field

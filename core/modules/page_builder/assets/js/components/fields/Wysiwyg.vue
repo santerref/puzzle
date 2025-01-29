@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import {computed} from 'vue'
 import {Ckeditor, useCKEditorCloud} from '@ckeditor/ckeditor5-vue'
-import type {Field} from '@/js/types'
+import type {Field} from '@modules/page_builder/assets/js/types'
 
 const model = defineModel<string>()
 defineProps<{

@@ -35,9 +35,9 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import {useComponentsStore} from '@/js/stores/components'
+import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
 import clone from 'clone-deep'
-import type {EditorComponent} from '@/js/types'
+import type {EditorComponent} from '@modules/page_builder/assets/js/types'
 import * as changeCase from 'change-case'
 
 const components = useComponentsStore()

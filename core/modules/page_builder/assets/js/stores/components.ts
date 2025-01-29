@@ -3,11 +3,12 @@ import {computed, ref} from 'vue'
 import equal from 'deep-equal'
 import clone from 'clone-deep'
 import {v4 as uuidv4} from 'uuid'
+import {Component, EditorComponent} from "@modules/page_builder/assets/js/types";
 
 export const useComponentsStore = defineStore('components', () => {
-    const components = ref([])
-    const pageComponents = ref([])
-    const editorComponents = ref([])
+    const components = ref<Component[]>([])
+    const pageComponents = ref<EditorComponent[]>([])
+    const editorComponents = ref<EditorComponent[]>([])
 
     const all = computed(() => components.value)
     const allEditor = computed(() => editorComponents.value)
@@ -40,7 +41,7 @@ export const useComponentsStore = defineStore('components', () => {
         }
     }
 
-    function moveUp(component) {
+    function moveUp(component: EditorComponent) {
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
         if (index > 0) {
             ;[editorComponents.value[index - 1], editorComponents.value[index]] =
@@ -51,7 +52,7 @@ export const useComponentsStore = defineStore('components', () => {
         }
     }
 
-    function moveDown(component) {
+    function moveDown(component: EditorComponent) {
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
 
         if (index < editorComponents.value.length - 1) { // Ensure there's an element to swap with
@@ -63,26 +64,26 @@ export const useComponentsStore = defineStore('components', () => {
         }
     }
 
-    function remove(component) {
+    function remove(component: EditorComponent) {
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
         editorComponents.value.splice(index, 1)
     }
 
-    function undo(component) {
+    function undo(component: EditorComponent) {
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
         Object.assign(editorComponents.value[index].user, editorComponents.value[index].original)
         editorComponents.value[index].isDirty = false
     }
 
-    function update(component) {
+    function update(component: EditorComponent) {
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
         component.isDirty = !equal(component.original, component.user)
         editorComponents.value.splice(index, 1, component)
     }
 
-    async function add(id) {
+    async function add(id: string) {
         let html = ''
-        let data = {}
+        let data: any = {}
         try {
             const response = await fetch(`/api/components/${id}/render`)
             data = await response.json()
@@ -91,7 +92,7 @@ export const useComponentsStore = defineStore('components', () => {
 
         }
 
-        const component = data.component
+        const component = data.component as Component
         html = data.html
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -112,7 +113,7 @@ export const useComponentsStore = defineStore('components', () => {
         editorComponents.value.push(newComponent)
     }
 
-    function updateEditors(components) {
+    function updateEditors(components: EditorComponent[]) {
         components.forEach((component, index) => {
             component.weight = index + 1
             return component

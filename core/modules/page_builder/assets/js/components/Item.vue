@@ -47,9 +47,9 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import Editor from '@/js/components/Editor.vue'
-import {useComponentsStore} from '@/js/stores/components'
-import {EditorComponent} from '@/js/types'
+import Editor from '@modules/page_builder/assets/js/components/Editor.vue'
+import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
+import {EditorComponent} from '@modules/page_builder/assets/js/types'
 
 defineProps<{
     component: EditorComponent
