@@ -1,53 +1,54 @@
 import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue'
-import liveReload from 'vite-plugin-live-reload'
 import tailwindcss from '@tailwindcss/vite'
 import glob from 'fast-glob'
 import path from 'path'
 
 const assetDirs = [
-    'components/contrib/*/assets/',
-    'components/custom/*/assets/',
     'core/assets/',
-    'modules/contrib/*/assets/',
-    'modules/custom/*/assets/',
-    'core/modules/*/assets/'
+    'core/modules/*/assets/',
+    'core/components/*/assets/',
 ];
 
 // Find all files matching extensions in the directories
 const input = Object.fromEntries(
     glob.sync(
-        assetDirs.map(dir => path.resolve(__dirname, dir, '**/*.{js,ts,scss,css}'))
+        assetDirs.map(dir => path.resolve(__dirname, dir, '**/*.{js,ts,css,scss}'))
     ).map(file => [
-        path.relative(path.resolve(__dirname), file).replace(/\.[^.]+$/, ''), // Name
+        path.relative(path.resolve(__dirname), file)
+            .replace(/\.[^.]+$/, '')
+            .replace(/\/assets\//, '/')
+            .replace(/core\/modules\//, 'modules/')
+            .replace(/core\/components\//, 'components/'),
         file // Full path
     ])
 );
 
+console.log(input)
+
 export default defineConfig({
-    root: 'core/resources',
+    root: 'public',
     plugins: [
         vue(),
-        liveReload([
-            __dirname + '/core/modules/*/templates/**/*.html.twig',
-            __dirname + '/modules/custom/*/templates/**/*.html.twig',
-            __dirname + '/modules/contrib/*/templates/**/*.html.twig',
-            __dirname + '/core/templates/**/*.html.twig',
-            __dirname + '/core/components/*/templates/**/*.html.twig',
-            __dirname + '/components/contrib/*/templates/**/*.html.twig',
-            __dirname + '/components/custom/*/templates/**/*.html.twig',
-        ]),
         tailwindcss(),
     ],
+    publicDir: false,
     build: {
-        outDir: 'assets',
+        outDir: 'static',
+        assetsDir: '.',
         rollupOptions: {
             input
         },
         manifest: 'manifest.json'
     },
     server: {
-        cors: true
+        cors: true,
+        fs: {
+            allow: [
+                path.resolve(__dirname, "core/assets/"),
+                path.resolve(__dirname, "public/static/")
+            ]
+        }
     },
     resolve: {
         alias: {

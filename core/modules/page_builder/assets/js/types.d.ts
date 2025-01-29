@@ -22,7 +22,7 @@ export type Field = {
     value: string
     type: string
     label: string
-    options: ?object
+    options?: object
 }
 
 declare global {

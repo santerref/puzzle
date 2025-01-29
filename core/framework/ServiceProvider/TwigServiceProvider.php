@@ -14,8 +14,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 {
     public static function register(ContainerBuilder $container): void
     {
-        $manifestPath = PUZZLE_ROOT . '/public/assets/manifest.json';
-        $pathPackage = new ViteAssetPackage($manifestPath);
+        $pathPackage = new ViteAssetPackage('/core/assets');
 
         $loader = new FilesystemLoader([
             PUZZLE_ROOT . '/core/templates',
@@ -25,9 +24,12 @@ class TwigServiceProvider implements ServiceProviderInterface
         $twig = new Environment($loader, [
             'cache' => false
         ]);
-        $packages = new Packages($pathPackage);
+        $packages = new Packages($pathPackage, [
+            'core' => $pathPackage
+        ]);
         $twig->addExtension(new AssetExtension($packages));
         $twig->addExtension(new PuzzleExtension());
         $container->set('twig', $twig);
+        $container->set('asset.packages', $packages);
     }
 }

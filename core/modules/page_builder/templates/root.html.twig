@@ -7,9 +7,12 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet">
 
-    <link href="{{ asset('../scss/puzzle.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tailwind.css', 'core') }}" rel="stylesheet">
+    <link href="{{ asset('modules/page_builder/css/page-builder.css') }}" rel="stylesheet">
 
     <script>
         window.page_id = '{{ page_id }}';
@@ -19,6 +22,6 @@
 <div id="puzzle"></div>
 
 <script type="module" src="https://vite.cms-custom.ddev.site/@vite/client"></script>
-<script type="module" src="{{ asset('../js/puzzle.ts') }}"></script>
+<script type="module" src="{{ asset('modules/page_builder/js/page-builder.ts') }}"></script>
 </body>
 </html>
