@@ -1,4 +1,4 @@
-name: cms-custom
+name: puzzle
 type: symfony
 docroot: public
 php_version: "8.3"

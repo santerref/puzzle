@@ -1,0 +1,104 @@
+#ddev-generated
+# If you remove the ddev-generated line above you
+# are responsible for maintaining this file. DDEV will not then
+# update it, for example if you add `additional_hostnames`, etc.
+
+http:
+  routers:
+    cms-custom-phpmyadmin-80-http:
+      entrypoints:
+        - http-8036
+      rule: HostRegexp(`^cms-custom\.ddev\.site$`)|| HostRegexp(`^vite\.cms-custom\.ddev\.site$`)
+      
+      service: "cms-custom-phpmyadmin-80"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "cms-custom-redirectHttps"
+    cms-custom-web-80-http:
+      entrypoints:
+        - http-80
+      rule: HostRegexp(`^cms-custom\.ddev\.site$`)|| HostRegexp(`^vite\.cms-custom\.ddev\.site$`)
+      
+      service: "cms-custom-web-80"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "cms-custom-redirectHttps"
+    cms-custom-web-8025-http:
+      entrypoints:
+        - http-8025
+      rule: HostRegexp(`^cms-custom\.ddev\.site$`)|| HostRegexp(`^vite\.cms-custom\.ddev\.site$`)
+      
+      service: "cms-custom-web-8025"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "cms-custom-redirectHttps"
+    
+    
+    cms-custom-phpmyadmin-80-https:
+      entrypoints:
+        - http-8037
+      rule: HostRegexp(`^cms-custom\.ddev\.site$`) || HostRegexp(`^vite\.cms-custom\.ddev\.site$`)
+      
+      service: "cms-custom-phpmyadmin-80"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    
+    
+    cms-custom-web-80-https:
+      entrypoints:
+        - http-443
+      rule: HostRegexp(`^cms-custom\.ddev\.site$`) || HostRegexp(`^vite\.cms-custom\.ddev\.site$`)
+      
+      service: "cms-custom-web-80"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    cms-custom-web-8025-https:
+      entrypoints:
+        - http-8026
+      rule: HostRegexp(`^cms-custom\.ddev\.site$`) || HostRegexp(`^vite\.cms-custom\.ddev\.site$`)
+      
+      service: "cms-custom-web-8025"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    
+
+  middlewares:
+    cms-custom-redirectHttps:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+  services:
+    cms-custom-phpmyadmin-80:
+      loadbalancer:
+        servers:
+          - url: http://ddev-cms-custom-phpmyadmin:80
+        
+    
+    cms-custom-web-80:
+      loadbalancer:
+        servers:
+          - url: http://ddev-cms-custom-web:80
+        
+    cms-custom-web-8025:
+      loadbalancer:
+        servers:
+          - url: http://ddev-cms-custom-web:8025
+        
+    
+    
+    
+
+tls:
+  certificates:
+    - certFile: /mnt/ddev-global-cache/traefik/certs/cms-custom.crt
+      keyFile: /mnt/ddev-global-cache/traefik/certs/cms-custom.key
