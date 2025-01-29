@@ -3,6 +3,7 @@
 namespace Puzzle\component\EventSubscriber;
 
 use GuzzleHttp\Client;
+use Puzzle\Config;
 use Puzzle\Event\ComponentPreRender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -34,7 +35,7 @@ class GenerateDefaultImage implements EventSubscriberInterface
                 'orientation' => 'landscape'
             ],
             'headers' => [
-                'Authorization' => '',
+                'Authorization' => 'Client-ID ' . Config::get('unsplash.access_key')
             ]
         ]);
         $data = json_decode($response->getBody()->getContents(), true);

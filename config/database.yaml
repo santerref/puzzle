@@ -1,0 +1,8 @@
+driver: 'mysql'
+host: !env DATABASE_HOST
+database: !env DATABASE_NAME
+username: !env DATABASE_USERNAME
+password: !env DATABASE_PASSWORD
+charset: 'utf8'
+collation: 'utf8_unicode_ci'
+prefix: !env DATABASE_PREFIX
