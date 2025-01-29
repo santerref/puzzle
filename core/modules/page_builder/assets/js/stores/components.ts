@@ -3,7 +3,7 @@ import {computed, ref} from 'vue'
 import equal from 'deep-equal'
 import clone from 'clone-deep'
 import {v4 as uuidv4} from 'uuid'
-import {Component, EditorComponent} from "@modules/page_builder/assets/js/types";
+import {Component, EditorComponent} from '@modules/page_builder/assets/js/types'
 
 export const useComponentsStore = defineStore('components', () => {
     const components = ref<Component[]>([])

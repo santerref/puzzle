@@ -27,13 +27,30 @@ class ViteManifestVersionStrategy implements VersionStrategyInterface
     {
         if (!isset($this->manifestData)) {
             if (!is_file($this->manifestPath)) {
-                throw new RuntimeException(\sprintf('Asset manifest file "%s" does not exist. Did you forget to build the assets with npm or yarn?', $this->manifestPath));
+                throw new RuntimeException(
+                    \sprintf(
+                        'Asset manifest file "%s" does not exist. Did you forget to build the assets with npm or yarn?',
+                        $this->manifestPath
+                    )
+                );
             }
 
             try {
-                $this->manifestData = json_decode(file_get_contents($this->manifestPath), true, flags: \JSON_THROW_ON_ERROR);
+                $this->manifestData = json_decode(
+                    file_get_contents($this->manifestPath),
+                    true,
+                    flags:
+                    \JSON_THROW_ON_ERROR
+                );
             } catch (\JsonException $e) {
-                throw new RuntimeException(\sprintf('Error parsing JSON from asset manifest file "%s": ', $this->manifestPath) . $e->getMessage(), previous: $e);
+                throw new RuntimeException(
+                    \sprintf(
+                        'Error parsing JSON from asset manifest file "%s": ',
+                        $this->manifestPath
+                    ) . $e->getMessage(),
+                    previous:
+                    $e
+                );
             }
         }
 
