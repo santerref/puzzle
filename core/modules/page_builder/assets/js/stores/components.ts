@@ -89,6 +89,25 @@ export const useComponentsStore = defineStore('components', () => {
         }
     }
 
+    async function rerender(component: PageBuilderItem) {
+        try {
+            const response = await fetch(`/api/components/${component.live.component_type}/refresh`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    form_values: component.live.form_values
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const pageComponent = await response.json()
+            update(component.live, pageComponent)
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+
+        }
+    }
+
     function undo(component: PageBuilderItem) {
         Object.assign(component.live, component.original)
     }
@@ -151,6 +170,7 @@ export const useComponentsStore = defineStore('components', () => {
         pageBuilderItems,
         originalPageBuilderItems,
         isDirty,
+        rerender,
         add,
         save,
         all,

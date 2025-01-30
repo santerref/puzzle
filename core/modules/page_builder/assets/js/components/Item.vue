@@ -21,6 +21,10 @@
                     @click.prevent="remove(component)"
                 />
                 <i
+                    class="pi pi-sync hover:cursor-pointer"
+                    @click.prevent="components.rerender(component)"
+                />
+                <i
                     v-if="isDirty"
                     class="pi pi-undo hover:cursor-pointer"
                     @click.prevent="undo(component)"
