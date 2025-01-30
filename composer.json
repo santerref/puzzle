@@ -11,9 +11,6 @@
                 "tests"
             ]
         },
-        "classmap": [
-            "core/modules/*/src"
-        ],
         "files": [
             "core/framework/constants.php"
         ]
