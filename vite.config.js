@@ -5,7 +5,6 @@ import glob from 'fast-glob'
 import path from 'path'
 
 const assetDirs = [
-    'core/assets/',
     'core/modules/*/assets/',
     'core/components/*/assets/',
 ];
@@ -17,7 +16,6 @@ const input = Object.fromEntries(
     ).map(file => [
         path.relative(path.resolve(__dirname), file)
             .replace(/\.[^.]+$/, '')
-            .replace(/\/assets\//, '/')
             .replace(/core\/modules\//, 'modules/')
             .replace(/core\/components\//, 'components/'),
         file
@@ -45,7 +43,6 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            "@assets": path.resolve(__dirname, "core/assets/"),
             "@modules": path.resolve(__dirname, "core/modules/"),
             "@components": path.resolve(__dirname, "core/components/"),
         },

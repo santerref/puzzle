@@ -62,7 +62,7 @@ import {useComponentsStore} from '@modules/page_builder/assets/js/stores/compone
 import {VueDraggable} from 'vue-draggable-plus'
 
 const components = useComponentsStore()
-components.load()
+components.initialize(window.page_uuid)
 
 const addComponent = function (id, component) {
     components.add(id, component)

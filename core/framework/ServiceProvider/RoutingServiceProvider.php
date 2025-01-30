@@ -23,8 +23,6 @@ class RoutingServiceProvider extends ServiceProvider
 
         $routeCollectionDefinition = new Definition(RouteCollection::class);
         $this->container->setDefinition('router.route_collection', $routeCollectionDefinition)
-            ->setFactory([$routeLoader, 'load'])
-            ->setArguments(['routes.yaml'])
             ->setPublic(true);
 
         $this->container->register('router', UrlMatcher::class)

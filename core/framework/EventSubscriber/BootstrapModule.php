@@ -3,6 +3,7 @@
 namespace Puzzle\EventSubscriber;
 
 use Puzzle\Event\ModuleDiscovered;
+use Puzzle\Module\Bootstrapper\ControllerBootstrapper;
 use Puzzle\Module\Bootstrapper\RoutingBootstrapper;
 use Puzzle\Module\Bootstrapper\ServiceBootstrapper;
 use Puzzle\Module\Bootstrapper\TemplateBootstrapper;
@@ -22,7 +23,8 @@ class BootstrapModule implements EventSubscriberInterface
         $bootstrappers = [
             new ServiceBootstrapper(),
             new RoutingBootstrapper(),
-            new TemplateBootstrapper()
+            new TemplateBootstrapper(),
+            new ControllerBootstrapper()
         ];
 
         foreach ($bootstrappers as $bootstrapper) {

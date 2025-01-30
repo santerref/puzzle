@@ -2,17 +2,18 @@
 
 namespace Puzzle\ThirdParty\Symfony;
 
+use Puzzle\Config;
 use Puzzle\ThirdParty\Symfony\Asset\VersionStrategy\ViteManifestVersionStrategy;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
 class ViteAssetPackage extends PathPackage
 {
-    //@TODO: Move this in configuration + .env.
-    protected bool $isDevMode = true;
+    protected bool $isDevMode;
 
     public function __construct(string $basePath)
     {
+        $this->isDevMode = Config::get('puzzle.dev_mode', false);
         $manifestPath = PUZZLE_ROOT . '/public/static/manifest.json';
         $versionStrategy = $this->isDevMode
             ? new EmptyVersionStrategy()
@@ -30,14 +31,10 @@ class ViteAssetPackage extends PathPackage
             );
         }
 
-        if ($this->isDevMode) {
-            return parent::getUrl($path);
-        } else {
-            return 'static/' . preg_replace(
-                '/^' . preg_quote($this->getBasePath(), '/') . '/i',
-                '',
-                parent::getUrl(ltrim($this->getBasePath(), '/') . $path)
-            );
-        }
+        return 'static/' . preg_replace(
+            '/^' . preg_quote($this->getBasePath(), '/') . '/i',
+            '',
+            parent::getUrl(ltrim($this->getBasePath(), '/') . $path)
+        );
     }
 }

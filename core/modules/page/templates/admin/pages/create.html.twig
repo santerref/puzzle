@@ -1,14 +1,14 @@
-{% extends '@core/admin/layout.html.twig' %}
+{% extends '@module_core/admin/layout.html.twig' %}
 {% block content %}
     <form method="post" action="/admin/pages">
         <div class="mb-4">
             <div>
-                {% include '@core/admin/components/input-text.html.twig' with {
+                {% include '@module_core/admin/components/input-text.html.twig' with {
                     label: 'Page title',
                     input_name: 'title'
                 } %}
             </div>
         </div>
-        {% include '@core/admin/components/button.html.twig' with {title: 'Create'} %}
+        {% include '@module_core/admin/components/button.html.twig' with {title: 'Create'} %}
     </form>
 {% endblock %}

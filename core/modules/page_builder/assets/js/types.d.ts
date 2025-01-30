@@ -10,11 +10,12 @@ export type Component = {
 
 export type EditorComponent = {
     id: string
-    original: Component
+    original?: Component
     user: Component
     isDirty: boolean
     weight: number
-    originalWeight: number
+    originalWeight?: number
+    isNew: boolean
 }
 
 export type Field = {
@@ -27,6 +28,6 @@ export type Field = {
 
 declare global {
     interface Window {
-        page_id: string
+        page_uuid: string
     }
 }

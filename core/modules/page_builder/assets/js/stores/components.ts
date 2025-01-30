@@ -16,9 +16,11 @@ export const useComponentsStore = defineStore('components', () => {
     const isDirty = computed(() => {
         let dirty = false
         editorComponents.value.forEach(component => {
-            component.isDirty = !equal(component.original, component.user)
-            if (component.isDirty || component.weight !== component.originalWeight) {
-                dirty = true
+            if (!component.isNew) {
+                component.isDirty = !equal(component.original, component.user)
+                if (component.isDirty || component.weight !== component.originalWeight) {
+                    dirty = true
+                }
             }
         })
         if (!dirty && !equal(pageComponents.value, editorComponents.value)) {
@@ -27,18 +29,15 @@ export const useComponentsStore = defineStore('components', () => {
         return dirty
     })
 
-    async function load() {
-        try {
-            const componentsResponse = await fetch('/api/components')
-            components.value = await componentsResponse.json()
-            const pageResponse = await fetch(`/api/pages/${window.page_id}`)
-            const page = await pageResponse.json()
-            editorComponents.value = page.components
-            pageComponents.value = clone(editorComponents.value)
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (e) {
-
-        }
+    async function initialize(page_uuid: string) {
+        const [pageResponse, componentsResponse] = await Promise.all([
+            fetch(`/api/pages/${page_uuid}`),
+            fetch('/api/components')
+        ])
+        const page = await pageResponse.json()
+        components.value = await componentsResponse.json()
+        pageComponents.value = page.components
+        editorComponents.value = clone(pageComponents.value)
     }
 
     function moveUp(component: EditorComponent) {
@@ -70,6 +69,9 @@ export const useComponentsStore = defineStore('components', () => {
     }
 
     function undo(component: EditorComponent) {
+        if (component.isNew) {
+            return
+        }
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
         Object.assign(editorComponents.value[index].user, editorComponents.value[index].original)
         editorComponents.value[index].isDirty = false
@@ -77,7 +79,7 @@ export const useComponentsStore = defineStore('components', () => {
 
     function update(component: EditorComponent) {
         const index = editorComponents.value.findIndex(obj => obj.id === component.id)
-        component.isDirty = !equal(component.original, component.user)
+        component.isDirty = !component.isNew && !equal(component.original, component.user)
         editorComponents.value.splice(index, 1, component)
     }
 
@@ -102,13 +104,11 @@ export const useComponentsStore = defineStore('components', () => {
         const weight = editorComponents.value.length + 1
         const newComponent = {
             id: uuidv4(),
-            original: clone(component),
             user: clone(component),
             isDirty: false,
             weight: weight,
-            originalWeight: weight
+            isNew: true
         }
-        newComponent.original.html = html
         newComponent.user.html = html
         editorComponents.value.push(newComponent)
     }
@@ -126,7 +126,6 @@ export const useComponentsStore = defineStore('components', () => {
         editorComponents,
         pageComponents,
         isDirty,
-        load,
         add,
         all,
         allEditor,
@@ -135,6 +134,7 @@ export const useComponentsStore = defineStore('components', () => {
         undo,
         updateEditors,
         moveUp,
-        moveDown
+        moveDown,
+        initialize
     }
 })

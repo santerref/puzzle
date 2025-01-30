@@ -26,4 +26,9 @@ class Module
     {
         return $this->path;
     }
+
+    public function getNamespace(): string
+    {
+        return 'Puzzle\\' . $this->getName();
+    }
 }

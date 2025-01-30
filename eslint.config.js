@@ -10,12 +10,6 @@ export default tseslint.config(
         ignores: [
             '*',
             '!core',
-            'core/framework',
-            'core/config',
-            'core/templates',
-            '!core/assets/**/*.{js,vue,ts}',
-            '!core/modules/**/*.{js,vue,ts}',
-            '!core/components/**/*.{js,vue,ts}',
         ],
     },
     ...tseslint.configs.recommended,

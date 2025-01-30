@@ -50,19 +50,13 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerTwig(): void
     {
-        $pathPackage = new ViteAssetPackage('/core/assets');
-
         $loader = new FilesystemLoader([
-            PUZZLE_ROOT . '/core/templates',
             PUZZLE_ROOT . '/core/components'
         ]);
-        $loader->addPath(PUZZLE_ROOT . '/core/templates', 'core');
         $twig = new Environment($loader, [
-            'cache' => false
+            'cache' => Config::get('twig.cache')
         ]);
-        $packages = new Packages($pathPackage, [
-            'core' => $pathPackage
-        ]);
+        $packages = new Packages();
         $twig->addExtension(new AssetExtension($packages));
         $twig->addExtension(new PuzzleExtension());
         $this->container->set('twig', $twig);

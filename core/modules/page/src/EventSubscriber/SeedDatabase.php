@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\EventSubscriber;
+namespace Puzzle\page\EventSubscriber;
 
 use Puzzle\Event\BootFinishedEvent;
 use Puzzle\page\Entity\Page;

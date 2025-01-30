@@ -16,7 +16,7 @@ class RoutingBootstrapper implements ModuleBootstrapperInterface
         if (file_exists($routesFile)) {
             $loader = new YamlFileLoader(new FileLocator($module->getPath()));
             $routes = $loader->load($routesFile);
-            $routes->addNamePrefix('@' . $module->getName() . '.');
+            $routes->addNamePrefix($module->getName() . '.');
             $container->get('router.route_collection')
                 ->addCollection($routes);
         }

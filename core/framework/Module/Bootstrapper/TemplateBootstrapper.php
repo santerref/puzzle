@@ -14,7 +14,7 @@ class TemplateBootstrapper implements ModuleBootstrapperInterface
         if (is_dir($templatesDirectory)) {
             $container->get('twig')
                 ->getLoader()
-                ->addPath($templatesDirectory, $module->getName());
+                ->addPath($templatesDirectory, 'module_' . $module->getName());
         }
 
         $assetsDirectory = $module->getPath() . '/assets';

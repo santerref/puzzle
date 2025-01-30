@@ -8,6 +8,6 @@ class HomeController
 {
     public function welcome(): TwigTemplateResponse
     {
-        return new TwigTemplateResponse('@page/welcome.html.twig');
+        return new TwigTemplateResponse('@module_page/welcome.html.twig');
     }
 }

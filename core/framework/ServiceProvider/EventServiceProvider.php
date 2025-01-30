@@ -15,7 +15,6 @@ class EventServiceProvider extends ServiceProvider
         BootstrapModule::class,
         LoadComponent::class,
         RecordInstallScript::class,
-        SeedDatabase::class,
         ConvertCoreResponse::class,
     ];
 

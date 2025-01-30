@@ -6,3 +6,4 @@ package-lock.json
 /.phpunit.cache
 .php-cs-fixer.cache
 /.env
+/.env.local

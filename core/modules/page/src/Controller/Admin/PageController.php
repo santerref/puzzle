@@ -11,12 +11,12 @@ class PageController
 {
     public function index(): TwigTemplateResponse
     {
-        return new TwigTemplateResponse('@page/admin/pages/index.html.twig');
+        return new TwigTemplateResponse('@module_page/admin/pages/index.html.twig');
     }
 
     public function create(): TwigTemplateResponse
     {
-        return new TwigTemplateResponse('@page/admin/pages/create.html.twig');
+        return new TwigTemplateResponse('@module_page/admin/pages/create.html.twig');
     }
 
     public function store(Request $request): InternalRedirectResponse
@@ -24,6 +24,6 @@ class PageController
         $page = Page::create($request->request->all());
         $page->save();
 
-        return new InternalRedirectResponse('@page.pages.admin');
+        return new InternalRedirectResponse('page.admin');
     }
 }
