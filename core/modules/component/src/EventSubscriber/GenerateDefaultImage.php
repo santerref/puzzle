@@ -24,7 +24,9 @@ class GenerateDefaultImage implements EventSubscriberInterface
     {
         $component = $event->getComponent();
         $formValues = $event->getFormValues();
-        $formValues['image'] = $this->getUnsplashRandomImage();
+        if (empty($formValues['image'])) {
+            $formValues['image'] = $this->getUnsplashRandomImage();
+        }
         $event->setValues($formValues);
     }
 
