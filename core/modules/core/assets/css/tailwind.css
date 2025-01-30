@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-@source "../../components/**/*.{css,scss,html.twig,info.yaml}";
-@source "../../modules/*/templates/**/*.html.twig";
-@source "../../templates/**/*.html.twig";
+@source "../../../..";
 
 @theme {
     --font-sans: "Inter", "sans-serif";

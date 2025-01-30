@@ -82,7 +82,7 @@ export const useComponentsStore = defineStore('components', () => {
         }
     }
 
-    function remove(component: PageComponent) {
+    function remove(component: PageBuilderItem) {
         const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
         if (index !== -1) {
             pageBuilderItems.value.splice(index, 1)

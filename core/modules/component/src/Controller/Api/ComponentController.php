@@ -28,10 +28,11 @@ class ComponentController
     public function create(string $id): JsonResponse
     {
         $component = $this->componentDiscovery->get($id);
+        $formValues = $component->getDefaultValues();
         return new JsonResponse([
             'component_type' => $id,
-            'form_values' => $component->getDefaultValues(),
-            'rendered_html' => $this->renderer->render($component, true)
+            'form_values' => $formValues,
+            'rendered_html' => $this->renderer->render($component, $formValues)
         ]);
     }
 
@@ -61,11 +62,11 @@ class ComponentController
     ): JsonResponse {
         $component = $this->componentDiscovery->get($id);
         $payload = $request->toArray();
-        $component->updateFields($payload['form_values']);
+        $formValues = $payload['form_values'];
         return new JsonResponse([
             'component_type' => $id,
-            'form_values' => $payload['form_values'],
-            'rendered_html' => $this->renderer->render($component)
+            'form_values' => $formValues,
+            'rendered_html' => $this->renderer->render($component, $formValues)
         ]);
     }
 }

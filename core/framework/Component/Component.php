@@ -22,13 +22,6 @@ class Component
         return new Component($id, $path, $info);
     }
 
-    public function updateFields($values)
-    {
-        foreach ($values as $field => $value) {
-            $this->info['settings']['fields'][$field]['value'] = $value;
-        }
-    }
-
     public function toArray()
     {
         return $this->info;
@@ -59,22 +52,12 @@ class Component
         return $this->info['version'];
     }
 
-    public function getArgs($value = false)
-    {
-        return array_map(
-            function ($field) use ($value) {
-                return $value ? $field['value'] : $field['default_value'];
-            },
-            $this->info['settings']['fields']
-        ) + ['css' => $this->info['settings']['css'] ?? []];
-    }
-
     public function getDefaultValues(): array
     {
-        $defaultValues = [];
+        $values = [];
         foreach (Arr::get($this->info, 'settings.fields', []) as $key => $field) {
-            $defaultValues[$key] = Arr::get($field, 'default_value');
+            $values[$key] = Arr::get($field, 'default_value');
         }
-        return $defaultValues;
+        return $values;
     }
 }
