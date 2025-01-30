@@ -6,7 +6,7 @@ use Puzzle\Event\InstallerFinishedEvent;
 use Puzzle\Setup\Installer;
 use Puzzle\Storage\Database;
 
-require '../vendor/autoload.php';
+require '../autoload.php';
 
 $container = Bootstrap::boot();
 

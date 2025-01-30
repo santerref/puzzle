@@ -4,7 +4,7 @@ use Puzzle\Bootstrap;
 use Puzzle\Kernel;
 use Symfony\Component\HttpFoundation\Request;
 
-require '../vendor/autoload.php';
+require '../autoload.php';
 
 $container = Bootstrap::boot();
 $kernel = new Kernel($container);
