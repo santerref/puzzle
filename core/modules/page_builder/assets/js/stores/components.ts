@@ -61,7 +61,6 @@ export const useComponentsStore = defineStore('components', () => {
 
     function moveUp(component: PageBuilderItem) {
         const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
-        console.log(index)
         if (index > 0) {
             ;[pageBuilderItems.value[index - 1], pageBuilderItems.value[index]] =
                 [pageBuilderItems.value[index], pageBuilderItems.value[index - 1]]
@@ -155,6 +154,7 @@ export const useComponentsStore = defineStore('components', () => {
         add,
         save,
         all,
+        setCurrentPageUuid,
         allItems,
         currentPageUuid,
         update,

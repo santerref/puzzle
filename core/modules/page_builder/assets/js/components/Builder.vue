@@ -6,8 +6,8 @@
                 'cursor-pointer': components.isDirty,
             }"
             :disabled="!components.isDirty"
-            @click.prevent="components.save"
             class="text-white bg-stone-600 px-4 py-2 font-medium"
+            @click.prevent="components.save"
         >
             Save
         </button>
