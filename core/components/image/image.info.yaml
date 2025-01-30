@@ -1,7 +1,2 @@
 name: Image
-template: templates/image.html.twig
-fields:
-    image:
-        label: Image
-        type: image
-        default_value: ''
+version: 0.0.1
