@@ -29,9 +29,9 @@ export const useComponentsStore = defineStore('components', () => {
         return dirty
     })
 
-    async function initialize(page_uuid: string) {
+    async function initialize(pageUuid: string) {
         const [pageResponse, componentsResponse] = await Promise.all([
-            fetch(`/api/pages/${page_uuid}`),
+            fetch(`/api/pages/${pageUuid}`),
             fetch('/api/components')
         ])
         const page = await pageResponse.json()
