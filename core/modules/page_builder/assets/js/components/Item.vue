@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="relative hover:outline-2 hover:outline-stone-200"
+            class="relative hover:outline-2 hover:outline-stone-800"
             @mouseenter="showToolbar = true"
             @mouseleave="showToolbar = false"
         >
@@ -9,34 +9,34 @@
             <div v-html="component.live.rendered_html"/>
             <div
                 v-if="showToolbar"
-                class="bg-stone-100 flex gap-4 absolute -translate-y-full top-0 rounded-tr-md rounded-tl-md left-0 px-4 py-2 shadow"
+                class="bg-stone-800 text-stone-100 flex gap-4 py-3 absolute top-0 rounded-bl-md -right-0.5 px-4 shadow-lg"
             >
-                <i class="pi handle pi-arrows-alt hover:cursor-grab"/>
+                <i class="pi handle text-stone-100 pi-arrows-alt hover:cursor-grab"/>
                 <i
                     class="pi pi-pencil hover:cursor-pointer"
                     @click.prevent="edit=true"
                 />
                 <i
-                    class="pi pi-trash hover:cursor-pointer"
+                    class="pi text-stone-100 pi-trash hover:cursor-pointer"
                     @click.prevent="remove(component)"
                 />
                 <i
-                    class="pi pi-sync hover:cursor-pointer"
+                    class="pi text-stone-100 pi-sync hover:cursor-pointer"
                     @click.prevent="components.rerender(component)"
                 />
                 <i
                     v-if="isDirty"
-                    class="pi pi-undo hover:cursor-pointer"
+                    class="pi text-stone-100 pi-undo hover:cursor-pointer"
                     @click.prevent="undo(component)"
                 />
                 <i
                     v-if="component.live.weight > 1"
-                    class="pi pi-angle-up hover:cursor-pointer"
+                    class="pi text-stone-100 pi-angle-up hover:cursor-pointer"
                     @click.prevent="components.moveUp(component)"
                 />
                 <i
                     v-if="component.live.weight < components.pageBuilderItems.length"
-                    class="pi pi-angle-down hover:cursor-pointer"
+                    class="pi text-stone-100 pi-angle-down hover:cursor-pointer"
                     @click.prevent="components.moveDown(component)"
                 />
             </div>
