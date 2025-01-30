@@ -1,134 +1,162 @@
 import {defineStore} from 'pinia'
 import {computed, ref} from 'vue'
 import equal from 'deep-equal'
-import clone from 'clone-deep'
+import {ComponentType, PageBuilderItem, PageComponent} from '@modules/page_builder/assets/js/types'
 import {v4 as uuidv4} from 'uuid'
-import {Component, EditorComponent} from '@modules/page_builder/assets/js/types'
+import clone from 'clone-deep'
 
 export const useComponentsStore = defineStore('components', () => {
-    const components = ref<Component[]>([])
-    const pageComponents = ref<EditorComponent[]>([])
-    const editorComponents = ref<EditorComponent[]>([])
+    const components = ref<ComponentType[]>([])
+    const originalPageBuilderItems = ref<PageBuilderItem[]>([])
+    const pageBuilderItems = ref<PageBuilderItem[]>([])
+    const currentPageUuid = ref<string>(window.page_uuid)
 
     const all = computed(() => components.value)
-    const allEditor = computed(() => editorComponents.value)
+    const allItems = computed(() => pageBuilderItems.value.sort((a, b) => a.live.weight - b.live.weight))
 
     const isDirty = computed(() => {
         let dirty = false
-        editorComponents.value.forEach(component => {
-            if (!component.isNew) {
-                component.isDirty = !equal(component.original, component.user)
-                if (component.isDirty || component.weight !== component.originalWeight) {
-                    dirty = true
-                }
+        pageBuilderItems.value.forEach((pageBuilderItem: PageBuilderItem) => {
+            if (pageBuilderItem.isDirty()) {
+                dirty = true
+                return
             }
         })
-        if (!dirty && !equal(pageComponents.value, editorComponents.value)) {
+        //@TODO: Mabye only use this?
+        if (!equal(originalPageBuilderItems.value, pageBuilderItems.value)) {
             dirty = true
         }
         return dirty
     })
 
-    async function initialize(pageUuid: string) {
+    function setCurrentPageUuid(pageUuid: string) {
+        currentPageUuid.value = pageUuid
+    }
+
+    async function initialize() {
         const [pageResponse, componentsResponse] = await Promise.all([
-            fetch(`/api/pages/${pageUuid}`),
+            fetch(`/api/pages/${currentPageUuid.value}`),
             fetch('/api/components')
         ])
         const page = await pageResponse.json()
         components.value = await componentsResponse.json()
-        pageComponents.value = page.components
-        editorComponents.value = clone(pageComponents.value)
+        loadPageComponents(page)
+        pageBuilderItems.value = clone(originalPageBuilderItems.value)
     }
 
-    function moveUp(component: EditorComponent) {
-        const index = editorComponents.value.findIndex(obj => obj.id === component.id)
+    function loadPageComponents(page: any) {
+        originalPageBuilderItems.value = []
+        page.components.forEach((component: PageComponent) => {
+            originalPageBuilderItems.value.push({
+                isNew: false,
+                live: clone(component as PageComponent),
+                original: clone(component as PageComponent),
+                isDirty() {
+                    return this.isNew || !equal(this.live, this.original)
+                }
+            } as PageBuilderItem)
+        })
+        originalPageBuilderItems.value.sort((a, b) => a.live.weight - b.live.weight)
+    }
+
+    function moveUp(component: PageBuilderItem) {
+        const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
+        console.log(index)
         if (index > 0) {
-            ;[editorComponents.value[index - 1], editorComponents.value[index]] =
-                [editorComponents.value[index], editorComponents.value[index - 1]]
+            ;[pageBuilderItems.value[index - 1], pageBuilderItems.value[index]] =
+                [pageBuilderItems.value[index], pageBuilderItems.value[index - 1]]
 
-            ;[editorComponents.value[index - 1].weight, editorComponents.value[index].weight] =
-                [editorComponents.value[index].weight, editorComponents.value[index - 1].weight]
+            ;[pageBuilderItems.value[index - 1].live.weight, pageBuilderItems.value[index].live.weight] =
+                [pageBuilderItems.value[index].live.weight, pageBuilderItems.value[index - 1].live.weight]
         }
     }
 
-    function moveDown(component: EditorComponent) {
-        const index = editorComponents.value.findIndex(obj => obj.id === component.id)
+    function moveDown(component: PageBuilderItem) {
+        const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
 
-        if (index < editorComponents.value.length - 1) { // Ensure there's an element to swap with
-            ;[editorComponents.value[index], editorComponents.value[index + 1]] =
-                [editorComponents.value[index + 1], editorComponents.value[index]]
+        if (index < pageBuilderItems.value.length - 1) { // Ensure there's an element to swap with
+            ;[pageBuilderItems.value[index], pageBuilderItems.value[index + 1]] =
+                [pageBuilderItems.value[index + 1], pageBuilderItems.value[index]]
 
-            ;[editorComponents.value[index].weight, editorComponents.value[index + 1].weight] =
-                [editorComponents.value[index + 1].weight, editorComponents.value[index].weight]
+            ;[pageBuilderItems.value[index].live.weight, pageBuilderItems.value[index + 1].live.weight] =
+                [pageBuilderItems.value[index + 1].live.weight, pageBuilderItems.value[index].live.weight]
         }
     }
 
-    function remove(component: EditorComponent) {
-        const index = editorComponents.value.findIndex(obj => obj.id === component.id)
-        editorComponents.value.splice(index, 1)
-    }
-
-    function undo(component: EditorComponent) {
-        if (component.isNew) {
-            return
+    function remove(component: PageComponent) {
+        const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
+        if (index !== -1) {
+            pageBuilderItems.value.splice(index, 1)
         }
-        const index = editorComponents.value.findIndex(obj => obj.id === component.id)
-        Object.assign(editorComponents.value[index].user, editorComponents.value[index].original)
-        editorComponents.value[index].isDirty = false
     }
 
-    function update(component: EditorComponent) {
-        const index = editorComponents.value.findIndex(obj => obj.id === component.id)
-        component.isDirty = !component.isNew && !equal(component.original, component.user)
-        editorComponents.value.splice(index, 1, component)
+    function undo(component: PageBuilderItem) {
+        Object.assign(component.live, component.original)
+    }
+
+    function update(component: PageComponent, updatedData: Partial<PageComponent>) {
+        const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.id)
+        Object.assign(pageBuilderItems.value[index].live, updatedData)
     }
 
     async function add(id: string) {
-        let html = ''
-        let data: any = {}
+        let data: Partial<PageComponent> = {}
         try {
-            const response = await fetch(`/api/components/${id}/render`)
+            const response = await fetch(`/api/components/${id}/render`, {
+                method: 'POST'
+            })
             data = await response.json()
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
 
         }
 
-        const component = data.component as Component
-        html = data.html
+        data.id = `temporary:${uuidv4()}`
+        data.weight = pageBuilderItems.value.length + 1
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for (const [key, value] of Object.entries(component.fields)) {
-            value.value = value.default_value
-        }
-        const weight = editorComponents.value.length + 1
-        const newComponent = {
-            id: uuidv4(),
-            user: clone(component),
-            isDirty: false,
-            weight: weight,
-            isNew: true
-        }
-        newComponent.user.html = html
-        editorComponents.value.push(newComponent)
+        pageBuilderItems.value.push({
+            isNew: true,
+            live: clone(data as PageComponent),
+            original: clone(data as PageComponent),
+            isDirty() {
+                return this.isNew || !equal(this.live, this.original)
+            }
+        } as PageBuilderItem)
     }
 
-    function updateEditors(components: EditorComponent[]) {
+    function updateEditors(components: PageBuilderItem[]) {
         components.forEach((component, index) => {
-            component.weight = index + 1
+            component.live.weight = index + 1
             return component
         })
-        editorComponents.value = components
+        pageBuilderItems.value = components
+    }
+
+    async function save() {
+        try {
+            const response = await fetch(`/api/pages/${currentPageUuid.value}/components`, {
+                method: 'PUT',
+                body: JSON.stringify(pageBuilderItems.value.map(pageBuilderItem => pageBuilderItem.live))
+            })
+            const page = await response.json()
+            loadPageComponents(page)
+            pageBuilderItems.value = clone(originalPageBuilderItems.value)
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+
+        }
     }
 
     return {
         components,
-        editorComponents,
-        pageComponents,
+        pageBuilderItems,
+        originalPageBuilderItems,
         isDirty,
         add,
+        save,
         all,
-        allEditor,
+        allItems,
+        currentPageUuid,
         update,
         remove,
         undo,

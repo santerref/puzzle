@@ -1,8 +1,9 @@
 <?php
 
-namespace Puzzle\page\Setup\Install;
+namespace Puzzle\component\Setup\Install;
 
 use Illuminate\Database\Schema\Blueprint;
+use Puzzle\page\Setup\Install\CreatePagesTable;
 use Puzzle\Storage\Database;
 use Puzzle\Setup\InstallScriptInterface;
 
@@ -14,7 +15,9 @@ class CreateComponentsTable implements InstallScriptInterface
             $table->uuid('id')->primary();
             $table->foreignUuid('page_id')->references('id')->on('pages');
             $table->string('component_type');
-            $table->binary('content');
+            $table->binary('rendered_html');
+            $table->binary('form_values');
+            $table->integer('weight');
             $table->timestamps();
         });
     }

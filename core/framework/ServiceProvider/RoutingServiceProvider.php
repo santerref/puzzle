@@ -16,11 +16,6 @@ class RoutingServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $fileLocator = new FileLocator([
-            PUZZLE_ROOT . '/core/config',
-        ]);
-        $routeLoader = new YamlFileLoader($fileLocator);
-
         $routeCollectionDefinition = new Definition(RouteCollection::class);
         $this->container->setDefinition('router.route_collection', $routeCollectionDefinition)
             ->setPublic(true);

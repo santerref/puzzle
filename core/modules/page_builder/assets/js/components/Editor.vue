@@ -3,12 +3,12 @@
         <div class="flex flex-col min-h-full">
             <div class="flex-grow">
                 <h1 class="text-lg mb-4">
-                    Edit <strong>{{ component.user.name }}</strong>
+                    Edit <strong>{{ componentType.name }}</strong>
                 </h1>
                 <div class="space-y-4">
                     <component
                         :is="changeCase.pascalCase(field.type)"
-                        v-for="(field,key) in component.user.fields"
+                        v-for="(field,key) in componentType.settings.fields"
                         :key="key"
                         v-model="form[key]"
                         :field="field"
@@ -34,42 +34,33 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {computed} from 'vue'
 import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
-import clone from 'clone-deep'
-import type {EditorComponent} from '@modules/page_builder/assets/js/types'
+import type {PageComponent} from '@modules/page_builder/assets/js/types'
 import * as changeCase from 'change-case'
 
 const components = useComponentsStore()
 const props = defineProps<{
-    component: EditorComponent
+    component: PageComponent
 }>()
 
 const model = defineModel<boolean>()
-
-const form = ref({})
-for (const [key, value] of Object.entries(props.component.user.fields)) {
-    Object.assign(form.value, {
-        [key]: value.value
-    })
-}
+const componentType = computed(() => components.components[props.component.component_type])
+const form = props.component.form_values
 
 const save = async function () {
     try {
-        const response = await fetch(`/api/components/${props.component.user.id}/update`, {
+        const response = await fetch(`/api/components/${props.component.component_type}/refresh`, {
             method: 'PUT',
             body: JSON.stringify({
-                fields: form.value
+                form_values: form
             }),
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-        let component = await response.json()
-        let editorComponent = clone(props.component)
-        editorComponent.user.html = component.html
-        Object.assign(editorComponent.user, component.component)
-        components.update(editorComponent)
+        const pageComponent = await response.json()
+        components.update(props.component, pageComponent)
         model.value = false
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {

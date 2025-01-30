@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\ThirdParty\Symfony;
+namespace Puzzle\ThirdParty\Symfony\Controller;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +23,6 @@ class ServiceResolver implements ValueResolverInterface
             return [$this->container->get($type)];
         }
 
-        return [null];
+        return [];
     }
 }

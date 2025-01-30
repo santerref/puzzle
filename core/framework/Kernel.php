@@ -4,7 +4,8 @@ namespace Puzzle;
 
 use Puzzle\Event\BootFinishedEvent;
 use Puzzle\Event\ResponsePrepareEvent;
-use Puzzle\ThirdParty\Symfony\ServiceResolver;
+use Puzzle\ThirdParty\Symfony\Controller\EntityResolver;
+use Puzzle\ThirdParty\Symfony\Controller\ServiceResolver;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,9 +40,10 @@ readonly class Kernel
         $argumentResolver = new ArgumentResolver(
             $metadataFactory,
             [
+                new EntityResolver(),
                 new RequestAttributeValueResolver(),
                 new RequestValueResolver(),
-                $serviceValueResolver,
+                $serviceValueResolver
             ]
         );
 

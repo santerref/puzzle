@@ -2,15 +2,19 @@ components:
     path: /api/components
     controller: Puzzle\component\Controller\Api\ComponentController::index
     methods: GET
-components.render:
+components.create:
     path: /api/components/{id}/render
-    controller: Puzzle\component\Controller\Api\ComponentController::output
-    methods: GET
-components.update:
-    path: /api/components/{id}/update
-    controller: Puzzle\component\Controller\Api\ComponentController::update
+    controller: Puzzle\component\Controller\Api\ComponentController::create
+    methods: POST
+components.refresh:
+    path: /api/components/{id}/refresh
+    controller: Puzzle\component\Controller\Api\ComponentController::refresh
     methods: PUT
 components.undo:
     path: /api/components/{id}/undo
     controller: Puzzle\component\Controller\Api\ComponentController::undo
+    methods: PUT
+components.pages.save:
+    path: /api/pages/{page}/components
+    controller: Puzzle\component\Controller\Api\ComponentController::save
     methods: PUT

@@ -6,6 +6,7 @@
                 'cursor-pointer': components.isDirty,
             }"
             :disabled="!components.isDirty"
+            @click.prevent="components.save"
             class="text-white bg-stone-600 px-4 py-2 font-medium"
         >
             Save
@@ -31,15 +32,15 @@
             <div class="container m-auto">
                 <div class="border border-dashed border-stone-400 rounded-2xl p-5">
                     <VueDraggable
-                        v-if="components.allEditor.length > 0"
-                        :model-value="components.allEditor"
+                        v-if="components.allItems.length > 0"
+                        :model-value="components.allItems"
                         handle=".handle"
                         @update:model-value="components.updateEditors"
                     >
                         <item
-                            v-for="(component, key) in components.allEditor"
+                            v-for="(pageBuilderItem, key) in components.allItems"
                             :key="key"
-                            :component="component"
+                            :component="pageBuilderItem"
                         />
                     </VueDraggable>
                     <div
@@ -62,7 +63,7 @@ import {useComponentsStore} from '@modules/page_builder/assets/js/stores/compone
 import {VueDraggable} from 'vue-draggable-plus'
 
 const components = useComponentsStore()
-components.initialize(window.page_uuid)
+components.initialize()
 
 const addComponent = function (id, component) {
     components.add(id, component)

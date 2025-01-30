@@ -18,11 +18,18 @@ class ComponentDiscovery
         $finder = new Finder();
         $finder->files()->in($this->folder)->name('*.info.yaml')->depth('== 1');
         foreach ($finder as $file) {
-            $this->components[$file->getRelativePath()] = Component::createFromInfo(
-                $file->getRelativePath(),
-                $file->getPath(),
-                Yaml::parseFile($file->getRealPath())
-            );
+            $info = Yaml::parseFile($file->getRealPath());
+            $version = $info['version'];
+
+            $settingsFile = $file->getPath() . '/versions/' . $version . '/settings.yaml';
+            if (file_exists($settingsFile)) {
+                $info += ['settings' => Yaml::parseFile($settingsFile)];
+                $this->components[$file->getRelativePath()] = Component::createFromInfo(
+                    $file->getRelativePath(),
+                    $file->getPath(),
+                    $info
+                );
+            }
         }
     }
 

@@ -1,5 +1,5 @@
-export type Component = {
-    fields: object
+export type ComponentType = {
+    fields: any
     group: string
     id: string
     name: string
@@ -8,14 +8,19 @@ export type Component = {
     html: string
 }
 
-export type EditorComponent = {
-    id: string
-    original?: Component
-    user: Component
-    isDirty: boolean
-    weight: number
-    originalWeight?: number
+export type PageBuilderItem = {
     isNew: boolean
+    live: PageComponent
+    original: PageComponent
+    isDirty: () => boolean
+}
+
+export type PageComponent = {
+    id: string
+    component_type: string
+    rendered_html: string
+    form_values: object
+    weight: number
 }
 
 export type Field = {
