@@ -2,12 +2,17 @@
 
 namespace Puzzle\ThirdParty\Twig;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class PuzzleExtension extends AbstractExtension
 {
+    public function __construct(protected ContainerBuilder $container)
+    {
+    }
+
     public function getFilters()
     {
         return [
@@ -20,6 +25,7 @@ class PuzzleExtension extends AbstractExtension
         return [
             new TwigFunction('dump', [$this, 'dump']),
             new TwigFunction('dd', [$this, 'dd']),
+            new TwigFunction('route', [$this, 'route']),
         ];
     }
 
@@ -44,5 +50,11 @@ class PuzzleExtension extends AbstractExtension
     public function dd($arg)
     {
         dd($arg);
+    }
+
+    public function route($route, $args = [])
+    {
+        $urlGenerator = $this->container->get('router.url_generator');
+        return $urlGenerator->generate($route, $args);
     }
 }

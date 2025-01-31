@@ -1,6 +1,3 @@
-welcome:
-    path: /
-    controller: Puzzle\page\Controller\HomeController::welcome
 admin:
     path: /admin/pages
     controller: Puzzle\page\Controller\Admin\PageController::index

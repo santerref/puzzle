@@ -1,4 +1,18 @@
 {% extends '@module_core/admin/layout.html.twig' %}
 {% block content %}
+    <div>
+        {% for page in pages %}
+            <div class="flex justify-between">
+                {{ page.title }}
+
+                <div>
+                    <a class="underline text-blue-500" href="{{ route('page_builder.admin.launch', {uuid: page.id}) }}">Builder</a>
+                    <a class="underline text-blue-500" target="_blank"
+                       href="{{ route('page.show', {slug: page.slug}) }}">Show</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
     <a href="/admin/pages/create" class="underline text-blue-500">Add new page</a>
 {% endblock %}

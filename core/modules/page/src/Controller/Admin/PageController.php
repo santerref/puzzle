@@ -11,7 +11,13 @@ class PageController
 {
     public function index(): TwigTemplateResponse
     {
-        return new TwigTemplateResponse('@module_page/admin/index.html.twig');
+        $pages = Page::orderBy('created_at', 'DESC')->get();
+        return new TwigTemplateResponse(
+            '@module_page/admin/index.html.twig',
+            [
+                'pages' => $pages
+            ]
+        );
     }
 
     public function create(): TwigTemplateResponse

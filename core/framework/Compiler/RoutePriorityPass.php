@@ -20,9 +20,9 @@ class RoutePriorityPass implements CompilerPassInterface
 
     private function sortRoutesByPriority(RouteCollection $routes): RouteCollection
     {
-        $routeArray = iterator_to_array($routes->all());
+        $routeArray = $routes->all();
 
-        usort($routeArray, function ($a, $b) {
+        uasort($routeArray, function ($a, $b) {
             return ($b->getOption('priority') ?? 0) <=> ($a->getOption('priority') ?? 0);
         });
 

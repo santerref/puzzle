@@ -1,0 +1,3 @@
+welcome:
+    path: /
+    controller: Puzzle\core\Controller\HomeController::welcome

@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\page\Controller;
+namespace Puzzle\core\Controller;
 
 use Puzzle\Http\TwigTemplateResponse;
 
@@ -8,6 +8,6 @@ class HomeController
 {
     public function welcome(): TwigTemplateResponse
     {
-        return new TwigTemplateResponse('@module_page/welcome.html.twig');
+        return new TwigTemplateResponse('@module_core/welcome.html.twig');
     }
 }

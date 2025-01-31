@@ -70,7 +70,7 @@ class CoreServiceProvider extends ServiceProvider
         $packages = new Packages();
         $twig->addGlobal('dev_mode', Config::get('puzzle.dev_mode', false));
         $twig->addExtension(new AssetExtension($packages));
-        $twig->addExtension(new PuzzleExtension());
+        $twig->addExtension(new PuzzleExtension($this->container));
         $this->container->set('twig', $twig);
         $this->container->set('asset.packages', $packages);
     }
@@ -87,7 +87,7 @@ class CoreServiceProvider extends ServiceProvider
             'password'  => Config::get('database.password'),
             'charset'   => Config::get('database.charset', 'utf8'),
             'collation' => Config::get('database.collation', 'utf8_unicode_ci'),
-            'prefix'    => Config::get('database.prix', ''),
+            'prefix'    => Config::get('database.prefix', ''),
         ]);
 
         $capsule->setAsGlobal();
