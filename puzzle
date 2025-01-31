@@ -2,6 +2,7 @@
 <?php
 
 use Puzzle\Bootstrap;
+use Puzzle\Command\TestCommand;
 use Symfony\Component\Console\Application;
 
 require 'autoload.php';
@@ -9,5 +10,7 @@ require 'autoload.php';
 $container = Bootstrap::boot();
 
 $application = new Application('Puzzle');
+
+$application->add(new TestCommand());
 
 $application->run();
