@@ -27,16 +27,13 @@ export const useComponentsStore = defineStore('components', () => {
             }, {})
         } else {
             return Object.entries(components.value).reduce<Record<string, ComponentType>>((acc, [key, component]) => {
-                if (typeof component.settings.parents === "undefined") {
-                    console.log('B')
+                if (typeof component.settings.parents === 'undefined') {
                     acc[key] = component
                 } else if (Array.isArray(component.settings.parents)) {
                     if (component.settings.parents?.includes(currentComponent.value?.live?.component_type ?? '')) {
-                        console.log('D')
                         acc[key] = component
                     }
                 } else if (component.settings.parents) {
-                    console.log('E')
                     acc[key] = component
                 }
                 return acc
@@ -214,8 +211,8 @@ export const useComponentsStore = defineStore('components', () => {
 
         }
 
-        const weights = pageBuilderItems.value.map(item => item.live.weight);
-        const maxWeight = weights.length > 0 ? Math.max(...weights) : 0;
+        const weights = pageBuilderItems.value.map(item => item.live.weight)
+        const maxWeight = weights.length > 0 ? Math.max(...weights) : 0
         data.weight = maxWeight + 1
         data.parent = null
         if (currentComponent.value !== null) {
