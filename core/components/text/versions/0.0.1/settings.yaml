@@ -1,4 +1,4 @@
-root: false
+container: false
 fields:
     text:
         label: Content

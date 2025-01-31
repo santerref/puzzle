@@ -14,7 +14,7 @@ class Renderer
     ) {
     }
 
-    public function render(Component $component, array $formValues): string
+    public function render(Component $component, array $formValues, array $context = []): string
     {
         $event = new ComponentPreRender($component, $formValues);
         $this->eventDispatcher->dispatch($event, ComponentPreRender::NAME);
@@ -22,7 +22,7 @@ class Renderer
         return $this->twig->render(
             $component->getTemplate(),
             //@TODO: Refactor this, because css can be a form input.
-            $formValues + ['css' => $component->getInfo()['settings']['css'] ?? []]
+            $formValues + ['css' => $component->getInfo()['settings']['css'] ?? []] + ['context' => $context]
         );
     }
 }

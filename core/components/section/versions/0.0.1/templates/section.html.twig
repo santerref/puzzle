@@ -1,0 +1,19 @@
+{% set container_class = [
+    css.variables[container],
+]|css %}
+<div class="px-4">
+    <div class="{{ container_class }}">
+        {% if context.page_builder %}
+            <Children id="{{ context.uuid }}"></Children>
+        {% else %}
+            {# @TODO: Find a way to make this recursive! #}
+            {% for child in context.component.children %}
+                {% if child.container %}
+                    {{ render(child) }}
+                {% else %}
+                    {{ child.rendered_html|raw }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

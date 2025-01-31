@@ -1,0 +1,14 @@
+container: true
+template: templates/section.html.twig
+css:
+  variables:
+    standard: 'container m-auto'
+    narrow: 'max-w-screen-md m-auto'
+fields:
+  container:
+    label: Container
+    type: dropdown
+    options:
+      standard: Standard
+      narrow: Narrow
+    default_value: standard

@@ -1,4 +1,4 @@
-root: false
+container: false
 template: templates/heading.html.twig
 css:
     variables:

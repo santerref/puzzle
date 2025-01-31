@@ -4,6 +4,7 @@ namespace Puzzle\page\Entity;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Puzzle\component\Entity\Component;
 use Puzzle\Entity\Entity;
 
 class Page extends Entity
@@ -21,6 +22,6 @@ class Page extends Entity
 
     public function components(): HasMany
     {
-        return $this->hasMany(Component::class);
+        return $this->hasMany(Component::class)->orderBy('weight');
     }
 }

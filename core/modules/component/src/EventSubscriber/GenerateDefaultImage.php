@@ -25,7 +25,8 @@ class GenerateDefaultImage implements EventSubscriberInterface
         $component = $event->getComponent();
         $formValues = $event->getFormValues();
         if (empty($formValues['image'])) {
-            $formValues['image'] = $this->getUnsplashRandomImage();
+            //@TODO: Fix this, prerender called for all components!
+            $formValues['image'] = 'https://placehold.co/500x500';//$this->getUnsplashRandomImage();
         }
         $event->setValues($formValues);
     }

@@ -24,7 +24,7 @@
                 </button>
                 <button
                     class="bg-gray-300 cursor-pointer px-4 py-2 font-bold"
-                    @click.prevent="model = false"
+                    @click.prevent="components.editComponent(null)"
                 >
                     Cancel
                 </button>
@@ -36,32 +36,35 @@
 <script setup lang="ts">
 import {computed} from 'vue'
 import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
-import type {PageComponent} from '@modules/page_builder/assets/js/types'
+import type {PageBuilderItem} from '@modules/page_builder/assets/js/types'
 import * as changeCase from 'change-case'
 
 const components = useComponentsStore()
 const props = defineProps<{
-    component: PageComponent
+    component: PageBuilderItem
 }>()
 
-const model = defineModel<boolean>()
-const componentType = computed(() => components.components[props.component.component_type])
-const form = props.component.form_values
+const componentType = computed(() => components.components[props.component.live.component_type])
+const form = props.component.live.form_values
 
 const save = async function () {
     try {
-        const response = await fetch(`/api/components/${props.component.component_type}/refresh`, {
+        const response = await fetch(`/api/components/${props.component.live.component_type}/refresh`, {
             method: 'PUT',
             body: JSON.stringify({
-                form_values: form
+                form_values: form,
+                uuid: props.component.live.id
             }),
             headers: {
                 'Content-Type': 'application/json'
             }
         })
         const pageComponent = await response.json()
-        components.update(props.component, pageComponent)
-        model.value = false
+        components.update(props.component.live, pageComponent)
+        components.editComponent(null)
+        //@TODO: Add a method in the store to rerender.
+        // eslint-disable-next-line vue/no-mutating-props
+        props.component.rerender = true
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
 

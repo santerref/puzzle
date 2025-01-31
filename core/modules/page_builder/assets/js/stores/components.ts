@@ -2,7 +2,6 @@ import {defineStore} from 'pinia'
 import {computed, ref} from 'vue'
 import equal from 'deep-equal'
 import {ComponentType, PageBuilderItem, PageComponent} from '@modules/page_builder/assets/js/types'
-import {v4 as uuidv4} from 'uuid'
 import clone from 'clone-deep'
 
 export const useComponentsStore = defineStore('components', () => {
@@ -10,8 +9,20 @@ export const useComponentsStore = defineStore('components', () => {
     const originalPageBuilderItems = ref<PageBuilderItem[]>([])
     const pageBuilderItems = ref<PageBuilderItem[]>([])
     const currentPageUuid = ref<string>(window.page_uuid)
+    const currentComponent = ref<PageBuilderItem | null>(null)
+    const currentEdit = ref<PageBuilderItem | null>(null)
 
-    const all = computed(() => components.value)
+    const all = computed(() => {
+        if (currentComponent.value === null) {
+            return Object.entries(components.value).reduce((acc, [key, component]) => {
+                if (component.container === true) {
+                    acc[key] = component // Keep the key-value pair if it matches
+                }
+                return acc
+            }, {})
+        }
+        return components.value
+    })
     const allItems = computed(() => pageBuilderItems.value.sort((a, b) => a.live.weight - b.live.weight))
 
     const isDirty = computed(() => {
@@ -28,6 +39,16 @@ export const useComponentsStore = defineStore('components', () => {
         }
         return dirty
     })
+
+    const rootItems = computed(() => allItems.value.filter(item => item.live.parent === null))
+
+    function getChildren(pageBuilderItem: PageBuilderItem): PageBuilderItem[] {
+        return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id)
+    }
+
+    function editComponent(pageComponent: PageBuilderItem | null) {
+        currentEdit.value = pageComponent
+    }
 
     function setCurrentPageUuid(pageUuid: string) {
         currentPageUuid.value = pageUuid
@@ -49,10 +70,14 @@ export const useComponentsStore = defineStore('components', () => {
         page.components.forEach((component: PageComponent) => {
             originalPageBuilderItems.value.push({
                 isNew: false,
+                rerender: false,
                 live: clone(component as PageComponent),
                 original: clone(component as PageComponent),
                 isDirty() {
                     return this.isNew || !equal(this.live, this.original)
+                },
+                children() {
+                    return getChildren(this)
                 }
             } as PageBuilderItem)
         })
@@ -60,33 +85,61 @@ export const useComponentsStore = defineStore('components', () => {
     }
 
     function moveUp(component: PageBuilderItem) {
-        const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
-        if (index > 0) {
-            ;[pageBuilderItems.value[index - 1], pageBuilderItems.value[index]] =
-                [pageBuilderItems.value[index], pageBuilderItems.value[index - 1]]
+        const siblings = pageBuilderItems.value.filter(obj => obj.live.parent === component.live.parent)
 
-            ;[pageBuilderItems.value[index - 1].live.weight, pageBuilderItems.value[index].live.weight] =
-                [pageBuilderItems.value[index].live.weight, pageBuilderItems.value[index - 1].live.weight]
+        const index = siblings.findIndex(obj => obj.live.id === component.live.id)
+        if (index > 0) {
+            const globalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
+            const prevSiblingGlobalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === siblings[index - 1].live.id)
+
+            ;[pageBuilderItems.value[globalIndex], pageBuilderItems.value[prevSiblingGlobalIndex]] =
+                [pageBuilderItems.value[prevSiblingGlobalIndex], pageBuilderItems.value[globalIndex]]
+
+            ;[pageBuilderItems.value[globalIndex].live.weight, pageBuilderItems.value[prevSiblingGlobalIndex].live.weight] =
+                [pageBuilderItems.value[prevSiblingGlobalIndex].live.weight, pageBuilderItems.value[globalIndex].live.weight]
+
+            pageBuilderItems.value[globalIndex].rerender = true
+            pageBuilderItems.value[prevSiblingGlobalIndex].rerender = true
         }
     }
 
     function moveDown(component: PageBuilderItem) {
-        const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
+        const siblings = pageBuilderItems.value.filter(obj => obj.live.parent === component.live.parent)
 
-        if (index < pageBuilderItems.value.length - 1) { // Ensure there's an element to swap with
-            ;[pageBuilderItems.value[index], pageBuilderItems.value[index + 1]] =
-                [pageBuilderItems.value[index + 1], pageBuilderItems.value[index]]
+        const index = siblings.findIndex(obj => obj.live.id === component.live.id)
+        if (index < siblings.length - 1) {
+            const globalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
+            const nextSiblingGlobalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === siblings[index + 1].live.id)
 
-            ;[pageBuilderItems.value[index].live.weight, pageBuilderItems.value[index + 1].live.weight] =
-                [pageBuilderItems.value[index + 1].live.weight, pageBuilderItems.value[index].live.weight]
+            ;[pageBuilderItems.value[globalIndex], pageBuilderItems.value[nextSiblingGlobalIndex]] =
+                [pageBuilderItems.value[nextSiblingGlobalIndex], pageBuilderItems.value[globalIndex]]
+
+            ;[pageBuilderItems.value[globalIndex].live.weight, pageBuilderItems.value[nextSiblingGlobalIndex].live.weight] =
+                [pageBuilderItems.value[nextSiblingGlobalIndex].live.weight, pageBuilderItems.value[globalIndex].live.weight]
+
+            pageBuilderItems.value[globalIndex].rerender = true
+            pageBuilderItems.value[nextSiblingGlobalIndex].rerender = true
         }
     }
 
     function remove(component: PageBuilderItem) {
         const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
         if (index !== -1) {
+            removeChildren(component.live.id)
             pageBuilderItems.value.splice(index, 1)
         }
+    }
+
+    function removeChildren(parentId: string) {
+        const children = pageBuilderItems.value.filter(obj => obj.live.parent === parentId)
+
+        children.forEach(child => {
+            removeChildren(child.live.id)
+            const childIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === child.live.id)
+            if (childIndex !== -1) {
+                pageBuilderItems.value.splice(childIndex, 1)
+            }
+        })
     }
 
     async function rerender(component: PageBuilderItem) {
@@ -129,17 +182,36 @@ export const useComponentsStore = defineStore('components', () => {
 
         }
 
-        data.id = `temporary:${uuidv4()}`
         data.weight = pageBuilderItems.value.length + 1
+        data.parent = null
+        if (currentComponent.value !== null) {
+            data.parent = currentComponent.value.live.id
+            currentComponent.value.rerender = true
+        }
 
-        pageBuilderItems.value.push({
+        data.container = false
+        if (components.value[id].container === true) {
+            data.container = true
+        }
+
+        const pageBuilderItem = {
             isNew: true,
             live: clone(data as PageComponent),
             original: clone(data as PageComponent),
+            rerender: false,
             isDirty() {
                 return this.isNew || !equal(this.live, this.original)
+            },
+            children() {
+                return getChildren(this)
             }
-        } as PageBuilderItem)
+        }
+
+        if (pageBuilderItem.live.container) {
+            setCurrentComponent(pageBuilderItem)
+        }
+
+        pageBuilderItems.value.push(pageBuilderItem as PageBuilderItem)
     }
 
     function updateEditors(components: PageBuilderItem[]) {
@@ -147,7 +219,10 @@ export const useComponentsStore = defineStore('components', () => {
             component.live.weight = index + 1
             return component
         })
-        pageBuilderItems.value = components
+    }
+
+    function setCurrentComponent(pageBuilderItem: PageBuilderItem | null) {
+        currentComponent.value = pageBuilderItem
     }
 
     async function save() {
@@ -174,15 +249,21 @@ export const useComponentsStore = defineStore('components', () => {
         add,
         save,
         all,
+        setCurrentComponent,
+        rootItems,
+        getChildren,
         setCurrentPageUuid,
         allItems,
+        currentComponent,
         currentPageUuid,
         update,
         remove,
         undo,
         updateEditors,
         moveUp,
+        editComponent,
         moveDown,
+        currentEdit,
         initialize
     }
 })

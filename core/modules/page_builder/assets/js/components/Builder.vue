@@ -14,6 +14,30 @@
     </div>
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-3 p-4">
+            <div class="border-2 mb-4 p-5 border-stone-200">
+                <p class="font-semibold mb-2">
+                    Tree
+                </p>
+                <ul class="mt-2">
+                    <li>
+                        <button
+                            class="cursor-pointer text-blue-500 underline"
+                            :class="{'bg-stone-200':active}"
+                            @click.prevent="components.setCurrentComponent(null)"
+                        >
+                            Root
+                        </button>
+                        <ul class="pl-4 list-disc">
+                            <TreeItem
+                                v-for="pageBuilderItem in components.rootItems"
+                                :key="pageBuilderItem.live.id"
+                                :page-builder-item="pageBuilderItem"
+                            />
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
             <ul class="grid grid-cols-2 gap-4">
                 <li
                     v-for="(component, key) in components.all"
@@ -32,14 +56,15 @@
             <div class="container m-auto">
                 <div class="border border-dashed border-stone-400 rounded-2xl p-5">
                     <VueDraggable
-                        v-if="components.allItems.length > 0"
-                        :model-value="components.allItems"
+                        v-if="components.rootItems.length > 0"
+                        :model-value="components.rootItems"
                         handle=".handle"
+                        @end="onDragEnd"
                         @update:model-value="components.updateEditors"
                     >
                         <item
-                            v-for="(pageBuilderItem, key) in components.allItems"
-                            :key="key"
+                            v-for="pageBuilderItem in components.rootItems"
+                            :key="pageBuilderItem.live.id"
                             :component="pageBuilderItem"
                         />
                     </VueDraggable>
@@ -55,12 +80,20 @@
             </div>
         </div>
     </div>
+    <editor
+        v-if="components.currentEdit !== null"
+        :component="components.currentEdit"
+    />
 </template>
 
 <script setup lang="ts">
 import Item from '@modules/page_builder/assets/js/components/Item.vue'
 import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
 import {VueDraggable} from 'vue-draggable-plus'
+import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue'
+import {computed, nextTick} from 'vue'
+import {PageBuilderItem} from '@modules/page_builder/assets/js/types'
+import Editor from '@modules/page_builder/assets/js/components/Editor.vue'
 
 const components = useComponentsStore()
 components.initialize()
@@ -68,6 +101,16 @@ components.initialize()
 const addComponent = function (id, component) {
     components.add(id, component)
 }
+
+const onDragEnd = () => {
+    nextTick(() => {
+        components.rootItems.forEach((item: PageBuilderItem) => {
+            item.rerender = !item.rerender // Trigger reactivity
+        })
+    })
+}
+
+const active = computed(() => components.currentComponent === null)
 </script>
 
 <style lang="scss">

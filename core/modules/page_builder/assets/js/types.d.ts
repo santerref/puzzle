@@ -12,7 +12,9 @@ export type PageBuilderItem = {
     isNew: boolean
     live: PageComponent
     original: PageComponent
+    rerender: boolean
     isDirty: () => boolean
+    children: () => PageBuilderItem[]
 }
 
 export type PageComponent = {
@@ -21,6 +23,8 @@ export type PageComponent = {
     rendered_html: string
     form_values: object
     weight: number
+    container: boolean
+    parent: string | null
 }
 
 export type Field = {

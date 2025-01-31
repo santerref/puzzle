@@ -15,7 +15,13 @@
 </head>
 <body>
 {% for component in page.components %}
-    {{ component.rendered_html|raw }}
+    {% if component.parent is empty %}
+        {% if component.container %}
+            {{ render(component) }}
+        {% else %}
+            {{ component.rendered_html|raw }}
+        {% endif %}
+    {% endif %}
 {% endfor %}
 </body>
 </html>

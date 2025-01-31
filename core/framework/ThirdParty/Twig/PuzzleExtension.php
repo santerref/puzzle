@@ -2,6 +2,7 @@
 
 namespace Puzzle\ThirdParty\Twig;
 
+use Puzzle\component\Entity\Component;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -26,6 +27,7 @@ class PuzzleExtension extends AbstractExtension
             new TwigFunction('dump', [$this, 'dump']),
             new TwigFunction('dd', [$this, 'dd']),
             new TwigFunction('route', [$this, 'route']),
+            new TwigFunction('render', [$this, 'render'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -42,9 +44,29 @@ class PuzzleExtension extends AbstractExtension
         return trim($classes);
     }
 
+    public function children($children)
+    {
+        //@TODO: Check if context of page builder or not.l
+        if (true) {
+            return '<Children/>';
+        }
+    }
+
     public function dump($arg)
     {
         dump($arg);
+    }
+
+    public function render(Component $component)
+    {
+        $components = $this->container->get('component_discovery')->getComponents();
+        return $this->container->get('component.renderer')->render(
+            $components[$component->component_type],
+            $component->form_values,
+            [
+                'component' => $component
+            ]
+        );
     }
 
     public function dd($arg)
