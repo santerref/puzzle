@@ -1,3 +1,8 @@
-<div class="my-4">
+{% set wrapper_class = [
+    'my-4',
+    'flex',
+    css.variables[position] ?? 'align-items-start'
+] %}
+<div class="{{ wrapper_class|css }}">
     <img src="{{ image }}" width="500" height="500" alt="">
 </div>
