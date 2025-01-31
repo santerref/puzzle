@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+use Puzzle\Bootstrap;
+use Symfony\Component\Console\Application;
+
+require 'autoload.php';
+
+$container = Bootstrap::boot();
+
+$application = new Application('Puzzle');
+
+$application->run();
