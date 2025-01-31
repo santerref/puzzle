@@ -7,3 +7,12 @@ package-lock.json
 .php-cs-fixer.cache
 /.env
 /.env.local
+/storage/*
+!/storage/.gitkeep
+!/storage/public
+/storage/public/*
+!/storage/public/.gitkeep
+!/storage/private
+/storage/private/*
+!/storage/private/.gitkeep
+/public/storage

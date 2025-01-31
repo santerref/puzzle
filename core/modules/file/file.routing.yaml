@@ -1,0 +1,4 @@
+admin.upload:
+    path: /admin/files/upload/image
+    controller: Puzzle\file\Controller\FileController::uploadImage
+    methods: POST
