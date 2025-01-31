@@ -1,4 +1,5 @@
 template: templates/section.html.twig
+parents: false
 css:
     variables:
         standard: 'container m-auto'

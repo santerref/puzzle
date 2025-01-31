@@ -11,6 +11,7 @@ export type ComponentTypeSettings = {
     fields: object
     template: string
     css?: object
+    parents?: string[] | boolean
     default_position?: string
     positions?: { [key: string], Position }
 }

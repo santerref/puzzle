@@ -21,12 +21,27 @@ export const useComponentsStore = defineStore('components', () => {
         if (currentComponent.value === null) {
             return Object.entries(components.value).reduce<Record<string, ComponentType>>((acc, [key, component]) => {
                 if (component.container) {
-                    acc[key] = component // Keep the key-value pair if it matches
+                    acc[key] = component
+                }
+                return acc
+            }, {})
+        } else {
+            return Object.entries(components.value).reduce<Record<string, ComponentType>>((acc, [key, component]) => {
+                if (typeof component.settings.parents === "undefined") {
+                    console.log('B')
+                    acc[key] = component
+                } else if (Array.isArray(component.settings.parents)) {
+                    if (component.settings.parents?.includes(currentComponent.value?.live?.component_type ?? '')) {
+                        console.log('D')
+                        acc[key] = component
+                    }
+                } else if (component.settings.parents) {
+                    console.log('E')
+                    acc[key] = component
                 }
                 return acc
             }, {})
         }
-        return components.value
     })
     const allItems = computed(() => pageBuilderItems.value.sort((a, b) => a.live.weight - b.live.weight))
 
@@ -199,7 +214,9 @@ export const useComponentsStore = defineStore('components', () => {
 
         }
 
-        data.weight = Math.max(...pageBuilderItems.value.map(item => item.live.weight)) + 1
+        const weights = pageBuilderItems.value.map(item => item.live.weight);
+        const maxWeight = weights.length > 0 ? Math.max(...weights) : 0;
+        data.weight = maxWeight + 1
         data.parent = null
         if (currentComponent.value !== null) {
             data.parent = currentComponent.value.live.id
