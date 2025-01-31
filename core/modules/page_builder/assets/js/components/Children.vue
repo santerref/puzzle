@@ -20,7 +20,8 @@ import {VueDraggable} from 'vue-draggable-plus'
 import {computed} from 'vue'
 
 const props = defineProps<{
-    componentUuid?: string
+    componentUuid?: string,
+    position?: string
 }>()
 
 const components = useComponentsStore()
@@ -28,7 +29,7 @@ const components = useComponentsStore()
 const index = computed(() => components.allItems.findIndex(obj => obj.live.id === props.componentUuid))
 const children = computed(() => {
     if (index.value !== -1) {
-        return components.getChildren(components.allItems[index.value])
+        return components.getChildren(components.allItems[index.value], props.position)
     }
     return []
 })

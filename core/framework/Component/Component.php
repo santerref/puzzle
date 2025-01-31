@@ -9,30 +9,41 @@ class Component
     public function __construct(
         protected string $id,
         protected string $path,
-        protected array $info
+        protected array $info,
+        protected string $version
     ) {
     }
 
-    public static function createFromInfo(string $id, string $path, array $info)
+    public static function createFromInfo(string $id, string $path, array $info, string $version): self
     {
         foreach ($info['settings']['fields'] as &$field) {
             $field['value'] = '';
         }
         $info['id'] = $id;
-        return new Component($id, $path, $info);
+        return new Component($id, $path, $info, $version);
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->info;
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function getTemplate()
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    public function getType(): string
+    {
+        return $this->id;
+    }
+
+    public function getTemplate(): string
     {
         return $this->id . '/versions/' . $this->version() . '/' . $this->info['settings']['template'];
     }

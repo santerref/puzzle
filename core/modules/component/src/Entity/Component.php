@@ -19,7 +19,8 @@ class Component extends Entity
         'weight',
         'parent',
         'container',
-        'id'
+        'id',
+        'position'
     ];
 
     protected $casts = [

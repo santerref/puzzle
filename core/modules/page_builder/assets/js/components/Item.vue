@@ -81,7 +81,11 @@ const renderChildren = () => {
         const childrenElements = html.value.querySelectorAll(`[id="${props.component.live.id}"]`)
         childrenElements.forEach((el) => {
             render(
-                h(Children, {componentUuid: props.component.live.id, key: props.component.live.id}),
+                h(Children, {
+                    componentUuid: props.component.live.id,
+                    position: el.dataset.position,
+                    key: props.component.live.id + '_' + el.dataset.position
+                }),
                 el
             )
         })

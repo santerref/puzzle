@@ -3,4 +3,4 @@ fields:
     image:
         label: Image
         type: image
-        default_value: ''
+        default_value: 'https://placehold.co/500x500'

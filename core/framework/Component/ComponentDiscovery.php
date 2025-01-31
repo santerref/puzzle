@@ -27,7 +27,8 @@ class ComponentDiscovery
                 $this->components[$file->getRelativePath()] = Component::createFromInfo(
                     $file->getRelativePath(),
                     $file->getPath(),
-                    $info
+                    $info,
+                    $version
                 );
             }
         }

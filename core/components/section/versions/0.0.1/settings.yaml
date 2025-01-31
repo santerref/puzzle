@@ -1,14 +1,38 @@
-container: true
 template: templates/section.html.twig
 css:
-  variables:
-    standard: 'container m-auto'
-    narrow: 'max-w-screen-md m-auto'
+    variables:
+        standard: 'container m-auto'
+        narrow: 'max-w-screen-md m-auto'
 fields:
-  container:
-    label: Container
-    type: dropdown
-    options:
-      standard: Standard
-      narrow: Narrow
-    default_value: standard
+    container:
+        label: Container
+        type: dropdown
+        options:
+            standard: Standard
+            narrow: Narrow
+        default_value: standard
+    columns:
+        label: Columns
+        type: dropdown
+        options:
+            1: One column
+            2: Two columns (50/50)
+            3: Three columns (33/33/33)
+        default_value: 1
+default_position: col_1
+positions:
+    col_1:
+        label: Column 1
+        conditions:
+            -   field: columns
+                value: [ '1', '2', '3' ]
+    col_2:
+        label: Column 2
+        conditions:
+            -   field: columns
+                value: [ '2','3' ]
+    col_3:
+        label: Column 3
+        conditions:
+            -   field: columns
+                value: '3'

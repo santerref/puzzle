@@ -1,21 +1,26 @@
 import {defineStore} from 'pinia'
 import {computed, ref} from 'vue'
 import equal from 'deep-equal'
-import {ComponentType, PageBuilderItem, PageComponent} from '@modules/page_builder/assets/js/types'
+import {ComponentType, CurrentPosition, PageBuilderItem, PageComponent} from '@modules/page_builder/assets/js/types'
 import clone from 'clone-deep'
 
 export const useComponentsStore = defineStore('components', () => {
-    const components = ref<ComponentType[]>([])
+    const components = ref<{ [key: string]: ComponentType }>({})
     const originalPageBuilderItems = ref<PageBuilderItem[]>([])
     const pageBuilderItems = ref<PageBuilderItem[]>([])
+
     const currentPageUuid = ref<string>(window.page_uuid)
     const currentComponent = ref<PageBuilderItem | null>(null)
     const currentEdit = ref<PageBuilderItem | null>(null)
+    const currentPosition = ref<CurrentPosition>({
+        uuid: null,
+        position: null
+    } as CurrentPosition)
 
     const all = computed(() => {
         if (currentComponent.value === null) {
-            return Object.entries(components.value).reduce((acc, [key, component]) => {
-                if (component.container === true) {
+            return Object.entries(components.value).reduce<Record<string, ComponentType>>((acc, [key, component]) => {
+                if (component.container) {
                     acc[key] = component // Keep the key-value pair if it matches
                 }
                 return acc
@@ -42,8 +47,8 @@ export const useComponentsStore = defineStore('components', () => {
 
     const rootItems = computed(() => allItems.value.filter(item => item.live.parent === null))
 
-    function getChildren(pageBuilderItem: PageBuilderItem): PageBuilderItem[] {
-        return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id)
+    function getChildren(pageBuilderItem: PageBuilderItem, position: string | null): PageBuilderItem[] {
+        return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id && item.live.position === position)
     }
 
     function editComponent(pageComponent: PageBuilderItem | null) {
@@ -76,8 +81,9 @@ export const useComponentsStore = defineStore('components', () => {
                 isDirty() {
                     return this.isNew || !equal(this.live, this.original)
                 },
-                children() {
-                    return getChildren(this)
+                children(targetPosition: any) {
+                    const position = targetPosition ?? this.live.position
+                    return getChildren(this, position)
                 }
             } as PageBuilderItem)
         })
@@ -127,6 +133,16 @@ export const useComponentsStore = defineStore('components', () => {
         if (index !== -1) {
             removeChildren(component.live.id)
             pageBuilderItems.value.splice(index, 1)
+            if (currentPosition.value.uuid !== null) {
+                const currentPositionIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === currentPosition.value.uuid)
+                if (currentPositionIndex === -1) {
+                    //@TODO: Select nearest component, not root.
+                    currentPosition.value = {
+                        uuid: null,
+                        position: null
+                    }
+                }
+            }
         }
     }
 
@@ -147,7 +163,8 @@ export const useComponentsStore = defineStore('components', () => {
             const response = await fetch(`/api/components/${component.live.component_type}/refresh`, {
                 method: 'PUT',
                 body: JSON.stringify({
-                    form_values: component.live.form_values
+                    form_values: component.live.form_values,
+                    uuid: component.live.id
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -182,17 +199,20 @@ export const useComponentsStore = defineStore('components', () => {
 
         }
 
-        data.weight = pageBuilderItems.value.length + 1
+        data.weight = Math.max(...pageBuilderItems.value.map(item => item.live.weight)) + 1
         data.parent = null
         if (currentComponent.value !== null) {
             data.parent = currentComponent.value.live.id
             currentComponent.value.rerender = true
         }
 
-        data.container = false
-        if (components.value[id].container === true) {
-            data.container = true
+        data.container = components.value[id].container === true
+
+        let position = currentPosition.value.position
+        if (components.value[id].settings.positions && Object.keys(components.value[id].settings.positions).length > 0) {
+            position = components.value[id].settings.default_position
         }
+        data.position = position
 
         const pageBuilderItem = {
             isNew: true,
@@ -202,13 +222,14 @@ export const useComponentsStore = defineStore('components', () => {
             isDirty() {
                 return this.isNew || !equal(this.live, this.original)
             },
-            children() {
-                return getChildren(this)
+            children(targetPosition: any) {
+                const position = targetPosition ?? this.live.position
+                return getChildren(this, position)
             }
         }
 
         if (pageBuilderItem.live.container) {
-            setCurrentComponent(pageBuilderItem)
+            setCurrentComponent(pageBuilderItem, position ?? null)
         }
 
         pageBuilderItems.value.push(pageBuilderItem as PageBuilderItem)
@@ -221,8 +242,12 @@ export const useComponentsStore = defineStore('components', () => {
         })
     }
 
-    function setCurrentComponent(pageBuilderItem: PageBuilderItem | null) {
+    function setCurrentComponent(pageBuilderItem: PageBuilderItem | null, position: string | null) {
         currentComponent.value = pageBuilderItem
+        currentPosition.value = {
+            uuid: pageBuilderItem?.live?.id,
+            position: position
+        }
     }
 
     async function save() {
@@ -254,6 +279,7 @@ export const useComponentsStore = defineStore('components', () => {
         getChildren,
         setCurrentPageUuid,
         allItems,
+        currentPosition,
         currentComponent,
         currentPageUuid,
         update,

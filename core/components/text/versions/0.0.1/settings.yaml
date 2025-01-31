@@ -1,4 +1,3 @@
-container: false
 fields:
     text:
         label: Content

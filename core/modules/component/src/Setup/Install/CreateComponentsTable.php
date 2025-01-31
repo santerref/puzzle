@@ -22,6 +22,7 @@ class CreateComponentsTable implements InstallScriptInterface
             $table->foreignUuid('parent')->nullable()->default(null)
                 ->references('id')->on('components')
                 ->cascadeOnDelete();
+            $table->string('position')->nullable();
             $table->timestamps();
         });
     }

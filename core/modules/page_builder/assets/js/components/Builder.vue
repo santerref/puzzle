@@ -23,7 +23,7 @@
                         <button
                             class="cursor-pointer text-blue-500 underline"
                             :class="{'bg-stone-200':active}"
-                            @click.prevent="components.setCurrentComponent(null)"
+                            @click.prevent="components.setCurrentComponent(null, null)"
                         >
                             Root
                         </button>

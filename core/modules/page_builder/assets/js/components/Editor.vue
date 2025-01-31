@@ -38,6 +38,7 @@ import {computed} from 'vue'
 import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
 import type {PageBuilderItem} from '@modules/page_builder/assets/js/types'
 import * as changeCase from 'change-case'
+import cloneDeep from 'clone-deep'
 
 const components = useComponentsStore()
 const props = defineProps<{
@@ -45,7 +46,7 @@ const props = defineProps<{
 }>()
 
 const componentType = computed(() => components.components[props.component.live.component_type])
-const form = props.component.live.form_values
+const form = cloneDeep(props.component.live.form_values)
 
 const save = async function () {
     try {
