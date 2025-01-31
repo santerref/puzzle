@@ -12,12 +12,16 @@
         rel="stylesheet">
 
     <link href="{{ asset('css/tailwind.css', 'module_core') }}" rel="stylesheet">
+
+    {% block before_head_close %}{% endblock %}
 </head>
 <body>
 <div class="container m-auto py-5">
     {% block content %}{% endblock %}
 </div>
 
-<script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
+{% if dev_mode %}
+    <script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
+{% endif %}
 </body>
 </html>

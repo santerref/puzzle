@@ -31,7 +31,7 @@ class ViteAssetPackage extends PathPackage
             );
         }
 
-        return 'static/' . preg_replace(
+        return '/static/' . preg_replace(
             '/^' . preg_quote($this->getBasePath(), '/') . '/i',
             '',
             parent::getUrl(ltrim($this->getBasePath(), '/') . $path)

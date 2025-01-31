@@ -2,6 +2,7 @@
 
 namespace Puzzle;
 
+use Puzzle\Compiler\RoutePriorityPass;
 use Puzzle\ServiceProvider\ComponentServiceProvider;
 use Puzzle\ServiceProvider\CoreServiceProvider;
 use Puzzle\ServiceProvider\EventServiceProvider;
@@ -24,6 +25,8 @@ class Bootstrap
         (new RoutingServiceProvider($container))->register();
         (new ComponentServiceProvider($container))->register();
         (new ModuleServiceProvider($container))->register();
+
+        $container->addCompilerPass(new RoutePriorityPass());
 
         $container->compile();
 

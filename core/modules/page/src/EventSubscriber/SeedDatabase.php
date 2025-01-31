@@ -18,7 +18,8 @@ class SeedDatabase implements EventSubscriberInterface
     public function onInstallerFinished(InstallerFinishedEvent $event): void
     {
         $page = Page::create([
-            'title' => 'Test page'
+            'title' => 'Test page',
+            'slug' => 'test-page'
         ]);
         $page->save();
     }

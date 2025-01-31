@@ -17,3 +17,8 @@ api.fetch:
     path: /api/pages/{uuid}
     controller: Puzzle\page\Controller\Api\PageController::fetch
     methods: GET
+show:
+    path: /{slug}
+    controller: Puzzle\page\Controller\PageController::show
+    options:
+        priority: -100

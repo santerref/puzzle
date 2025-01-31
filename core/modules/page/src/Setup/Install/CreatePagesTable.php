@@ -13,6 +13,7 @@ class CreatePagesTable implements InstallScriptInterface
         Database::schema()->create('pages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
+            $table->string('slug');
             $table->timestamps();
         });
     }

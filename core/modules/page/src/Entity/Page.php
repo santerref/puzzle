@@ -15,7 +15,8 @@ class Page extends Entity
     ];
 
     protected $fillable = [
-        'title'
+        'title',
+        'slug'
     ];
 
     public function components(): HasMany

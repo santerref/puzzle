@@ -12,7 +12,7 @@ const assetDirs = [
 // Find all files matching extensions in the directories
 const input = Object.fromEntries(
     glob.sync(
-        assetDirs.map(dir => path.resolve(__dirname, dir, '**/*.{js,ts,css,scss}'))
+        assetDirs.map(dir => path.resolve(__dirname, dir, '**/*.{js,ts,scss,css}'))
     ).map(file => [
         path.relative(path.resolve(__dirname), file)
             .replace(/\.[^.]+$/, '')

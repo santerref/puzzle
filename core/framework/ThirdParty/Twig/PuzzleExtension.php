@@ -4,6 +4,7 @@ namespace Puzzle\ThirdParty\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class PuzzleExtension extends AbstractExtension
 {
@@ -11,6 +12,14 @@ class PuzzleExtension extends AbstractExtension
     {
         return [
             new TwigFilter('css', [$this, 'css']),
+        ];
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('dump', [$this, 'dump']),
+            new TwigFunction('dd', [$this, 'dd']),
         ];
     }
 
@@ -25,5 +34,15 @@ class PuzzleExtension extends AbstractExtension
         }
 
         return trim($classes);
+    }
+
+    public function dump($arg)
+    {
+        dump($arg);
+    }
+
+    public function dd($arg)
+    {
+        dd($arg);
     }
 }

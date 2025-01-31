@@ -37,7 +37,17 @@ class CoreServiceProvider extends ServiceProvider
             $parsedConfig = Yaml::parseFile($file->getRealPath(), Yaml::PARSE_CUSTOM_TAGS);
             array_walk_recursive($parsedConfig, function (&$value) {
                 if ($value instanceof TaggedValue) {
-                    $envValue = getenv($value->getValue()) ?: $_ENV[$value->getValue()] ?? null;
+                    [$env, $cast] = array_pad(explode(':', $value->getValue(), 2), 2, 'string');
+                    $envValue = getenv($env) ?: $_ENV[$env] ?? null;
+                    $envValue = match ($cast) {
+                        'bool'   => filter_var($envValue, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false,
+                        'int'    => (int) $envValue,
+                        'float'  => (float) $envValue,
+                        'string' => (string) $envValue,
+                        'array'  => is_string($envValue) ? explode(',', $envValue) : (array) $envValue,
+                        'json'   => json_decode($envValue, true),
+                        default  => $value,
+                    };
                     $value = $envValue;
                 }
             });
@@ -54,9 +64,11 @@ class CoreServiceProvider extends ServiceProvider
             PUZZLE_ROOT . '/core/components'
         ]);
         $twig = new Environment($loader, [
-            'cache' => Config::get('twig.cache')
+            'cache' => Config::get('twig.cache'),
+            'debug' => Config::get('puzzle.dev_mode', false)
         ]);
         $packages = new Packages();
+        $twig->addGlobal('dev_mode', Config::get('puzzle.dev_mode', false));
         $twig->addExtension(new AssetExtension($packages));
         $twig->addExtension(new PuzzleExtension());
         $this->container->set('twig', $twig);

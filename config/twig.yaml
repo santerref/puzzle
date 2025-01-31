@@ -1,1 +1,1 @@
-cache: false
+cache: !env TWIG_CACHE:bool
