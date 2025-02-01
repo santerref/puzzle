@@ -45,7 +45,7 @@ class Component
 
     public function getTemplate(): string
     {
-        return $this->id . '/versions/' . $this->version() . '/' . $this->info['settings']['template'];
+        return $this->id . '/' . $this->info['settings']['template'];
     }
 
     public function getInfo(): array

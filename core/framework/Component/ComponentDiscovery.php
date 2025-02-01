@@ -20,17 +20,12 @@ class ComponentDiscovery
         foreach ($finder as $file) {
             $info = Yaml::parseFile($file->getRealPath());
             $version = $info['version'];
-
-            $settingsFile = $file->getPath() . '/versions/' . $version . '/settings.yaml';
-            if (file_exists($settingsFile)) {
-                $info += ['settings' => Yaml::parseFile($settingsFile)];
-                $this->components[$file->getRelativePath()] = Component::createFromInfo(
-                    $file->getRelativePath(),
-                    $file->getPath(),
-                    $info,
-                    $version
-                );
-            }
+            $this->components[$file->getRelativePath()] = Component::createFromInfo(
+                $file->getRelativePath(),
+                $file->getPath(),
+                $info,
+                $version
+            );
         }
     }
 

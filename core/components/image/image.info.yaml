@@ -1,3 +1,23 @@
 name: Image
 version: 0.0.1
 container: false
+settings:
+    template: templates/image.html.twig
+    css:
+        variables:
+            left: 'justify-start'
+            center: 'justify-center'
+            right: 'justify-end'
+    fields:
+        image:
+            label: Image
+            type: image
+            default_value: 'https://placehold.co/500x500'
+        position:
+            label: Image position
+            type: dropdown
+            options:
+                left: Left
+                center: Center
+                right: Right
+            default_value: left
