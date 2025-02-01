@@ -1,0 +1,4 @@
+services:
+    file.event_subscriber.transliterate_filename:
+        class: Puzzle\file\EventSubscriber\TransliterateFileName
+        tags: [ 'event.event_subscriber' ]

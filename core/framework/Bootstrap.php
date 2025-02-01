@@ -2,6 +2,7 @@
 
 namespace Puzzle;
 
+use Puzzle\Compiler\RegisterEventSubscribersPass;
 use Puzzle\Compiler\RoutePriorityPass;
 use Puzzle\ServiceProvider\ComponentServiceProvider;
 use Puzzle\ServiceProvider\CoreServiceProvider;
@@ -21,12 +22,13 @@ class Bootstrap
         $container = new ContainerBuilder();
 
         (new CoreServiceProvider($container))->register();
-        (new EventServiceProvider($container))->register();
         (new RoutingServiceProvider($container))->register();
         (new ComponentServiceProvider($container))->register();
         (new ModuleServiceProvider($container))->register();
+        (new EventServiceProvider($container))->register();
 
         $container->addCompilerPass(new RoutePriorityPass());
+        $container->addCompilerPass(new RegisterEventSubscribersPass());
 
         $container->compile();
 

@@ -6,13 +6,13 @@ use Puzzle\EventSubscriber\BootstrapModule;
 use Puzzle\EventSubscriber\ConvertCoreResponse;
 use Puzzle\EventSubscriber\LoadComponent;
 use Puzzle\EventSubscriber\RecordInstallScript;
-use Puzzle\EventSubscriber\SeedDatabase;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class EventServiceProvider extends ServiceProvider
 {
     private static array $subscribers = [
-        BootstrapModule::class,
         LoadComponent::class,
         RecordInstallScript::class,
         ConvertCoreResponse::class,
@@ -20,10 +20,19 @@ class EventServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $dispatcher = new EventDispatcher();
-        foreach (static::$subscribers as $subscriber) {
-            $dispatcher->addSubscriber(new $subscriber());
+        foreach (static::$subscribers as $subscriberClass) {
+            $this->container->register($subscriberClass, $subscriberClass)
+                ->setPublic(true);
         }
-        $this->container->set('event_dispatcher', $dispatcher);
+
+        $dispatcherDefinition = new Definition(EventDispatcher::class);
+        foreach (static::$subscribers as $subscriberServiceId) {
+            $dispatcherDefinition->addMethodCall('addSubscriber', [new Reference($subscriberServiceId)]);
+        }
+
+        $this->container->setDefinition('event_dispatcher', $dispatcherDefinition)
+            ->setPublic(true);
+        $this->container->setAlias(EventDispatcher::class, 'event_dispatcher')
+            ->setPublic(true);
     }
 }

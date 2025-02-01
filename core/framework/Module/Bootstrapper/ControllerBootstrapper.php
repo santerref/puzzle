@@ -22,6 +22,7 @@ class ControllerBootstrapper implements ModuleBootstrapperInterface
                     implode(DIRECTORY_SEPARATOR, explode('\\', $file->getRelativePath())) .
                     '\\' .
                     str_replace('.php', '', $file->getBasename());
+                $className = preg_replace('/\\\\+/', '\\', $className);
                 if (class_exists($className)) {
                     $definition = new Definition($className);
                     $definition->setAutowired(true)

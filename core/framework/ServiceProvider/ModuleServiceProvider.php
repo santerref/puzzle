@@ -16,15 +16,9 @@ class ModuleServiceProvider extends ServiceProvider
     {
         $moduleDiscovery = new ModuleDiscovery(
             static::MODULE_DIRECTORIES,
-            $this->container->get('event_dispatcher'),
             $this->container
         );
         $moduleDiscovery->discover();
-
-        foreach ($this->container->findTaggedServiceIds('event.event_subscriber') as $id => $attributes) {
-            $this->container->get('event_dispatcher')->addSubscriber(
-                $this->container->get($id)
-            );
-        }
+        $moduleDiscovery->bootstrap();
     }
 }
