@@ -20,4 +20,4 @@ $eventDispatcher = $container->get('event_dispatcher');
 $installer = new Installer($eventDispatcher);
 $installer->run();
 
-$eventDispatcher->dispatch(new InstallerFinishedEvent(), InstallerFinishedEvent::NAME);
+$eventDispatcher->dispatch(new InstallerFinishedEvent($container), InstallerFinishedEvent::NAME);

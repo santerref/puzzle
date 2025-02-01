@@ -10,8 +10,6 @@ use Puzzle\page\Entity\Page;
 
 class Component extends Entity
 {
-    use HasUuids;
-
     protected $fillable = [
         'component_type',
         'rendered_html',

@@ -1,0 +1,4 @@
+services:
+    user.event_subscriber.seed_database:
+        class: Puzzle\user\EventSubscriber\SeedDatabase
+        tags: [ 'event.event_subscriber' ]

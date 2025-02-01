@@ -9,8 +9,6 @@ use Puzzle\Entity\Entity;
 
 class Page extends Entity
 {
-    use HasUuids;
-
     protected $with = [
         'components'
     ];

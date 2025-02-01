@@ -7,8 +7,6 @@ use Puzzle\Entity\Entity;
 
 class File extends Entity
 {
-    use HasUuids;
-
     protected $fillable = [
         'filename',
         'filemime',
