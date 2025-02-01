@@ -149,10 +149,7 @@ export const useComponentsStore = defineStore('components', () => {
                 const currentPositionIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === currentPosition.value.uuid)
                 if (currentPositionIndex === -1) {
                     //@TODO: Select nearest component, not root.
-                    currentPosition.value = {
-                        uuid: null,
-                        position: null
-                    }
+                    setCurrentComponent(null, null);
                 }
             }
         }
