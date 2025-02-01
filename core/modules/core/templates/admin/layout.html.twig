@@ -16,12 +16,22 @@
     {% block before_head_close %}{% endblock %}
 </head>
 <body>
-<div class="container m-auto py-5">
-    {% block content %}{% endblock %}
+<div class="bg-[#3a435e] px-4">
+    <div class="container m-auto">
+        <nav class="flex">
+            <a href="/admin/pages" class="py-3 px-5 hover:bg-[#4E5A7E] text-[#EFF1F5]">Pages</a>
+        </nav>
+    </div>
+</div>
+<div class="px-4">
+    <div class="container m-auto py-5">
+        {% block content %}{% endblock %}
+    </div>
 </div>
 
 {% if dev_mode %}
     <script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
 {% endif %}
+{% block before_body_close %}{% endblock %}
 </body>
 </html>
