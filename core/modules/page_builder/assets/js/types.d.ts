@@ -43,7 +43,7 @@ export type PageBuilderItem = {
     original: PageComponent
     rerender: boolean
     isDirty: () => boolean
-    children: (targetPosition: any) => PageBuilderItem[]
+    children: (targetPosition?: any) => PageBuilderItem[]
 }
 
 export type CurrentPosition = {

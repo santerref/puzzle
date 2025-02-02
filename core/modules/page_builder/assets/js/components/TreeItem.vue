@@ -1,21 +1,37 @@
 <template>
     <li>
-        <button
-            v-if="container"
-            class="cursor-pointer text-blue-500 underline"
-            :class="{'bg-stone-200':active && (innerPosition === null || Object.keys(positions).length === 1)}"
-            @click.prevent="updateInnerPosition(componentPosition)"
-        >
-            {{ components.components[pageBuilderItem.live.component_type].name }}
-        </button>
-        <p v-else>
-            {{ components.components[pageBuilderItem.live.component_type].name }}
-        </p>
+        <div class="flex justify-between border-b border-stone-200">
+            <div>
+                <button
+                    v-if="container"
+                    class="cursor-pointer text-blue-500 underline"
+                    :class="{'bg-stone-200':active && (innerPosition === null || Object.keys(positions).length === 1)}"
+                    @click.prevent="updateInnerPosition(componentPosition)"
+                >
+                    {{ components.components[pageBuilderItem.live.component_type].name }}
+                </button>
+                <p v-else>
+                    {{ components.components[pageBuilderItem.live.component_type].name }}
+                </p>
+            </div>
+            <div>
+                <i
+                    class="pi pi-pencil hover:cursor-pointer"
+                    @click.prevent="components.editComponent(pageBuilderItem)"
+                />
+            </div>
+        </div>
         <ul
-            v-if="container"
             class="pl-4 list-disc"
         >
-            <template v-if="positionsCount <= 1">
+            <template v-if="positionsCount > 1 && !container">
+                <TreeItem
+                    v-for="child in children()"
+                    :key="child.live.id"
+                    :page-builder-item="child"
+                />
+            </template>
+            <template v-else-if="positionsCount <= 1">
                 <TreeItem
                     v-for="child in children(innerPosition)"
                     :key="child.live.id"
@@ -114,7 +130,7 @@ const active = computed(() => {
         components.currentComponent.live.id === props.pageBuilderItem.live.id
 })
 
-const children = function (position: any) {
+const children = function (position?: any) {
     return props.pageBuilderItem.children(position)
 }
 </script>

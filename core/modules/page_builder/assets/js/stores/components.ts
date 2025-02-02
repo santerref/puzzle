@@ -68,8 +68,13 @@ export const useComponentsStore = defineStore('components', () => {
 
     const rootItems = computed(() => allItems.value.filter(item => item.live.parent === null))
 
-    function getChildren(pageBuilderItem: PageBuilderItem, position: string | null): PageBuilderItem[] {
-        return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id && item.live.position === position)
+    function getChildren(pageBuilderItem: PageBuilderItem, position?: string | null | undefined): PageBuilderItem[] {
+        if(position) {
+            return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id && item.live.position === position)
+        } else {
+            return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id)
+
+        }
     }
 
     function editComponent(pageComponent: PageBuilderItem | null) {
@@ -105,9 +110,8 @@ export const useComponentsStore = defineStore('components', () => {
                 isDirty() {
                     return this.isNew || !equal(this.live, this.original)
                 },
-                children(targetPosition: any) {
-                    const position = targetPosition ?? this.live.position
-                    return getChildren(this, position)
+                children(targetPosition?: any) {
+                    return getChildren(this, targetPosition)
                 }
             } as PageBuilderItem)
         })
