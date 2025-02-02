@@ -1,104 +1,22 @@
 {% set container_class = [
     css.variables[container],
 ]|css %}
+{% set grid_class = {
+    '1': 'grid-cols-1',
+    '2': 'grid-cols-2',
+    '3': 'grid-cols-3'
+} %}
 <div class="px-4">
     <div class="{{ container_class }}">
-        {% if columns == 3 %}
-            <div class="grid grid-cols-3 gap-4">
-                {% if context.page_builder %}
-                    <div>
-                        <Children data-position="col_1" id="{{ context.uuid }}"></Children>
-                    </div>
-                    <div>
-                        <Children data-position="col_2" id="{{ context.uuid }}"></Children>
-                    </div>
-                    <div>
-                        <Children data-position="col_3" id="{{ context.uuid }}"></Children>
-                    </div>
-                {% else %}
-                    <div>
-                        {# @TODO: Find a way to make this recursive! #}
-                        {% for child in context.component.children.where('position','col_1').all %}
-                            {% if child.container %}
-                                {{ render(child) }}
-                            {% else %}
-                                {{ child.rendered_html|raw }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div>
-                        {# @TODO: Find a way to make this recursive! #}
-                        {% for child in context.component.children.where('position','col_2').all %}
-                            {% if child.container %}
-                                {{ render(child) }}
-                            {% else %}
-                                {{ child.rendered_html|raw }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div>
-                        {# @TODO: Find a way to make this recursive! #}
-                        {% for child in context.component.children.where('position','col_3').all %}
-                            {% if child.container %}
-                                {{ render(child) }}
-                            {% else %}
-                                {{ child.rendered_html|raw }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        {% elseif columns == 2 %}
-            <div class="grid grid-cols-2 gap-4">
-                {% if context.page_builder %}
-                    <div>
-                        <Children data-position="col_1" id="{{ context.uuid }}"></Children>
-                    </div>
-                    <div>
-                        <Children data-position="col_2" id="{{ context.uuid }}"></Children>
-                    </div>
-                {% else %}
-                    <div>
-                        {# @TODO: Find a way to make this recursive! #}
-                        {% for child in context.component.children.where('position','col_1').all %}
-                            {% if child.container %}
-                                {{ render(child) }}
-                            {% else %}
-                                {{ child.rendered_html|raw }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div>
-                        {# @TODO: Find a way to make this recursive! #}
-                        {% for child in context.component.children.where('position','col_2').all %}
-                            {% if child.container %}
-                                {{ render(child) }}
-                            {% else %}
-                                {{ child.rendered_html|raw }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        {% else %}
-            <div class="grid grid-cols-1 gap-4">
-                {% if context.page_builder %}
-                    <div>
-                        <Children data-position="col_1" id="{{ context.uuid }}"></Children>
-                    </div>
-                {% else %}
-                    <div>
-                        {# @TODO: Find a way to make this recursive! #}
-                        {% for child in context.component.children.where('position','col_1').all %}
-                            {% if child.container %}
-                                {{ render(child) }}
-                            {% else %}
-                                {{ child.rendered_html|raw }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
+        <div class="grid gap-4 {{ grid_class[columns] }}">
+            {% for column in 1..columns %}
+                <div>
+                    {% include '@module_page_builder/children.html.twig' with {
+                        position: 'col_' ~ column,
+                        container: true
+                    } %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>

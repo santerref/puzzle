@@ -1,0 +1,11 @@
+{% if context.page_builder %}
+    <Children data-position="{{ position }}" id="{{ context.uuid }}"></Children>
+{% else %}
+    {% for child in context.component.children.where('position', position).all %}
+        {% if child.container %}
+            {{ render(child) }}
+        {% else %}
+            {{ child.rendered_html|raw }}
+        {% endif %}
+    {% endfor %}
+{% endif %}
