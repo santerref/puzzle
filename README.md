@@ -36,3 +36,7 @@ We're actively looking for developers to join us in making this project even bet
 ## Getting Started
 
 Please follow our guide in the wiki: [Getting Started](https://github.com/santerref/puzzle/wiki/Getting-started)
+
+## Community
+
+Join us on our Facebook group: https://facebook.com/groups/616761237666804
