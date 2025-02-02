@@ -1,0 +1,9 @@
+name: Card
+version: 0.0.1
+settings:
+    template: templates/card.html.twig
+    positions:
+        image:
+            label: Image
+        text:
+            label: Text

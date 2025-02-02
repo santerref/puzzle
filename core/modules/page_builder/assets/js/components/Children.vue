@@ -17,14 +17,28 @@
 import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
 import Item from '@modules/page_builder/assets/js/components/Item.vue'
 import {VueDraggable} from 'vue-draggable-plus'
-import {computed} from 'vue'
+import {computed, onMounted} from 'vue'
 
 const props = defineProps<{
     componentUuid?: string,
-    position?: string
+    position?: string,
+    component?: string,
+    locked?: boolean
 }>()
 
 const components = useComponentsStore()
+
+onMounted(() => {
+    if (props.component) {
+        if (children.value.length === 0 && props.position) {
+            components.add(props.component, {
+                position: props.position,
+                parent: props.componentUuid,
+                locked: props.locked ?? false
+            })
+        }
+    }
+})
 
 const index = computed(() => components.allItems.findIndex(obj => obj.live.id === props.componentUuid))
 const children = computed(() => {

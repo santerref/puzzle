@@ -1,8 +1,14 @@
 {% if context.page_builder %}
-    <Children data-position="{{ position }}" id="{{ context.uuid }}"></Children>
+    <div
+        data-position="{{ position }}"
+        id="{{ context.uuid }}"
+        data-locked="{% if locked is defined %}{{ locked }}{% else %}false{% endif %}"
+        {% if component is defined %}data-component="{{ component }}"{% endif %}
+    >
+    </div>
 {% else %}
     {% for child in context.component.children.where('position', position).all %}
-        {% if child.container %}
+        {% if child.container or child.children %}
             {{ render(child) }}
         {% else %}
             {{ child.rendered_html|raw }}

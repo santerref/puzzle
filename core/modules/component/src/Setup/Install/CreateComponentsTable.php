@@ -22,6 +22,7 @@ class CreateComponentsTable implements InstallScriptInterface
                 ->references('id')->on('components')
                 ->cascadeOnDelete();
             $table->string('position')->nullable();
+            $table->boolean('locked')->default(false);
             $table->timestamps();
         });
     }

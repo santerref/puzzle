@@ -12,6 +12,12 @@ export type Page = {
     slug: string
 }
 
+export type ComponentSettings = {
+    position?: string | null | undefined
+    parent?: string | null | undefined
+    locked?: boolean | null | undefined
+}
+
 export type ComponentTypeSettings = {
     fields: object
     template: string
@@ -52,6 +58,7 @@ export type PageComponent = {
     form_values: { [key: string], any }
     weight: number
     container: boolean
+    locked: boolean | number
     parent: string | null
     position: string | null
 }

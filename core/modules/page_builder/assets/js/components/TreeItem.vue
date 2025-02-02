@@ -1,7 +1,7 @@
 <template>
     <li>
         <button
-            v-if="pageBuilderItem.live.container"
+            v-if="container"
             class="cursor-pointer text-blue-500 underline"
             :class="{'bg-stone-200':active && (innerPosition === null || Object.keys(positions).length === 1)}"
             @click.prevent="updateInnerPosition(componentPosition)"
@@ -11,7 +11,10 @@
         <p v-else>
             {{ components.components[pageBuilderItem.live.component_type].name }}
         </p>
-        <ul class="pl-4 list-disc">
+        <ul
+            v-if="container"
+            class="pl-4 list-disc"
+        >
             <template v-if="positionsCount <= 1">
                 <TreeItem
                     v-for="child in children(innerPosition)"
@@ -69,6 +72,11 @@ function updateInnerPosition(key) {
     innerPosition.value = key
 }
 
+const container = computed(() => {
+    const id = props.pageBuilderItem.live.component_type
+    return components.components[id].container ?? false
+})
+
 const positions = computed(() => {
     const id = props.pageBuilderItem.live.component_type
     if (components.components[id].settings.positions) {
@@ -106,7 +114,7 @@ const active = computed(() => {
         components.currentComponent.live.id === props.pageBuilderItem.live.id
 })
 
-const children = function(position: any) {
+const children = function (position: any) {
     return props.pageBuilderItem.children(position)
 }
 </script>

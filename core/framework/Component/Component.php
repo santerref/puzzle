@@ -16,7 +16,7 @@ class Component
 
     public static function createFromInfo(string $id, string $path, array $info, string $version): self
     {
-        foreach ($info['settings']['fields'] as &$field) {
+        foreach ($info['settings']['fields'] ?? [] as &$field) {
             $field['value'] = '';
         }
         $info['id'] = $id;

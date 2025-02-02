@@ -2,6 +2,7 @@ import {defineStore} from 'pinia'
 import {computed, ref} from 'vue'
 import equal from 'deep-equal'
 import {
+    ComponentSettings,
     ComponentType,
     CurrentPosition,
     Page,
@@ -15,6 +16,7 @@ export const useComponentsStore = defineStore('components', () => {
     const originalPageBuilderItems = ref<PageBuilderItem[]>([])
     const pageBuilderItems = ref<PageBuilderItem[]>([])
     const page = ref<Page>()
+    const loading = ref<boolean>(true)
 
     const currentPageUuid = ref<string>(window.page_uuid)
     const currentComponent = ref<PageBuilderItem | null>(null)
@@ -88,11 +90,13 @@ export const useComponentsStore = defineStore('components', () => {
         page.value = pageModel as Page
         loadPageComponents(pageModel)
         pageBuilderItems.value = clone(originalPageBuilderItems.value)
+        loading.value = false
     }
 
     function loadPageComponents(page: any) {
         originalPageBuilderItems.value = []
         page.components.forEach((component: PageComponent) => {
+            component.locked = component.locked === 1
             originalPageBuilderItems.value.push({
                 isNew: false,
                 rerender: false,
@@ -204,11 +208,16 @@ export const useComponentsStore = defineStore('components', () => {
         Object.assign(pageBuilderItems.value[index].live, updatedData)
     }
 
-    async function add(id: string) {
+    async function add(id: string, settings?: ComponentSettings) {
+        const position = settings?.position ?? null
+        parent = parent ?? null
         let data: Partial<PageComponent> = {}
         try {
             const response = await fetch(`/api/components/${id}/render`, {
-                method: 'POST'
+                method: 'POST',
+                body: JSON.stringify({
+                    position
+                })
             })
             data = await response.json()
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -219,19 +228,27 @@ export const useComponentsStore = defineStore('components', () => {
         const weights = pageBuilderItems.value.map(item => item.live.weight)
         const maxWeight = weights.length > 0 ? Math.max(...weights) : 0
         data.weight = maxWeight + 1
-        data.parent = null
+        data.parent = settings?.parent ?? null
         if (currentComponent.value !== null) {
-            data.parent = currentComponent.value.live.id
+            if (data.parent === null) {
+                data.parent = currentComponent.value.live.id
+            }
             currentComponent.value.rerender = true
         }
 
         data.container = components.value[id].container === true
 
-        let position = currentPosition.value.position
-        if (components.value[id].settings.positions && Object.keys(components.value[id].settings.positions).length > 0) {
-            position = components.value[id].settings.default_position
-        }
         data.position = position
+        if (position === null || typeof position === 'undefined') {
+            data.position = currentPosition.value.position
+            if (components.value[id].settings.positions && Object.keys(components.value[id].settings.positions).length > 0) {
+                if (components.value[id].settings.default_position) {
+                    data.position = components.value[id].settings.default_position
+                }
+            }
+        }
+
+        data.locked = settings?.locked ?? false
 
         const pageBuilderItem = {
             isNew: true,
@@ -248,7 +265,7 @@ export const useComponentsStore = defineStore('components', () => {
         }
 
         if (pageBuilderItem.live.container) {
-            setCurrentComponent(pageBuilderItem, position ?? null)
+            setCurrentComponent(pageBuilderItem, data.position ?? null)
         }
 
         pageBuilderItems.value.push(pageBuilderItem as PageBuilderItem)
@@ -304,6 +321,7 @@ export const useComponentsStore = defineStore('components', () => {
         update,
         remove,
         page,
+        loading,
         undo,
         updateEditors,
         moveUp,

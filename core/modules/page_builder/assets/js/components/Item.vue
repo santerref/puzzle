@@ -16,12 +16,16 @@
                 class="text-stone-100 flex gap-4 py-3 absolute top-0 rounded-bl-md px-4 shadow-lg"
                 :class="{'-right-0.5 bg-stone-800':!component.live.container,'-left-0.5 bg-blue-800':component.live.container}"
             >
-                <i class="pi handle text-stone-100 pi-arrows-alt hover:cursor-grab"/>
+                <i
+                    v-if="component.children.length > 1"
+                    class="pi handle text-stone-100 pi-arrows-alt hover:cursor-grab"
+                />
                 <i
                     class="pi pi-pencil hover:cursor-pointer"
                     @click.prevent="components.editComponent(component)"
                 />
                 <i
+                    v-if="!component.live.locked"
                     class="pi text-stone-100 pi-trash hover:cursor-pointer"
                     @click.prevent="remove(component)"
                 />
@@ -35,12 +39,12 @@
                     @click.prevent="undo(component)"
                 />
                 <i
-                    v-if="component.live.weight > 1"
+                    v-if="component.live.weight > 1 && component.children.length > 1"
                     class="pi text-stone-100 pi-angle-up hover:cursor-pointer"
                     @click.prevent="components.moveUp(component)"
                 />
                 <i
-                    v-if="component.live.weight < components.pageBuilderItems.length"
+                    v-if="component.live.weight < components.pageBuilderItems.length && component.children.length > 1"
                     class="pi text-stone-100 pi-angle-down hover:cursor-pointer"
                     @click.prevent="components.moveDown(component)"
                 />
@@ -84,6 +88,8 @@ const renderChildren = () => {
                 h(Children, {
                     componentUuid: props.component.live.id,
                     position: el.dataset.position,
+                    component: el.dataset.component ?? null,
+                    locked: el.dataset.locked === '1' ? true : false,
                     key: props.component.live.id + '_' + el.dataset.position
                 }),
                 el
