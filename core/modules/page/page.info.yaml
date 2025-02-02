@@ -1,2 +1,4 @@
 name: Page
 version: 0.0.1
+dependencies:
+    - user

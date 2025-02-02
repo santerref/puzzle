@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterEventSubscribersPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $eventDispatcher = $container->get('event_dispatcher');
         foreach ($container->findTaggedServiceIds('event.event_subscriber') as $id => $attributes) {

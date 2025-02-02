@@ -2,14 +2,22 @@
 
 namespace Puzzle\page_builder\Controller\Admin;
 
-use Puzzle\Http\TwigTemplateResponse;
+use Puzzle\Http\ResponseFactory;
+use Symfony\Component\HttpFoundation\Response;
 
 class PageBuilderController
 {
-    public function launch(string $uuid): TwigTemplateResponse
+    public function __construct(protected ResponseFactory $responseFactory)
     {
-        return new TwigTemplateResponse('@module_page_builder/page-builder.html.twig', [
+    }
+
+    public function launch(string $uuid): Response
+    {
+        return $this->responseFactory->createTwigTemplateResponse(
+            '@module_page_builder/page-builder.html.twig',
+            [
             'page_uuid' => $uuid
-        ]);
+            ]
+        );
     }
 }

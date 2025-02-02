@@ -1,5 +1,6 @@
 name: Page Builder
 version: 0.0.1
 dependencies:
-    - modules:image
-    - modules:page
+    - image
+    - page
+    - user

@@ -31,8 +31,8 @@ class RoutingServiceProvider extends ServiceProvider
         $this->container->set('request.context', $context);
 
         $urlGeneratorDefinition = new Definition(UrlGenerator::class, [
-            $this->container->get('router.route_collection'),
-            $this->container->get('request.context')
+            new Reference('router.route_collection'),
+            new Reference('request.context'),
         ]);
         $this->container->setDefinition('router.url_generator', $urlGeneratorDefinition)
             ->setPublic(true);

@@ -2,12 +2,10 @@
 
 namespace Puzzle\ServiceProvider;
 
-use Puzzle\user\Entity\User;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 

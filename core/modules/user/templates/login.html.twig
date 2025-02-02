@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <link href="{{ asset('css/tailwind.css', 'module_core') }}" rel="stylesheet">
+</head>
+<body class="bg-[#EFF1F5] antialiased">
+<div class="min-h-screen flex flex-col justify-center align-middle">
+    <div>
+        <img src="{{ asset('img/logo.svg', 'module_core') }}" width="260" class="m-auto mb-4" alt="Puzzle">
+        <div class="w-[500px] max-w-full rounded-lg p-8 shadow m-auto bg-white">
+            <form method="post" action="/login">
+                <div class="mb-4 space-y-4">
+                    <div>
+                        {% include '@module_core/admin/components/input-text.html.twig' with {
+                            label: 'Email',
+                            input_name: 'email',
+                            input_value: dev_mode ? 'john.doe@example.com' : ''
+                        } %}
+                    </div>
+                    <div>
+                        {% include '@module_core/admin/components/input-text.html.twig' with {
+                            label: 'Password',
+                            input_name: 'password',
+                            input_type: 'password',
+                            input_value: dev_mode ? 'admin' : ''
+                        } %}
+                    </div>
+                </div>
+                {% include '@module_core/admin/components/button.html.twig' with {title: 'Login'} %}
+            </form>
+        </div>
+    </div>
+</div>
+{% if dev_mode %}
+    <script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
+{% endif %}
+</body>
+</html>

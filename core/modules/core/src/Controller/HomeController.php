@@ -2,12 +2,17 @@
 
 namespace Puzzle\core\Controller;
 
-use Puzzle\Http\TwigTemplateResponse;
+use Puzzle\Http\ResponseFactory;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeController
 {
-    public function welcome(): TwigTemplateResponse
+    public function __construct(protected ResponseFactory $responseFactory)
     {
-        return new TwigTemplateResponse('@module_core/welcome.html.twig');
+    }
+
+    public function welcome(): Response
+    {
+        return $this->responseFactory->createTwigTemplateResponse('@module_core/welcome.html.twig');
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Puzzle\ServiceProvider;
 
-use Puzzle\EventSubscriber\BootstrapModule;
-use Puzzle\EventSubscriber\ConvertCoreResponse;
 use Puzzle\EventSubscriber\LoadComponent;
 use Puzzle\EventSubscriber\RecordInstallScript;
 use Symfony\Component\DependencyInjection\Definition;
@@ -14,8 +12,7 @@ class EventServiceProvider extends ServiceProvider
 {
     private static array $subscribers = [
         LoadComponent::class,
-        RecordInstallScript::class,
-        ConvertCoreResponse::class,
+        RecordInstallScript::class
     ];
 
     public function register(): void

@@ -2,18 +2,26 @@ admin:
     path: /admin/pages
     controller: Puzzle\page\Controller\Admin\PageController::index
     methods: GET
+    options:
+        middlewares: [ 'auth' ]
 admin.create:
     path: /admin/pages/create
     controller: Puzzle\page\Controller\Admin\PageController::create
     methods: GET
+    options:
+        middlewares: [ 'auth' ]
 admin.store:
     path: /admin/pages
     controller: Puzzle\page\Controller\Admin\PageController::store
     methods: POST
+    options:
+        middlewares: [ 'auth' ]
 api.fetch:
     path: /api/pages/{uuid}
     controller: Puzzle\page\Controller\Api\PageController::fetch
     methods: GET
+    options:
+        middlewares: [ 'auth' ]
 show:
     path: /{slug}
     controller: Puzzle\page\Controller\PageController::show

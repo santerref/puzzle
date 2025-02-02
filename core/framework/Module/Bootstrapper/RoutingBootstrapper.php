@@ -6,7 +6,6 @@ use Puzzle\Module\Module;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
-use Symfony\Component\Routing\RouteCollection;
 
 class RoutingBootstrapper implements ModuleBootstrapperInterface
 {
@@ -17,8 +16,8 @@ class RoutingBootstrapper implements ModuleBootstrapperInterface
             $loader = new YamlFileLoader(new FileLocator($module->getPath()));
             $routes = $loader->load($routesFile);
             $routes->addNamePrefix($module->getName() . '.');
-            $container->get('router.route_collection')
-                ->addCollection($routes);
+            $routeCollectionDefinition = $container->findDefinition('router.route_collection');
+            $routeCollectionDefinition->addMethodCall('addCollection', [$routes]);
         }
     }
 }

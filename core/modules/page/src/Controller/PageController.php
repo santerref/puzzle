@@ -2,14 +2,19 @@
 
 namespace Puzzle\page\Controller;
 
-use Puzzle\Http\TwigTemplateResponse;
+use Puzzle\Http\ResponseFactory;
 use Puzzle\page\Entity\Page;
+use Symfony\Component\HttpFoundation\Response;
 
 class PageController
 {
-    public function show(string $slug): TwigTemplateResponse
+    public function __construct(protected ResponseFactory $responseFactory)
     {
-        return new TwigTemplateResponse(
+    }
+
+    public function show(string $slug): Response
+    {
+        return $this->responseFactory->createTwigTemplateResponse(
             '@module_page/page.html.twig',
             [
                 'page' => Page::where('slug', $slug)->first()

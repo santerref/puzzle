@@ -2,3 +2,21 @@ services:
     user.event_subscriber.seed_database:
         class: Puzzle\user\EventSubscriber\SeedDatabase
         tags: [ 'event.event_subscriber' ]
+    user.auth:
+        class: Puzzle\user\Auth
+        arguments:
+            - '@session'
+    user.middleware.auth:
+        class: Puzzle\user\Middleware\AuthMiddleware
+        arguments:
+            - '@user.auth'
+            - '@http.response_factory'
+        tags:
+            - { name: 'request.middleware', alias: 'auth' }
+    user.middleware.anonymous:
+        class: Puzzle\user\Middleware\AnonymousMiddleware
+        arguments:
+            - '@user.auth'
+            - '@http.response_factory'
+        tags:
+            - { name: 'request.middleware', alias: 'anonymous' }

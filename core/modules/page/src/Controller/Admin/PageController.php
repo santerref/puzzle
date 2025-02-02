@@ -2,17 +2,21 @@
 
 namespace Puzzle\page\Controller\Admin;
 
-use Puzzle\Http\InternalRedirectResponse;
-use Puzzle\Http\TwigTemplateResponse;
+use Puzzle\Http\ResponseFactory;
 use Puzzle\page\Entity\Page;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PageController
 {
-    public function index(): TwigTemplateResponse
+    public function __construct(protected ResponseFactory $responseFactory)
+    {
+    }
+
+    public function index(): Response
     {
         $pages = Page::orderBy('created_at', 'DESC')->get();
-        return new TwigTemplateResponse(
+        return $this->responseFactory->createTwigTemplateResponse(
             '@module_page/admin/index.html.twig',
             [
                 'pages' => $pages
@@ -20,16 +24,16 @@ class PageController
         );
     }
 
-    public function create(): TwigTemplateResponse
+    public function create(): Response
     {
-        return new TwigTemplateResponse('@module_page/admin/create.html.twig');
+        return $this->responseFactory->createTwigTemplateResponse('@module_page/admin/create.html.twig');
     }
 
-    public function store(Request $request): InternalRedirectResponse
+    public function store(Request $request): Response
     {
         $page = Page::create($request->request->all());
         $page->save();
 
-        return new InternalRedirectResponse('page.admin');
+        return $this->responseFactory->createInternalRedirectResponse('page.admin');
     }
 }

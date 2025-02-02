@@ -1,0 +1,18 @@
+login:
+    path: /login
+    controller: Puzzle\user\Controller\UserController::login
+    methods: GET
+    options:
+        middlewares: [ 'anonymous' ]
+authenticate:
+    path: /login
+    controller: Puzzle\user\Controller\UserController::authenticate
+    methods: POST
+    options:
+        middlewares: [ 'anonymous' ]
+logout:
+    path: /logout
+    controller: Puzzle\user\Controller\UserController::logout
+    methods: GET
+    options:
+        middlewares: [ 'auth' ]

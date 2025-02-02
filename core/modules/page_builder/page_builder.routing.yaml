@@ -2,3 +2,5 @@ admin.launch:
     path: /admin/page-builder/{uuid}
     controller: Puzzle\page_builder\Controller\Admin\PageBuilderController::launch
     methods: GET
+    options:
+        middlewares: [ 'auth' ]

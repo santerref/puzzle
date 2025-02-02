@@ -12,7 +12,7 @@ class CreateUsersTable implements InstallScriptInterface
     {
         Database::schema()->create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('email');
+            $table->string('email')->unique();
             $table->text('password');
             $table->timestamps();
         });

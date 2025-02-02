@@ -4,17 +4,30 @@ namespace Puzzle\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Routing\RouteCollection;
 
 class RoutePriorityPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        if ($container->has('router.url_generator')) {
-            $urlGeneratorDefinition = $container->findDefinition('router.url_generator');
-            $routeCollection = $urlGeneratorDefinition->getArgument(0);
-            $sortedRoutes = $this->sortRoutesByPriority($routeCollection);
-            $urlGeneratorDefinition->setArgument(0, $sortedRoutes);
+        if ($container->has('router.route_collection')) {
+            $routeCollectionDefinition = $container->findDefinition('router.route_collection');
+            $methodClass = $routeCollectionDefinition->getMethodCalls();
+
+            $routeCollection = new RouteCollection();
+            foreach ($methodClass as [$methodName, $args]) {
+                if ($methodName === 'addCollection') {
+                    $subCollection = $args[0];
+                    $routeCollection->addCollection($subCollection);
+                }
+            }
+
+            $sortedRouteCollection = $this->sortRoutesByPriority($routeCollection);
+            $sortedRouteDefinition = new Definition(RouteCollection::class);
+            $sortedRouteDefinition->addMethodCall('addCollection', [$sortedRouteCollection]);
+            $container->setDefinition('router.route_collection', $sortedRouteDefinition)
+                ->setPublic(true);
         }
     }
 
