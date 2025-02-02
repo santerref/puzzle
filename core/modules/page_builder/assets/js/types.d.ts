@@ -7,6 +7,11 @@ export type ComponentType = {
     group?: string
 }
 
+export type Page = {
+    title: string
+    slug: string
+}
+
 export type ComponentTypeSettings = {
     fields: object
     template: string

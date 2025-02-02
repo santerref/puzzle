@@ -1,13 +1,20 @@
 import {defineStore} from 'pinia'
 import {computed, ref} from 'vue'
 import equal from 'deep-equal'
-import {ComponentType, CurrentPosition, PageBuilderItem, PageComponent} from '@modules/page_builder/assets/js/types'
+import {
+    ComponentType,
+    CurrentPosition,
+    Page,
+    PageBuilderItem,
+    PageComponent
+} from '@modules/page_builder/assets/js/types'
 import clone from 'clone-deep'
 
 export const useComponentsStore = defineStore('components', () => {
     const components = ref<{ [key: string]: ComponentType }>({})
     const originalPageBuilderItems = ref<PageBuilderItem[]>([])
     const pageBuilderItems = ref<PageBuilderItem[]>([])
+    const page = ref<Page>()
 
     const currentPageUuid = ref<string>(window.page_uuid)
     const currentComponent = ref<PageBuilderItem | null>(null)
@@ -76,9 +83,10 @@ export const useComponentsStore = defineStore('components', () => {
             fetch(`/api/pages/${currentPageUuid.value}`),
             fetch('/api/components')
         ])
-        const page = await pageResponse.json()
+        const pageModel = await pageResponse.json()
         components.value = await componentsResponse.json()
-        loadPageComponents(page)
+        page.value = pageModel as Page
+        loadPageComponents(pageModel)
         pageBuilderItems.value = clone(originalPageBuilderItems.value)
     }
 
@@ -295,6 +303,7 @@ export const useComponentsStore = defineStore('components', () => {
         currentPageUuid,
         update,
         remove,
+        page,
         undo,
         updateEditors,
         moveUp,

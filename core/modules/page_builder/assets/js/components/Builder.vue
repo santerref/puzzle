@@ -1,5 +1,12 @@
 <template>
-    <div class="bg-stone-100 w-full p-3 flex justify-end">
+    <div class="bg-stone-100 w-full p-3 flex gap-4 justify-end">
+        <a
+            class="text-white bg-stone-600 px-4 py-2 font-medium"
+            target="_blank"
+            :href="`/${components.page.slug}`"
+        >
+            View
+        </a>
         <button
             :class="{
                 'cursor-not-allowed opacity-50': !components.isDirty,
@@ -12,9 +19,9 @@
             Save
         </button>
     </div>
-    <div class="grid grid-cols-12 gap-4">
-        <div class="col-span-3 p-4">
-            <div class="border-2 mb-4 p-5 border-stone-200">
+    <div class="grid grid-cols-12">
+        <div class="col-span-3 p-4 bg-stone-100">
+            <div class="border-2 mb-4 bg-white p-5 border-stone-200">
                 <p class="font-semibold mb-2">
                     Tree
                 </p>
@@ -44,7 +51,7 @@
                     :key="key"
                 >
                     <button
-                        class=" border border-stone-100 text-stone-600 text-sm font-medium uppercase rounded shadow block w-full py-2 px-4 cursor-pointer min-h-[100px]"
+                        class=" bg-white border border-stone-100 text-stone-600 text-sm font-medium uppercase rounded shadow block w-full py-2 px-4 cursor-pointer min-h-[100px]"
                         @click.prevent="addComponent(key, component)"
                     >
                         {{ component.name }}
@@ -52,9 +59,9 @@
                 </li>
             </ul>
         </div>
-        <div class="col-span-9 p-4">
+        <div class="col-span-9">
             <div class="container m-auto">
-                <div class="border border-dashed border-stone-400 rounded-2xl p-5">
+                <div class="p-5">
                     <VueDraggable
                         v-if="components.rootItems.length > 0"
                         :model-value="components.rootItems"
