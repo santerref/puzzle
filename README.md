@@ -39,4 +39,5 @@ Please follow our guide in the wiki: [Getting Started](https://github.com/santer
 
 ## Community
 
-Join us on our Facebook group: https://facebook.com/groups/616761237666804
+* Join us on our Facebook group: https://facebook.com/groups/616761237666804
+* Join our Discord server: https://discord.gg/T62SWtxC
