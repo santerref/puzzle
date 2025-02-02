@@ -2,6 +2,8 @@
 
 namespace Puzzle\Module;
 
+use Illuminate\Support\Arr;
+
 class Module
 {
     public function __construct(
@@ -30,5 +32,10 @@ class Module
     public function getNamespace(): string
     {
         return 'Puzzle\\' . $this->getName();
+    }
+
+    public function getDependencies(): array
+    {
+        return Arr::get($this->definition, 'dependencies', []);
     }
 }

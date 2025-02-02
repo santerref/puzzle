@@ -3,6 +3,8 @@
 namespace Puzzle\Setup;
 
 use Puzzle\Event\InstallScriptFinishedEvent;
+use Puzzle\Module\ModuleDiscovery;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 
@@ -10,28 +12,35 @@ class Installer
 {
     private DependencyResolver $dependencyResolver;
 
-    public function __construct(private EventDispatcher $eventDispatcher)
+    private EventDispatcher $eventDispatcher;
+
+    private ModuleDiscovery $moduleDiscovery;
+
+    public function __construct(ContainerBuilder $container)
     {
         $this->dependencyResolver = new DependencyResolver();
+        $this->eventDispatcher = $container->get('event_dispatcher');
+        $this->moduleDiscovery = $container->get('module_discovery');
     }
 
     public function run(): void
     {
-        $modulesDir = PUZZLE_ROOT . '/core/modules';
-        $namespaceBase = 'Puzzle';
+        foreach ($this->moduleDiscovery->getModules() as $name => $module) {
+            $namespaceBase = 'Puzzle\\' . $name;
+            $finder = new Finder();
+            $finder->files()->in($module->getPath())->path('src/Setup/Install')->name('*.php');
 
-        $finder = new Finder();
-        $finder->files()->in($modulesDir)->path('src/Setup/Install')->name('*.php');
+            foreach ($finder as $file) {
+                $relativePath = '/' . ltrim($file->getRelativePathname(), '/');
+                $className = $this->convertPathToNamespace($namespaceBase, $relativePath);
+                $className = preg_replace('/\\\\+/', '\\', $className);
 
-        foreach ($finder as $file) {
-            $relativePath = $file->getRelativePathname();
-            $className = $this->convertPathToNamespace($namespaceBase, $relativePath);
-
-            if (class_exists($className)) {
-                $reflection = new \ReflectionClass($className);
-                if ($reflection->implementsInterface(InstallScriptInterface::class)) {
-                    $installScript = $reflection->newInstance();
-                    $this->dependencyResolver->addInstallScript($installScript);
+                if (class_exists($className)) {
+                    $reflection = new \ReflectionClass($className);
+                    if ($reflection->implementsInterface(InstallScriptInterface::class)) {
+                        $installScript = $reflection->newInstance();
+                        $this->dependencyResolver->addInstallScript($installScript);
+                    }
                 }
             }
         }

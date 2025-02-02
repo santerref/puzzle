@@ -3,7 +3,6 @@
 namespace Puzzle\component\Setup\Install;
 
 use Illuminate\Database\Schema\Blueprint;
-use Puzzle\page\Setup\Install\CreatePagesTable;
 use Puzzle\Storage\Database;
 use Puzzle\Setup\InstallScriptInterface;
 
@@ -29,6 +28,6 @@ class CreateComponentsTable implements InstallScriptInterface
 
     public function getDependencies(): array
     {
-        return [CreatePagesTable::class];
+        return [];
     }
 }

@@ -16,8 +16,8 @@ if (!Database::schema()->hasTable('installer_scripts')) {
     });
 }
 
-$eventDispatcher = $container->get('event_dispatcher');
-$installer = new Installer($eventDispatcher);
+$installer = new Installer($container);
 $installer->run();
 
+$eventDispatcher = $container->get('event_dispatcher');
 $eventDispatcher->dispatch(new InstallerFinishedEvent($container), InstallerFinishedEvent::NAME);

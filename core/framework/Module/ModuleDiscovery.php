@@ -7,7 +7,6 @@ use Puzzle\Module\Bootstrapper\RoutingBootstrapper;
 use Puzzle\Module\Bootstrapper\ServiceBootstrapper;
 use Puzzle\Module\Bootstrapper\TemplateBootstrapper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
@@ -35,12 +34,18 @@ class ModuleDiscovery
         $finder = new Finder();
         $finder->files()->in($this->folders)->name('*.info.yaml')->depth('== 1');
 
+        $discoveredModules = [];
         foreach ($finder as $file) {
             $name = $file->getRelativePath();
             $definition = Yaml::parseFile($file->getRealPath());
             $module = new Module($name, $file->getPath(), $definition);
             $definitionInspector->inspect($module);
-            $this->modules[$name] = $module;
+            $discoveredModules[$name] = $module;
+        }
+
+        $sortedModules = $this->sort($discoveredModules);
+        foreach ($sortedModules as $moduleName) {
+            $this->modules[$moduleName] = $discoveredModules[$moduleName];
         }
     }
 
@@ -52,5 +57,59 @@ class ModuleDiscovery
                 $bootstrapper->bootstrap($module, $this->container);
             }
         }
+    }
+
+    public function getModules(): array
+    {
+        return $this->modules;
+    }
+
+    protected function sort(array $modules): array
+    {
+        $graph = [];
+        $inDegree = [];
+
+        foreach ($modules as $name => $module) {
+            $graph[$name] = [];
+            $inDegree[$name] = 0;
+        }
+
+        foreach ($modules as $name => $module) {
+            foreach ($module->getDependencies() as $dependency) {
+                if (!isset($modules[$dependency])) {
+                    //@TODO: Handle when a dependency do not exists.
+                    continue;
+                }
+
+                $graph[$dependency][] = $name;
+                $inDegree[$name]++;
+            }
+        }
+
+        $queue = new \SplQueue();
+        foreach ($inDegree as $moduleName => $deg) {
+            if ($deg === 0) {
+                $queue->enqueue($moduleName);
+            }
+        }
+
+        $sortedOrder = [];
+        while (!$queue->isEmpty()) {
+            $current = $queue->dequeue();
+            $sortedOrder[] = $current;
+
+            foreach ($graph[$current] as $dependentModule) {
+                $inDegree[$dependentModule]--;
+                if ($inDegree[$dependentModule] === 0) {
+                    $queue->enqueue($dependentModule);
+                }
+            }
+        }
+
+        if (count($sortedOrder) < count($modules)) {
+            throw new \RuntimeException('Circular or unsatisfiable dependency detected.');
+        }
+
+        return $sortedOrder;
     }
 }

@@ -20,5 +20,7 @@ class ModuleServiceProvider extends ServiceProvider
         );
         $moduleDiscovery->discover();
         $moduleDiscovery->bootstrap();
+        $this->container->set('module_discovery', $moduleDiscovery);
+        $this->container->setAlias(ModuleDiscovery::class, 'module_discovery');
     }
 }
