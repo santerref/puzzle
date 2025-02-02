@@ -1,6 +1,6 @@
 {
     "name": "santerref/puzzle",
-    "license": "GPL-2.0-or-later",
+    "license": "MIT",
     "version": "0.0.1",
     "autoload": {
         "psr-4": {
