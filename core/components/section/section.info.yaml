@@ -6,8 +6,16 @@ settings:
     parents: false
     css:
         variables:
-            standard: 'container m-auto'
-            narrow: 'max-w-screen-md m-auto'
+            container:
+                standard: 'container m-auto'
+                narrow: 'max-w-screen-md m-auto'
+            vertical_spacing:
+                small: 'py-4'
+                standard: 'py-8'
+                large: 'py-12'
+            background_color:
+                white: 'bg-white'
+                light_brown: 'bg-stone-200'
     fields:
         container:
             label: Container
@@ -24,6 +32,21 @@ settings:
                 2: Two columns (50/50)
                 3: Three columns (33/33/33)
             default_value: 1
+        vertical_spacing:
+            label: Vertical spacing
+            type: dropdown
+            options:
+                small: Small
+                standard: Standard
+                large: Large
+            default_value: standard
+        background_color:
+            label: Background color
+            type: dropdown # @TODO: With palette, create a field of type "colors". People can decide available colors for a component.
+            options:
+                white: White
+                light_brown: Light brown
+            default_value: white
     default_position: col_1
     positions:
         col_1:

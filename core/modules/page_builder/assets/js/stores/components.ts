@@ -69,7 +69,7 @@ export const useComponentsStore = defineStore('components', () => {
     const rootItems = computed(() => allItems.value.filter(item => item.live.parent === null))
 
     function getChildren(pageBuilderItem: PageBuilderItem, position?: string | null | undefined): PageBuilderItem[] {
-        if(position) {
+        if (position) {
             return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id && item.live.position === position)
         } else {
             return pageBuilderItems.value.filter(item => item.live.parent === pageBuilderItem.live.id)
@@ -209,6 +209,7 @@ export const useComponentsStore = defineStore('components', () => {
 
     function update(component: PageComponent, updatedData: Partial<PageComponent>) {
         const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.id)
+        pageBuilderItems.value[index].rerender = true
         Object.assign(pageBuilderItems.value[index].live, updatedData)
     }
 

@@ -46,6 +46,7 @@ const props = defineProps<{
 }>()
 
 const componentType = computed(() => components.components[props.component.live.component_type])
+//@TODO: If have new fields, make sure to assign default values. Maybe server-side.
 const form = cloneDeep(props.component.live.form_values)
 
 const save = async function () {
