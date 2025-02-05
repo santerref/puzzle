@@ -1,0 +1,17 @@
+{% if context.component.children.where('position', context.component.position).count %}
+    {% for child in context.component.children.where('position', context.component.position).all %}
+        {% if child.children %}
+            {{ render(child) }}
+        {% else %}
+            {{ child.rendered_html|raw }}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {% if context.page_builder %}
+        <div class="p-5 flex justify-center">
+            <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
+                Add components
+            </p>
+        </div>
+    {% endif %}
+{% endif %}

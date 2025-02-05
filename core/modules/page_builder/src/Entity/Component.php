@@ -1,8 +1,8 @@
 <?php
 
-namespace Puzzle\component\Entity;
+namespace Puzzle\page_builder\Entity;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Puzzle\Entity\Entity;
@@ -14,16 +14,20 @@ class Component extends Entity
         'component_type',
         'rendered_html',
         'form_values',
-        'weight',
-        'parent',
-        'container',
         'id',
         'position',
-        'locked'
+        'locked',
+        'parent',
+        'weight'
     ];
 
     protected $casts = [
-        'form_values' => 'array'
+        'form_values' => 'array',
+        'is_new' => 'boolean'
+    ];
+
+    protected $appends = [
+        'is_new'
     ];
 
     protected $hidden = [
@@ -43,5 +47,12 @@ class Component extends Entity
     public function children(): HasMany
     {
         return $this->hasMany(Component::class, 'parent')->orderBy('weight');
+    }
+
+    public function isNew(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => !$this->exists,
+        );
     }
 }

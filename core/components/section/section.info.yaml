@@ -1,6 +1,7 @@
 name: Section
 version: 0.0.1
-container: true
+root: true
+placeholder: true
 settings:
     template: templates/section.html.twig
     parents: false

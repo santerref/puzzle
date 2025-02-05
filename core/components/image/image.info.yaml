@@ -1,6 +1,5 @@
 name: Image
 version: 0.0.1
-container: false
 settings:
     template: templates/image.html.twig
     css:

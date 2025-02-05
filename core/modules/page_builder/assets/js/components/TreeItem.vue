@@ -63,12 +63,12 @@
 </template>
 
 <script setup lang="ts">
-import {PageBuilderItem, Position} from '@modules/page_builder/assets/js/types'
-import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
+/*import {PageBuilderItem, Position} from '@modules/page_builder/assets/js/types/types'
+import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/components'
 import {computed, ref} from 'vue'
 import cloneDeep from 'clone-deep'
 
-const components = useComponentsStore()
+const pageBuilder = usePageBuilderStore()
 
 const props = defineProps<{
     pageBuilderItem: PageBuilderItem
@@ -132,5 +132,5 @@ const active = computed(() => {
 
 const children = function (position?: any) {
     return props.pageBuilderItem.children(position)
-}
+}*/
 </script>

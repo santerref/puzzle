@@ -1,20 +1,13 @@
 <template>
-    <VueDraggable
-        v-if="children.length > 0"
-        :model-value="children"
-        handle=".handle"
-        @update:model-value="components.updateEditors"
-    >
-        <item
+<!--        <item
             v-for="pageBuilderItem in children"
             :key="pageBuilderItem.live.id"
             :component="pageBuilderItem"
-        />
-    </VueDraggable>
+        />-->
 </template>
 
 <script setup lang="ts">
-import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
+/*import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/components'
 import Item from '@modules/page_builder/assets/js/components/Item.vue'
 import {VueDraggable} from 'vue-draggable-plus'
 import {computed, onMounted} from 'vue'
@@ -26,7 +19,7 @@ const props = defineProps<{
     locked?: boolean
 }>()
 
-const components = useComponentsStore()
+const pageBuilder = usePageBuilderStore()
 
 onMounted(() => {
     if (props.component) {
@@ -46,5 +39,5 @@ const children = computed(() => {
         return components.getChildren(components.allItems[index.value], props.position)
     }
     return []
-})
+})*/
 </script>

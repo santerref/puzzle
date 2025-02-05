@@ -1,6 +1,6 @@
 services:
     component.event_subscriber.generate_image:
-        class: Puzzle\component\EventSubscriber\GenerateDefaultImage
+        class: Puzzle\page_builder\EventSubscriber\GenerateDefaultImage
         tags: [ 'event.event_subscriber' ]
         arguments:
             - '@http_client'

@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\component\EventSubscriber;
+namespace Puzzle\page_builder\EventSubscriber;
 
 use GuzzleHttp\Client;
 use Puzzle\Config;
@@ -22,16 +22,16 @@ class GenerateDefaultImage implements EventSubscriberInterface
 
     public function onComponentPreRender(ComponentPreRender $event)
     {
-        $component = $event->getComponent();
-        if ($component->getType() != 'image' || Config::get('unsplash.enabled', false)) {
+        $componentType = $event->getComponentType();
+        if ($componentType->getType() != 'image' || Config::get('unsplash.enabled', false)) {
             return;
         }
 
-        $formValues = $event->getFormValues();
+        $formValues = $event->getComponent()->getAttribute('form_values');
         if (empty($formValues['image'])) {
             $formValues['image'] = $this->getUnsplashRandomImage();
         }
-        $event->setValues($formValues);
+        $event->getComponent()->setAttribute('form_values', $formValues);
     }
 
     protected function getUnsplashRandomImage(): string

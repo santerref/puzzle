@@ -2,6 +2,7 @@
 
 namespace Puzzle\Component;
 
+use Puzzle\page_builder\Entity\Component;
 use Puzzle\Event\ComponentPreRender;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Twig\Environment;
@@ -14,15 +15,20 @@ class Renderer
     ) {
     }
 
-    public function render(Component $component, array $formValues, array $context = []): string
+    public function render(ComponentType $componentType, Component $component, array $context = []): string
     {
-        $event = new ComponentPreRender($component, $formValues);
+        $event = new ComponentPreRender($componentType, $component);
         $this->eventDispatcher->dispatch($event, ComponentPreRender::NAME);
-        $formValues = $event->getFormValues();
+        $formValues = $component->getAttribute('form_values');
         return $this->twig->render(
-            $component->getTemplate(),
-            //@TODO: Refactor this, because css can be a form input.
-            $formValues + ['css' => $component->getInfo()['settings']['css'] ?? []] + ['context' => $context]
+            $componentType->getTemplate(),
+            array_merge(
+                $formValues,
+                [
+                    'css' => $componentType->getSetting('css', []),
+                    'context' => $context
+                ]
+            )
         );
     }
 }

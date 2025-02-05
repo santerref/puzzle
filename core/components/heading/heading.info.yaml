@@ -1,6 +1,5 @@
 name: Heading
 version: 0.0.1
-container: false
 settings:
     template: templates/heading.html.twig
     css:

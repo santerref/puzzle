@@ -4,7 +4,7 @@ namespace Puzzle\Component;
 
 use Illuminate\Support\Arr;
 
-class Component
+class ComponentType
 {
     public function __construct(
         protected string $id,
@@ -16,16 +16,61 @@ class Component
 
     public static function createFromInfo(string $id, string $path, array $info, string $version): self
     {
+        if (empty($info['settings'])) {
+            $info['settings'] = [];
+        }
         foreach ($info['settings']['fields'] ?? [] as &$field) {
             $field['value'] = '';
         }
         $info['id'] = $id;
-        return new Component($id, $path, $info, $version);
+        return new ComponentType($id, $path, $info, $version);
+    }
+
+    public function isRoot(): bool
+    {
+        if (!empty($this->info['root'])) {
+            return filter_var($this->info['root'], FILTER_VALIDATE_BOOLEAN);
+        }
+        return false;
+    }
+
+    public function isHidden(): bool
+    {
+        if (!empty($this->info['hidden'])) {
+            return filter_var($this->info['hidden'], FILTER_VALIDATE_BOOLEAN);
+        }
+        return false;
+    }
+
+    public function isContainer(): bool
+    {
+        if (!empty($this->info['container'])) {
+            return filter_var($this->info['container'], FILTER_VALIDATE_BOOLEAN);
+        }
+        return false;
+    }
+
+    public function isPlaceholder(): bool
+    {
+        if (!empty($this->info['placeholder'])) {
+            return filter_var($this->info['placeholder'], FILTER_VALIDATE_BOOLEAN);
+        }
+        return false;
     }
 
     public function toArray(): array
     {
-        return $this->info;
+        return array_merge($this->info, [
+            'container' => $this->isContainer(),
+            'root' => $this->isRoot(),
+            'hidden' => $this->isHidden(),
+            'placeholder' => $this->isPlaceholder()
+        ]);
+    }
+
+    public function getSetting(string $key, mixed $defaultValue): mixed
+    {
+        return Arr::get($this->info['settings'], $key, $defaultValue);
     }
 
     public function getPath(): string

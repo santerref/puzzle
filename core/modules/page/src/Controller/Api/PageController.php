@@ -9,6 +9,11 @@ class PageController
 {
     public function fetch(string $uuid): JsonResponse
     {
-        return new JsonResponse(Page::find($uuid));
+        $page = Page::find($uuid);
+        return new JsonResponse($page->load([
+            'components' => function ($query) {
+                $query->whereNull('parent')->orderBy('weight');
+            }
+        ]));
     }
 }

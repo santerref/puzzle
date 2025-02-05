@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import type {Field} from '@modules/page_builder/assets/js/types'
+import type {Field} from '@modules/page_builder/assets/js/types/types'
 import {useTemplateRef} from 'vue'
 
 const model = defineModel<string>()

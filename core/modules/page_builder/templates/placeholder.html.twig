@@ -1,0 +1,11 @@
+{% if context.page_builder %}
+    {% block placeholder %}{% endblock %}
+{% else %}
+    {% for child in context.component.children.where('position', position).all %}
+        {% if child.children %}
+            {{ render(child) }}
+        {% else %}
+            {{ child.rendered_html|raw }}
+        {% endif %}
+    {% endfor %}
+{% endif %}

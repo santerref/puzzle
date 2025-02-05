@@ -1,9 +1,10 @@
 <?php
 
-namespace Puzzle\component\Controller\Api;
+namespace Puzzle\page_builder\Controller\Api;
 
 use Illuminate\Support\Str;
 use Puzzle\Component\ComponentDiscovery;
+use Puzzle\page_builder\Entity\Component;
 use Puzzle\Component\Renderer;
 use Puzzle\page\Entity\Page;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,25 +21,26 @@ class ComponentController
     public function index(): JsonResponse
     {
         $components = $this->componentDiscovery->getComponents();
-        return new JsonResponse(array_map(function ($component) {
+        return new JsonResponse(array_values(array_map(function ($component) {
             return $component->toArray();
-        }, $components));
+        }, $components)));
     }
 
-    public function create(string $id): JsonResponse
+    public function render(string $id): JsonResponse
     {
-        $component = $this->componentDiscovery->get($id);
-        $formValues = $component->getDefaultValues();
-        $uuid = Str::uuid();
-        return new JsonResponse([
-            'id' => $uuid,
-            'component_type' => $id,
-            'form_values' => $formValues,
-            'rendered_html' => $this->renderer->render($component, $formValues, [
-                'page_builder' => true,
-                'uuid' => $uuid
-            ])
+        $componentType = $this->componentDiscovery->get($id);
+
+        $component = new Component([
+            'id' => Str::uuid(),
+            'form_values' => $componentType->getDefaultValues(),
+            'component_type' => $componentType->getType(),
         ]);
+        $component->setAttribute('rendered_html', $this->renderer->render($componentType, $component, [
+            'page_builder' => true,
+            'uuid' => $component->getAttribute('id')
+        ]));
+
+        return new JsonResponse($component);
     }
 
     public function save(Page $page, Request $request): JsonResponse
@@ -55,7 +57,11 @@ class ComponentController
 
         $page->refresh();
 
-        return new JsonResponse($page);
+        return new JsonResponse($page->load([
+            'components' => function ($query) {
+                $query->whereNull('parent')->orderBy('weight');
+            }
+        ]));
     }
 
     //@TODO: Refactor and move right place.
@@ -69,7 +75,7 @@ class ComponentController
             $id = $component['id'];
             $savedComponent = $page->components()->updateOrCreate(
                 ['id' => $id],
-                $component
+                array_diff_key($component, array_flip(['original', 'children']))
             );
             $savedComponents[] = $savedComponent->id;
             $idMapping[$savedComponent->id] = $savedComponent->id;

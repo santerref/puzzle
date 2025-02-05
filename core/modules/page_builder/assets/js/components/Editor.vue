@@ -34,13 +34,13 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
-import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
-import type {PageBuilderItem} from '@modules/page_builder/assets/js/types'
+/*import {computed} from 'vue'
+import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/components'
+import type {PageBuilderItem} from '@modules/page_builder/assets/js/types/types'
 import * as changeCase from 'change-case'
 import cloneDeep from 'clone-deep'
 
-const components = useComponentsStore()
+const pageBuilder = usePageBuilderStore()
 const props = defineProps<{
     component: PageBuilderItem
 }>()
@@ -71,5 +71,5 @@ const save = async function () {
     } catch (e) {
 
     }
-}
+}*/
 </script>

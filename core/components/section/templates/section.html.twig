@@ -14,10 +14,16 @@
         <div class="grid gap-4 {{ grid_class[columns] }}">
             {% for column in 1..columns %}
                 <div>
-                    {% include '@module_page_builder/children.html.twig' with {
-                        position: 'col_' ~ column,
-                        container: true
-                    } %}
+                    {% embed '@module_page_builder/placeholder.html.twig' with { position: 'col_' ~ column } %}
+                        {% block placeholder %}
+                            <component-placeholder
+                                data-component="container"
+                                data-uuid="{{ context.uuid }}"
+                                data-position="{{ 'col_' ~ column }}"
+                            >
+                            </component-placeholder>
+                        {% endblock %}
+                    {% endembed %}
                 </div>
             {% endfor %}
         </div>

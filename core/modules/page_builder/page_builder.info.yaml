@@ -4,3 +4,4 @@ dependencies:
     - image
     - page
     - user
+    - component

@@ -2,7 +2,7 @@
 
 namespace Puzzle\ThirdParty\Twig;
 
-use Puzzle\component\Entity\Component;
+use Puzzle\page_builder\Entity\Component;
 use Puzzle\file\Entity\File;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Extension\AbstractExtension;
@@ -64,7 +64,7 @@ class PuzzleExtension extends AbstractExtension
         $components = $this->container->get('component_discovery')->getComponents();
         return $this->container->get('component.renderer')->render(
             $components[$component->component_type],
-            $component->form_values,
+            $component,
             [
                 'component' => $component
             ]

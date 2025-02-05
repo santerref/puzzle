@@ -16,7 +16,7 @@
 <body>
 {% for component in page.components %}
     {% if component.parent is empty %}
-        {% if component.container %}
+        {% if component.children %}
             {{ render(component) }}
         {% else %}
             {{ component.rendered_html|raw }}

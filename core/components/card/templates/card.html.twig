@@ -1,18 +1,28 @@
 <div class="border-2 border-stone-200 rounded-lg max-w-full overflow-hidden">
     <div>
-        {% include '@module_page_builder/children.html.twig' with {
-            position: 'image',
-            container: false,
-            component: 'image',
-            locked: true
-        } %}
+        {% embed '@module_page_builder/placeholder.html.twig' with { position: 'image' } %}
+            {% block placeholder %}
+                <component-placeholder
+                    data-component="image"
+                    data-uuid="{{ context.uuid }}"
+                    data-position="image"
+                    data-locked="true"
+                >
+                </component-placeholder>
+            {% endblock %}
+        {% endembed %}
     </div>
     <div class="mt-4 p-4">
-        {% include '@module_page_builder/children.html.twig' with {
-            position: 'text',
-            container: false,
-            component: 'text',
-            locked: true
-        } %}
+        {% embed '@module_page_builder/placeholder.html.twig'  with { position: 'text' } %}
+            {% block placeholder %}
+                <component-placeholder
+                    data-component="text"
+                    data-uuid="{{ context.uuid }}"
+                    data-position="text"
+                    data-locked="true"
+                >
+                </component-placeholder>
+            {% endblock %}
+        {% endembed %}
     </div>
 </div>

@@ -20,7 +20,7 @@ class ComponentDiscovery
         foreach ($finder as $file) {
             $info = Yaml::parseFile($file->getRealPath());
             $version = $info['version'];
-            $this->components[$file->getRelativePath()] = Component::createFromInfo(
+            $this->components[$file->getRelativePath()] = ComponentType::createFromInfo(
                 $file->getRelativePath(),
                 $file->getPath(),
                 $info,
@@ -34,7 +34,7 @@ class ComponentDiscovery
         return $this->components;
     }
 
-    public function get(string $id): Component
+    public function get(string $id): ComponentType
     {
         return $this->components[$id];
     }

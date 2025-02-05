@@ -1,61 +1,61 @@
 <template>
-    <template v-if="!components.loading">
+    <template v-if="!pageBuilder.loading">
         <div class="bg-stone-100 w-full p-3 flex gap-4 justify-end">
             <a
                 class="text-white bg-stone-600 px-4 py-2 font-medium"
                 target="_blank"
-                :href="`/${components.page.slug}`"
+                :href="`/${pageBuilder.page.slug}`"
             >
                 View
             </a>
             <button
                 :class="{
-                    'cursor-not-allowed opacity-50': !components.isDirty,
-                    'cursor-pointer': components.isDirty,
+                    'cursor-not-allowed opacity-50': !pageBuilder.saveRequired,
+                    'cursor-pointer': pageBuilder.saveRequired,
                 }"
-                :disabled="!components.isDirty"
+                :disabled="!pageBuilder.saveRequired"
                 class="text-white bg-stone-600 px-4 py-2 font-medium"
-                @click.prevent="components.save"
+                @click.prevent="pageBuilder.save"
             >
                 Save
             </button>
         </div>
         <div class="grid grid-cols-12">
             <div class="col-span-3 p-4 bg-stone-100">
-                <div class="border-2 mb-4 bg-white p-5 border-stone-200">
-                    <p class="font-semibold mb-2">
-                        Tree
-                    </p>
-                    <ul class="mt-2">
-                        <li>
-                            <button
-                                class="cursor-pointer text-blue-500 underline"
-                                :class="{'bg-stone-200':active}"
-                                @click.prevent="components.setCurrentComponent(null, null)"
-                            >
-                                Root
-                            </button>
-                            <ul class="pl-4 list-disc">
-                                <TreeItem
-                                    v-for="pageBuilderItem in components.rootItems"
-                                    :key="pageBuilderItem.live.id"
-                                    :page-builder-item="pageBuilderItem"
-                                />
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                <!--                        <div class="border-2 mb-4 bg-white p-5 border-stone-200">
+                                            <p class="font-semibold mb-2">
+                                                Tree
+                                            </p>
+                                            <ul class="mt-2">
+                                                <li>
+                                                    <button
+                                                        class="cursor-pointer text-blue-500 underline"
+                                                        :class="{'bg-stone-200':active}"
+                                                        @click.prevent="components.setCurrentComponent(null, null)"
+                                                    >
+                                                        Root
+                                                    </button>
+                                                    <ul class="pl-4 list-disc">
+                                                        <TreeItem
+                                                            v-for="pageBuilderItem in components.rootItems"
+                                                            :key="pageBuilderItem.live.id"
+                                                            :page-builder-item="pageBuilderItem"
+                                                        />
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>-->
 
                 <ul class="grid grid-cols-2 gap-4">
                     <li
-                        v-for="(component, key) in components.all"
-                        :key="key"
+                        v-for="componentType in pageBuilder.availableComponentTypes"
+                        :key="componentType.id"
                     >
                         <button
                             class=" bg-white border border-stone-100 text-stone-600 text-sm font-medium uppercase rounded shadow block w-full py-2 px-4 cursor-pointer min-h-[100px]"
-                            @click.prevent="addComponent(key)"
+                            @click.prevent="pageBuilder.createComponent(componentType.id)"
                         >
-                            {{ component.name }}
+                            {{ componentType.name }}
                         </button>
                     </li>
                 </ul>
@@ -63,19 +63,10 @@
             <div class="col-span-9">
                 <div class="container m-auto">
                     <div class="p-5">
-                        <VueDraggable
-                            v-if="components.rootItems.length > 0"
-                            :model-value="components.rootItems"
-                            handle=".handle"
-                            @end="onDragEnd"
-                            @update:model-value="components.updateEditors"
-                        >
-                            <item
-                                v-for="pageBuilderItem in components.rootItems"
-                                :key="pageBuilderItem.live.id"
-                                :component="pageBuilderItem"
-                            />
-                        </VueDraggable>
+                        <nested-component
+                            v-if="pageBuilder.components.length"
+                            v-model="pageBuilder.components"
+                        />
                         <div
                             v-else
                             class="flex items-center"
@@ -88,26 +79,27 @@
                 </div>
             </div>
         </div>
-        <editor
-            v-if="components.currentEdit !== null"
-            :component="components.currentEdit"
-        />
+        <!--        <editor
+                    v-if="components.currentEdit !== null"
+                    :component="components.currentEdit"
+                />-->
     </template>
 </template>
 
 <script setup lang="ts">
-import Item from '@modules/page_builder/assets/js/components/Item.vue'
-import {useComponentsStore} from '@modules/page_builder/assets/js/stores/components'
-import {VueDraggable} from 'vue-draggable-plus'
-import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue'
-import {computed, nextTick} from 'vue'
-import {PageBuilderItem} from '@modules/page_builder/assets/js/types'
-import Editor from '@modules/page_builder/assets/js/components/Editor.vue'
+// import Item from '@modules/page_builder/assets/js/components/Item.vue'
+import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder'
+import NestedComponent from "@modules/page_builder/assets/js/components/NestedComponent.vue";
+// import {VueDraggable} from 'vue-draggable-plus'
+// import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue'
+// import {computed, nextTick} from 'vue'
+// import {PageBuilderItem} from '@modules/page_builder/assets/js/types/page-builder'
+// import Editor from '@modules/page_builder/assets/js/components/Editor.vue'
 
-const components = useComponentsStore()
-components.initialize()
+const pageBuilder = usePageBuilderStore()
+pageBuilder.initialize()
 
-const addComponent = function (id: string) {
+/*const addComponent = function (id: string) {
     components.add(id)
 }
 
@@ -119,7 +111,7 @@ const onDragEnd = () => {
     })
 }
 
-const active = computed(() => components.currentComponent === null)
+const active = computed(() => components.currentComponent === null)*/
 </script>
 
 <style lang="scss">

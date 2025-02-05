@@ -1,5 +1,6 @@
 name: Card
 version: 0.0.1
+placeholder: true
 settings:
     template: templates/card.html.twig
     positions:

@@ -3,8 +3,10 @@ export type ComponentType = {
     id: string
     version: string
     container: boolean
+    root: boolean
+    hidden: boolean
+    placeholder: boolean
     settings: ComponentTypeSettings
-    group?: string
 }
 
 export type Page = {
@@ -37,30 +39,23 @@ export type PositionCondition = {
     value: any
 }
 
-export type PageBuilderItem = {
-    isNew: boolean
-    live: PageComponent
-    original: PageComponent
-    rerender: boolean
-    isDirty: () => boolean
-    children: (targetPosition?: any) => PageBuilderItem[]
+export type Target = {
+    component: Component
+    position: string | null
 }
 
-export type CurrentPosition = {
-    uuid: any
-    position: any
-}
-
-export type PageComponent = {
+export type Component = {
     id: string
+    original: Component
+    weight?: number
+    parent: string | null
     component_type: string
     rendered_html: string
     form_values: { [key: string], any }
-    weight: number
-    container: boolean
     locked: boolean | number
-    parent: string | null
     position: string | null
+    is_new: boolean
+    children: Component[]
 }
 
 export type Field = {
@@ -69,10 +64,4 @@ export type Field = {
     type: string
     label: string
     options?: object
-}
-
-declare global {
-    interface Window {
-        page_uuid: string
-    }
 }
