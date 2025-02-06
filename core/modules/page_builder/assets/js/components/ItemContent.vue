@@ -101,11 +101,13 @@ const renderChildren = () => {
                         }
                     }
                     if (typeof newComponent !== 'undefined') {
+                        newComponent.locked = (el.dataset.locked ?? 'false') === 'true';
+
                         render(h(Item, {
                             componentUuid: newComponent.id,
                             key: newComponent.id + '_' + el.dataset.position,
                             position: newComponent.position,
-                            componentCount: newComponent.children.length,
+                            componentCount: newComponent.children.length
                         }), el);
                     }
                 }

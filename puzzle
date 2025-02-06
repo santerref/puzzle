@@ -2,8 +2,8 @@
 <?php
 
 use Puzzle\Bootstrap;
-use Puzzle\Command\StorageLinkCommand;
-use Puzzle\Command\TestCommand;
+use Puzzle\Console\Command\StorageLinkCommand;
+use Puzzle\Console\Command\TestCommand;
 use Symfony\Component\Console\Application;
 
 require 'autoload.php';
