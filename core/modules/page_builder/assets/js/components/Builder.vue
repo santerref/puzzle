@@ -21,30 +21,30 @@
             </button>
         </div>
         <div class="grid grid-cols-12">
-            <div class="col-span-3 p-4 bg-stone-100">
-                <!--                        <div class="border-2 mb-4 bg-white p-5 border-stone-200">
-                                            <p class="font-semibold mb-2">
-                                                Tree
-                                            </p>
-                                            <ul class="mt-2">
-                                                <li>
-                                                    <button
-                                                        class="cursor-pointer text-blue-500 underline"
-                                                        :class="{'bg-stone-200':active}"
-                                                        @click.prevent="components.setCurrentComponent(null, null)"
-                                                    >
-                                                        Root
-                                                    </button>
-                                                    <ul class="pl-4 list-disc">
-                                                        <TreeItem
-                                                            v-for="pageBuilderItem in components.rootItems"
-                                                            :key="pageBuilderItem.live.id"
-                                                            :page-builder-item="pageBuilderItem"
-                                                        />
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>-->
+            <div class="col-span-3 px-4 pb-4 bg-stone-100">
+                <div class="mb-4 bg-white p-5 ">
+                    <p class="font-semibold mb-2">
+                        Components Tree
+                    </p>
+                    <ul class="mt-2">
+                        <li>
+                            <button
+                                class="cursor-pointer text-blue-500 underline"
+                                :class="{'bg-stone-200':!pageBuilder.hasTarget()}"
+                                @click.prevent="pageBuilder.unsetTarget()"
+                            >
+                                Root
+                            </button>
+                            <ul class="pl-2">
+                                <TreeItem
+                                    v-for="component in pageBuilder.components"
+                                    :key="component.id"
+                                    :component="component"
+                                />
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
                 <ul class="grid grid-cols-2 gap-4">
                     <li
@@ -62,7 +62,7 @@
             </div>
             <div class="col-span-9">
                 <div class="container m-auto">
-                    <div class="p-5">
+                    <div>
                         <nested-component
                             v-if="pageBuilder.components.length"
                             v-model="pageBuilder.components"
@@ -79,41 +79,19 @@
                 </div>
             </div>
         </div>
-        <!--        <editor
-                    v-if="components.currentEdit !== null"
-                    :component="components.currentEdit"
-                />-->
+        <editor
+            v-if="pageBuilder.currentComponentSettings !== null"
+            :component="pageBuilder.currentComponentSettings"
+        />
     </template>
 </template>
 
 <script setup lang="ts">
-// import Item from '@modules/page_builder/assets/js/components/Item.vue'
-import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder'
-import NestedComponent from "@modules/page_builder/assets/js/components/NestedComponent.vue";
-// import {VueDraggable} from 'vue-draggable-plus'
-// import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue'
-// import {computed, nextTick} from 'vue'
-// import {PageBuilderItem} from '@modules/page_builder/assets/js/types/page-builder'
-// import Editor from '@modules/page_builder/assets/js/components/Editor.vue'
+import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
+import NestedComponent from '@modules/page_builder/assets/js/components/NestedComponent.vue';
+import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue';
+import Editor from '@modules/page_builder/assets/js/components/Editor.vue';
 
-const pageBuilder = usePageBuilderStore()
-pageBuilder.initialize()
-
-/*const addComponent = function (id: string) {
-    components.add(id)
-}
-
-const onDragEnd = () => {
-    nextTick(() => {
-        components.rootItems.forEach((item: PageBuilderItem) => {
-            item.rerender = !item.rerender // Trigger reactivity
-        })
-    })
-}
-
-const active = computed(() => components.currentComponent === null)*/
+const pageBuilder = usePageBuilderStore();
+pageBuilder.initialize();
 </script>
-
-<style lang="scss">
-
-</style>

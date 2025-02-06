@@ -15,34 +15,31 @@
 </template>
 
 <script setup lang="ts">
-import type {Field} from '@modules/page_builder/assets/js/types/types'
-import {useTemplateRef} from 'vue'
+import type {Field} from '@modules/page_builder/assets/js/types/page-builder';
+import {useTemplateRef} from 'vue';
 
-const model = defineModel<string>()
+const model = defineModel<string>();
 
 defineProps<{
     field: Field
-}>()
+}>();
 
-const fileRef = useTemplateRef('file')
-
+const fileRef = useTemplateRef('file');
 async function uploadFile(event: any) {
     if (event.target.files.length) {
-        const file = event.target.files[0]
-        const formData = new FormData()
-        formData.append('image', file)
-        try {
-            const response = await fetch('/admin/files/upload/image', {
-                method: 'POST',
-                body: formData,
-            })
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        const response = await fetch('/admin/files/upload/image', {
+            method: 'POST',
+            body: formData,
+        });
 
-            const result = await response.json()
-            model.value = result.id
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
+        const result = await response.json();
+        model.value = result.id;
+        if (fileRef.value) {
+            (fileRef.value as HTMLInputElement).value = '';
         }
-        fileRef.value.value = null
     }
 }
 </script>

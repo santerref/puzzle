@@ -90,15 +90,20 @@ class ComponentController
         string $id,
         Request $request
     ): JsonResponse {
-        $component = $this->componentDiscovery->get($id);
+        $componentType = $this->componentDiscovery->get($id);
         $payload = $request->toArray();
         $formValues = $payload['form_values'];
         $uuid = $payload['uuid'] ?? Str::uuid();
-        return new JsonResponse([
+
+        $component = new Component([
             'id' => $uuid,
-            'component_type' => $id,
             'form_values' => $formValues,
-            'rendered_html' => $this->renderer->render($component, $formValues, [
+            'component_type' => $componentType->getType(),
+        ]);
+
+        return new JsonResponse([
+            'form_values' => $formValues,
+            'rendered_html' => $this->renderer->render($componentType, $component, [
                 'page_builder' => true,
                 'uuid' => $uuid
             ])

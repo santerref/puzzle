@@ -12,10 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import type {Field} from '@modules/page_builder/assets/js/types/types'
+import type {Field} from '@modules/page_builder/assets/js/types/page-builder';
 
 defineProps<{
     field: Field
-}>()
-const model = defineModel<string>()
+}>();
+const model = defineModel<string>();
 </script>

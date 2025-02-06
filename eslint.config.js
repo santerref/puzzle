@@ -27,7 +27,7 @@ export default tseslint.config(
             '@stylistic/ts': stylisticTs
         },
         rules: {
-            'semi': ['error', 'never'],
+            'semi': ['error', 'always'],
             'vue/multi-word-component-names': 0,
             'no-console': 2,
             '@typescript-eslint/no-explicit-any': 0,

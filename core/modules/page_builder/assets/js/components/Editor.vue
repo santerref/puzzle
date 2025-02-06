@@ -7,7 +7,7 @@
                 </h1>
                 <div class="space-y-4">
                     <component
-                        :is="changeCase.pascalCase(field.type)"
+                        :is="pascalCase(field.type)"
                         v-for="(field,key) in componentType.settings.fields"
                         :key="key"
                         v-model="form[key]"
@@ -24,7 +24,7 @@
                 </button>
                 <button
                     class="bg-gray-300 cursor-pointer px-4 py-2 font-bold"
-                    @click.prevent="components.editComponent(null)"
+                    @click.prevent="pageBuilder.closeSettings()"
                 >
                     Cancel
                 </button>
@@ -34,42 +34,36 @@
 </template>
 
 <script setup lang="ts">
-/*import {computed} from 'vue'
-import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/components'
-import type {PageBuilderItem} from '@modules/page_builder/assets/js/types/types'
-import * as changeCase from 'change-case'
-import cloneDeep from 'clone-deep'
+import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
+import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
+import {computed} from 'vue';
+import {pascalCase} from 'change-case';
+import cloneDeep from 'clone-deep';
 
-const pageBuilder = usePageBuilderStore()
 const props = defineProps<{
-    component: PageBuilderItem
-}>()
+    component: Component
+}>();
 
-const componentType = computed(() => components.components[props.component.live.component_type])
+const pageBuilder = usePageBuilderStore();
+const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
 //@TODO: If have new fields, make sure to assign default values. Maybe server-side.
-const form = cloneDeep(props.component.live.form_values)
+const form = Object.fromEntries(
+    Object.entries(cloneDeep(props.component.form_values)).map(([key, value]) => [key, String(value)])
+);
 
 const save = async function () {
-    try {
-        const response = await fetch(`/api/components/${props.component.live.component_type}/refresh`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                form_values: form,
-                uuid: props.component.live.id
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        const pageComponent = await response.json()
-        components.update(props.component.live, pageComponent)
-        components.editComponent(null)
-        //@TODO: Add a method in the store to rerender.
-        // eslint-disable-next-line vue/no-mutating-props
-        props.component.rerender = true
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
-
-    }
-}*/
+    const response = await fetch(`/api/components/${props.component.component_type}/refresh`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            form_values: form,
+            uuid: props.component.id
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const partialComponent = await response.json();
+    Object.assign(props.component, partialComponent);
+    pageBuilder.closeSettings();
+};
 </script>

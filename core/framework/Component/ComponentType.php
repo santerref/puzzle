@@ -58,13 +58,19 @@ class ComponentType
         return false;
     }
 
+    public function hasFields(): bool
+    {
+        return !empty($this->info['settings']['fields']);
+    }
+
     public function toArray(): array
     {
         return array_merge($this->info, [
             'container' => $this->isContainer(),
             'root' => $this->isRoot(),
             'hidden' => $this->isHidden(),
-            'placeholder' => $this->isPlaceholder()
+            'placeholder' => $this->isPlaceholder(),
+            'has_fields' => $this->hasFields(),
         ]);
     }
 

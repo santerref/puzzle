@@ -1,8 +1,8 @@
-import {defineStore} from 'pinia'
-import {computed, ref} from "vue";
-import {Component, ComponentType, Page, Target} from '@modules/page_builder/assets/js/types/page-builder';
-import cloneDeep from "clone-deep";
-import deepEqual from "deep-equal";
+import {defineStore} from 'pinia';
+import {computed, ref} from 'vue';
+import type {Component, ComponentType, Page, Target} from '@modules/page_builder/assets/js/types/page-builder';
+import cloneDeep from 'clone-deep';
+import deepEqual from 'deep-equal';
 
 export const usePageBuilderStore = defineStore('pageBuilder', () => {
     const components = ref<Component[]>([]);
@@ -12,25 +12,28 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     const currentPageUuid = ref<string>(window.pageUuid);
     const isLoading = ref<boolean>(true);
     const componentHover = ref<Component | null>(null);
+    const currentComponentSettings = ref<Component | null>(null);
+
+    const saveRequired = computed(() => !deepEqual(page.value.components, components.value));
+    const page = computed<Page>(() => <Page>currentPage.value);
+    const loading = computed<boolean>(() => isLoading.value);
+    const isRoot = computed<boolean>(() => currentTarget.value === null);
 
     const flatComponents = computed(() => {
-        const assignWeight = (components: Component[], parentWeight: number = 0): Component[] => {
+        const assignWeight = (components: Component[]): Component[] => {
             return components.flatMap((component, index) => {
                 const weightedComponent = {
                     ...component,
                     weight: index,
                 };
 
-                return [weightedComponent, ...assignWeight(component.children, index)];
+                return [weightedComponent, ...assignWeight(component.children)];
             });
         };
 
         return assignWeight(components.value);
     });
-    const saveRequired = computed(() => !deepEqual(page.value.components, components.value))
-    const page = computed<Page>(() => <Page>currentPage.value);
-    const loading = computed<boolean>(() => isLoading.value);
-    const isRoot = computed<boolean>(() => currentTarget.value === null);
+
     const availableComponentTypes = computed<ComponentType[]>(() => {
         if (isRoot.value) {
             return componentTypes.value.filter((componentType: ComponentType) => componentType.root);
@@ -52,14 +55,6 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         ]);
         components.value = cloneDeep(page.value.components);
         isLoading.value = false;
-    }
-
-    function setComponentHover(component: Component | null) {
-        componentHover.value = component
-    }
-
-    function getComponentType(id: string): ComponentType {
-        return <ComponentType>componentTypes.value.find((componentType: ComponentType) => componentType.id === id)
     }
 
     async function loadComponentTypes(): Promise<ComponentType[]> {
@@ -98,6 +93,42 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         return component;
     }
 
+    function removeComponent(component: Component, children: Component[] | null = null): boolean {
+        if (children === null) {
+            children = components.value;
+        }
+
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].id === component.id) {
+                children.splice(i, 1);
+                return true;
+            }
+
+            if (children[i].children) {
+                removeComponent(component, children[i].children);
+            }
+        }
+        return false;
+    }
+
+    async function save(): Promise<void> {
+        const response = await fetch(`/api/pages/${currentPageUuid.value}/components`, {
+            method: 'PUT',
+            body: JSON.stringify(flatComponents.value)
+        });
+        const updatedPage = await response.json();
+        currentPage.value = cloneDeep(updatedPage);
+        components.value = cloneDeep(updatedPage.components);
+    }
+
+    function openSettings(component: Component): void {
+        currentComponentSettings.value = component;
+    }
+
+    function closeSettings(): void {
+        currentComponentSettings.value = null;
+    }
+
     function setTarget(component: Component, position?: string | null): void {
         currentTarget.value = {
             component,
@@ -105,14 +136,26 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         } as Target;
     }
 
-    async function save() {
-        const response = await fetch(`/api/pages/${currentPageUuid.value}/components`, {
-            method: 'PUT',
-            body: JSON.stringify(flatComponents.value)
-        })
-        const updatedPage = await response.json();
-        currentPage.value = cloneDeep(updatedPage);
-        components.value = cloneDeep(updatedPage.components);
+    function unsetTarget(): void {
+        currentTarget.value = null;
+    }
+
+    function setComponentHover(component: Component | null): void {
+        componentHover.value = component;
+    }
+
+    function getComponentType(id: string): ComponentType {
+        return <ComponentType>componentTypes.value.find((componentType: ComponentType) => componentType.id === id);
+    }
+
+    function hasTarget(): boolean {
+        return currentTarget.value !== null;
+    }
+
+    function currentTargetIs(component: Component): boolean {
+        return currentTarget.value !== null &&
+            currentTarget.value.component.id === component.id &&
+            currentTarget.value.position === component.position;
     }
 
     return {
@@ -131,91 +174,13 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         setComponents,
         createComponent,
         flatComponents,
-        saveRequired
-    }
-})
-
-
-/*
-
-    function editComponent(pageComponent: PageBuilderItem | null) {
-        currentEdit.value = pageComponent
-    }
-
-
-    function moveUp(component: PageBuilderItem) {
-        const siblings = pageBuilderItems.value.filter(obj => obj.live.parent === component.live.parent)
-
-        const index = siblings.findIndex(obj => obj.live.id === component.live.id)
-        if (index > 0) {
-            const globalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
-            const prevSiblingGlobalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === siblings[index - 1].live.id)
-
-            ;[pageBuilderItems.value[globalIndex], pageBuilderItems.value[prevSiblingGlobalIndex]] =
-                [pageBuilderItems.value[prevSiblingGlobalIndex], pageBuilderItems.value[globalIndex]]
-
-            ;[pageBuilderItems.value[globalIndex].live.weight, pageBuilderItems.value[prevSiblingGlobalIndex].live.weight] =
-                [pageBuilderItems.value[prevSiblingGlobalIndex].live.weight, pageBuilderItems.value[globalIndex].live.weight]
-
-            pageBuilderItems.value[globalIndex].rerender = true
-            pageBuilderItems.value[prevSiblingGlobalIndex].rerender = true
-        }
-    }
-
-    function moveDown(component: PageBuilderItem) {
-        const siblings = pageBuilderItems.value.filter(obj => obj.live.parent === component.live.parent)
-
-        const index = siblings.findIndex(obj => obj.live.id === component.live.id)
-        if (index < siblings.length - 1) {
-            const globalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
-            const nextSiblingGlobalIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === siblings[index + 1].live.id)
-
-            ;[pageBuilderItems.value[globalIndex], pageBuilderItems.value[nextSiblingGlobalIndex]] =
-                [pageBuilderItems.value[nextSiblingGlobalIndex], pageBuilderItems.value[globalIndex]]
-
-            ;[pageBuilderItems.value[globalIndex].live.weight, pageBuilderItems.value[nextSiblingGlobalIndex].live.weight] =
-                [pageBuilderItems.value[nextSiblingGlobalIndex].live.weight, pageBuilderItems.value[globalIndex].live.weight]
-
-            pageBuilderItems.value[globalIndex].rerender = true
-            pageBuilderItems.value[nextSiblingGlobalIndex].rerender = true
-        }
-    }
-
-    function remove(component: PageBuilderItem) {
-        const index = pageBuilderItems.value.findIndex(obj => obj.live.id === component.live.id)
-        if (index !== -1) {
-            removeChildren(component.live.id)
-            pageBuilderItems.value.splice(index, 1)
-            if (currentPosition.value.uuid !== null) {
-                const currentPositionIndex = pageBuilderItems.value.findIndex(obj => obj.live.id === currentPosition.value.uuid)
-                if (currentPositionIndex === -1) {
-                    //@TODO: Select nearest component, not root.
-                    setCurrentComponent(null, null)
-                }
-            }
-        }
-    }
-
-    function updateEditors(components: PageBuilderItem[]) {
-        components.forEach((component, index) => {
-            component.live.weight = index + 1
-            return component
-        })
-    }
-
-    async function save() {
-        try {
-            const response = await fetch(`/api/pages/${currentPageUuid.value}/components`, {
-                method: 'PUT',
-                body: JSON.stringify(pageBuilderItems.value.map(pageBuilderItem => pageBuilderItem.live))
-            })
-            const page = await response.json()
-            loadPageComponents(page)
-            pageBuilderItems.value = clone(originalPageBuilderItems.value)
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (e) {
-
-        }
-    }
-
-})*/
+        saveRequired,
+        openSettings,
+        closeSettings,
+        currentComponentSettings,
+        hasTarget,
+        unsetTarget,
+        currentTargetIs,
+        removeComponent
+    };
+});

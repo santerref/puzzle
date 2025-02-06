@@ -1,136 +1,48 @@
 <template>
     <li>
-        <div class="flex justify-between border-b border-stone-200">
+        <div class="flex justify-between py-0.5 px-2 hover:bg-stone-100">
             <div>
                 <button
-                    v-if="container"
+                    v-if="componentType.container"
+                    :class="{'bg-stone-200':pageBuilder.currentTargetIs(component)}"
                     class="cursor-pointer text-blue-500 underline"
-                    :class="{'bg-stone-200':active && (innerPosition === null || Object.keys(positions).length === 1)}"
-                    @click.prevent="updateInnerPosition(componentPosition)"
+                    @click.prevent="pageBuilder.setTarget(component, component.position)"
                 >
-                    {{ components.components[pageBuilderItem.live.component_type].name }}
+                    {{ componentType.name }}
                 </button>
                 <p v-else>
-                    {{ components.components[pageBuilderItem.live.component_type].name }}
+                    {{ componentType.name }}
                 </p>
             </div>
             <div>
                 <i
-                    class="pi pi-pencil hover:cursor-pointer"
-                    @click.prevent="components.editComponent(pageBuilderItem)"
+                    v-if="componentType.has_fields"
+                    class="pi pi-cog hover:cursor-pointer"
+                    @click.prevent="pageBuilder.openSettings(component)"
                 />
             </div>
         </div>
         <ul
-            class="pl-4 list-disc"
+            class="pl-2"
         >
-            <template v-if="positionsCount > 1 && !container">
-                <TreeItem
-                    v-for="child in children()"
-                    :key="child.live.id"
-                    :page-builder-item="child"
-                />
-            </template>
-            <template v-else-if="positionsCount <= 1">
-                <TreeItem
-                    v-for="child in children(innerPosition)"
-                    :key="child.live.id"
-                    :page-builder-item="child"
-                />
-            </template>
-            <li
-                v-for="(position, key) in positions"
-                v-else
-                :key="key"
-            >
-                <button
-                    class="cursor-pointer text-blue-500 underline"
-                    :class="{'bg-stone-200':active && key === innerPosition}"
-                    @click.prevent="updateInnerPosition(key)"
-                >
-                    {{ position.label }}
-                </button>
-                <ul class="pl-4 list-disc">
-                    <TreeItem
-                        v-for="child in children(key)"
-                        :key="child.live.id"
-                        :page-builder-item="child"
-                    />
-                </ul>
-            </li>
+            <TreeItem
+                v-for="child in component.children"
+                :key="child.id"
+                :component="child"
+            />
         </ul>
     </li>
 </template>
 
 <script setup lang="ts">
-/*import {PageBuilderItem, Position} from '@modules/page_builder/assets/js/types/types'
-import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/components'
-import {computed, ref} from 'vue'
-import cloneDeep from 'clone-deep'
-
-const pageBuilder = usePageBuilderStore()
+import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
+import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
+import {computed} from 'vue';
 
 const props = defineProps<{
-    pageBuilderItem: PageBuilderItem
-}>()
+    component: Component
+}>();
 
-const componentPosition = computed(() => {
-    const id = props.pageBuilderItem.live.component_type
-    if (components.components[id].settings.positions && Object.keys(components.components[id].settings.positions).length > 0) {
-        return components.components[id].settings.default_position
-    }
-    return null
-})
-const innerPosition = ref<string | null>(componentPosition.value)
-
-function updateInnerPosition(key) {
-    components.setCurrentComponent(props.pageBuilderItem, key)
-    innerPosition.value = key
-}
-
-const container = computed(() => {
-    const id = props.pageBuilderItem.live.component_type
-    return components.components[id].container ?? false
-})
-
-const positions = computed(() => {
-    const id = props.pageBuilderItem.live.component_type
-    if (components.components[id].settings.positions) {
-        const componentPositions = cloneDeep(components.components[id].settings.positions)
-        for (const key in componentPositions) {
-            if (Object.prototype.hasOwnProperty.call(componentPositions, key)) {
-                const position: Position = componentPositions[key]
-                if (position.conditions) {
-                    position.conditions.forEach((condition) => {
-                        const fieldValue = props.pageBuilderItem.live.form_values[condition.field].toString()
-                        let valid
-                        if (Array.isArray(condition.value)) {
-                            valid = condition.value.includes(fieldValue)
-                        } else {
-                            valid = fieldValue === condition.value
-                        }
-
-                        if (!valid) {
-                            delete componentPositions[key]
-                        }
-                    })
-                }
-            }
-        }
-        return componentPositions
-    }
-    return {}
-})
-const positionsCount = computed(() => {
-    return Object.keys(positions.value).length
-})
-
-const active = computed(() => {
-    return components.currentComponent &&
-        components.currentComponent.live.id === props.pageBuilderItem.live.id
-})
-
-const children = function (position?: any) {
-    return props.pageBuilderItem.children(position)
-}*/
+const pageBuilder = usePageBuilderStore();
+const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
 </script>
