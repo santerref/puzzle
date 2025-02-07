@@ -145,7 +145,7 @@
                     class="cursor-pointer bg-stone-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-stone-700"
                     @click.prevent="close"
                 >
-                    Close
+                    Select
                 </button>
             </div>
             <div
@@ -255,10 +255,12 @@ async function save(): Promise<any> {
             });
         }
 
-        await fetch(`/admin/files/${currentFile.value.id}/save`, {
+        const response = await fetch(`/admin/files/${currentFile.value.id}/save`, {
             method: 'POST',
             body: JSON.stringify(data),
         });
+
+        mediaStore.media.unshift(await response.json() as StorageFile);
 
         focalPoint.value = {
             x: 50,

@@ -3,7 +3,7 @@
         v-slot="{open}"
         :cardinality="cardinality"
         :image-only="imageOnly"
-        @close="selectedMedia = $event"
+        @close="setSelectedMedia"
     >
         <label class="font-medium mb-2 block">Media</label>
         <button
@@ -36,10 +36,21 @@ import {computed, ref} from 'vue';
 import {get} from 'lodash';
 import {useMediaStore} from '@modules/page_builder/assets/js/stores/media';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const model = defineModel<string>();
 const mediaStore = useMediaStore();
 const props = defineProps<{
     field: Field
 }>();
+
+const emit = defineEmits<{
+    (e: 'update:modelValue')
+}>();
+
+const setSelectedMedia = (value: string[]) => {
+    emit('update:modelValue', value.join(','));
+    selectedMedia.value = value;
+};
 
 const selectedMedia = ref<string[]>([]);
 const media = computed(() => mediaStore.media.filter(media => selectedMedia.value.includes(media.id)));

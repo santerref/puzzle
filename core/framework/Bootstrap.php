@@ -5,6 +5,7 @@ namespace Puzzle;
 use Puzzle\Compiler\HttpMiddlewarePass;
 use Puzzle\Compiler\RegisterEventSubscribersPass;
 use Puzzle\Compiler\RoutePriorityPass;
+use Puzzle\Compiler\TwigExtensionPass;
 use Puzzle\ServiceProvider\ComponentServiceProvider;
 use Puzzle\ServiceProvider\CoreServiceProvider;
 use Puzzle\ServiceProvider\EventServiceProvider;
@@ -35,6 +36,7 @@ class Bootstrap
         $container->addCompilerPass(new RoutePriorityPass());
         $container->addCompilerPass(new RegisterEventSubscribersPass());
         $container->addCompilerPass(new HttpMiddlewarePass());
+        $container->addCompilerPass(new TwigExtensionPass());
 
         $container->compile();
 

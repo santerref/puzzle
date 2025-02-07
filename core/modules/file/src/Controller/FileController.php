@@ -79,12 +79,22 @@ class FileController
             'response' => new SymfonyResponseFactory()
         ]);
 
-        [$width, $height] = explode('x', $size);
-        return $server->getImageResponse($file->filename, [
+        if (preg_match('/^[0-9]+x[0-9]+$/', $size)) {
+            [$width, $height] = explode('x', $size);
+        } else {
+            $width = $size;
+            $height = null;
+        }
+        $params = [
             'w' => $width,
             'h' => $height,
             'q' => 100,
             'fit' => 'crop-' . $file->focal_point_x . '-' . $file->focal_point_y
-        ]);
+        ];
+        if (empty($height)) {
+            unset($params['h']);
+        }
+
+        return $server->getImageResponse($file->filename, $params);
     }
 }

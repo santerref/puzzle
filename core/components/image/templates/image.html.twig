@@ -3,8 +3,10 @@
     css.variables[position] ?? 'align-items-start'
 ] %}
 <div class="{{ wrapper_class|css }}">
-    {% if image.id is not empty %}
-        <img src="{{ image.id|image_url }}" alt="">
+    {% if image is not empty %}
+        {% for id in image.split(',') ?? [image] %}
+            {{ id|responsive_image }}
+        {% endfor %}
     {% else %}
         <img src="https://placehold.co/500x500" width="500" height="500" alt="">
     {% endif %}

@@ -3,7 +3,6 @@
 namespace Puzzle\ThirdParty\Twig;
 
 use Puzzle\page_builder\Entity\Component;
-use Puzzle\file\Entity\File;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -19,7 +18,6 @@ class PuzzleExtension extends AbstractExtension
     {
         return [
             new TwigFilter('css', [$this, 'css']),
-            new TwigFilter('image_url', [$this, 'imageUrl'])
         ];
     }
 
@@ -80,15 +78,5 @@ class PuzzleExtension extends AbstractExtension
     {
         $urlGenerator = $this->container->get('router.url_generator');
         return $urlGenerator->generate($route, $args);
-    }
-
-    public function imageUrl($id)
-    {
-        if (filter_var($id, FILTER_VALIDATE_URL) !== false) {
-            return $id;
-        }
-        $image = File::find($id);
-        //@TODO: Use a custom service to generate app URL.
-        return 'https://puzzle.ddev.site' . $image->path;
     }
 }

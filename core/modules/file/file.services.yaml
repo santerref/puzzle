@@ -2,3 +2,6 @@ services:
     file.event_subscriber.transliterate_filename:
         class: Puzzle\file\EventSubscriber\TransliterateFileName
         tags: [ 'event.event_subscriber' ]
+    file.twig_extension:
+        class: Puzzle\file\Twig\TwigExtension
+        tags: [ 'twig.twig_extension' ]
