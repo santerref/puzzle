@@ -36,7 +36,6 @@ import {computed, ref} from 'vue';
 import {get} from 'lodash';
 import {useMediaStore} from '@modules/page_builder/assets/js/stores/media';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const model = defineModel<string>();
 const mediaStore = useMediaStore();
 const props = defineProps<{
