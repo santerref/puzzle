@@ -52,7 +52,7 @@ const setSelectedMedia = (value: string[]) => {
     selectedMedia.value = value;
 };
 
-const selectedMedia = ref<string[]>([]);
+const selectedMedia = ref<string[]>(model.value ? model.value.split(',') : []);
 const media = computed(() => mediaStore.media.filter(media => selectedMedia.value.includes(media.id)));
 
 const imageOnly = computed<boolean>(() => Boolean(get(props.field, 'options.image_only', false)));
