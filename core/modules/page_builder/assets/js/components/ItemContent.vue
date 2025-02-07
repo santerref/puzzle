@@ -3,7 +3,11 @@
     <div
         ref="componentBox"
         class="relative"
-        :class="{'outline-stone-800':!placeholder && showToolbar,'outline-blue-800':placeholder && showToolbar,'outline-2 z-10':showToolbar,'cursor-pointer':componentType.container}"
+        :class="{
+            'outline-stone-800':!placeholder && showToolbar,
+            'outline-blue-800':placeholder && showToolbar,'outline-2 z-10':showToolbar,
+            'cursor-pointer':componentType.container
+        }"
         @mouseenter.stop="pageBuilder.setComponentHover(component)"
         @mouseleave.stop="pageBuilder.setComponentHover(null)"
         @click.prevent="setCurrentTarget"
@@ -13,6 +17,15 @@
         </template>
         <template v-else>
             <div
+                v-if="componentType.container && component.children.length === 0"
+                class="p-5 flex justify-center"
+            >
+                <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
+                    Click here to add components to the container
+                </p>
+            </div>
+            <div
+                v-else
                 ref="html"
                 v-html="component.rendered_html"
             />

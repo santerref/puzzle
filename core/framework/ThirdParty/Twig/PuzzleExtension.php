@@ -88,6 +88,7 @@ class PuzzleExtension extends AbstractExtension
             return $id;
         }
         $image = File::find($id);
+        //@TODO: Use a custom service to generate app URL.
         return 'https://puzzle.ddev.site' . $image->path;
     }
 }

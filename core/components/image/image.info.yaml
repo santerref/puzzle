@@ -10,8 +10,10 @@ settings:
     fields:
         image:
             label: Image
-            type: image
-            default_value: 'https://placehold.co/500x500'
+            type: media
+            options:
+                image_only: true
+                cardinality: 1
         position:
             label: Image position
             type: dropdown

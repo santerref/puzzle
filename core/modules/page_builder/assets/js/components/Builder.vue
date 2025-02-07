@@ -69,10 +69,10 @@
                         />
                         <div
                             v-else
-                            class="flex items-center"
+                            class="flex items-center py-8"
                         >
                             <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
-                                Add your first component.
+                                Add a section to start building your page
                             </p>
                         </div>
                     </div>

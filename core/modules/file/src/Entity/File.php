@@ -11,6 +11,13 @@ class File extends Entity
         'filename',
         'filemime',
         'filesize',
-        'path'
+        'path',
+        'is_image',
+        'width',
+        'height',
+        'focal_point_x',
+        'focal_point_y',
+        'title',
+        'alt'
     ];
 }

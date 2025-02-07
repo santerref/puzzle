@@ -4,8 +4,9 @@ namespace Puzzle\ServiceProvider;
 
 use GuzzleHttp\Client;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 use Puzzle\Config;
-use Puzzle\Http\ResponseFactory;
 use Puzzle\ThirdParty\Twig\PuzzleExtension;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Component\Asset\Packages;
@@ -42,13 +43,13 @@ class CoreServiceProvider extends ServiceProvider
                     [$env, $cast] = array_pad(explode(':', $value->getValue(), 2), 2, 'string');
                     $envValue = getenv($env) ?: $_ENV[$env] ?? null;
                     $envValue = match ($cast) {
-                        'bool'   => filter_var($envValue, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false,
-                        'int'    => (int) $envValue,
-                        'float'  => (float) $envValue,
-                        'string' => (string) $envValue,
-                        'array'  => is_string($envValue) ? explode(',', $envValue) : (array) $envValue,
-                        'json'   => json_decode($envValue, true),
-                        default  => $value,
+                        'bool' => filter_var($envValue, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false,
+                        'int' => (int)$envValue,
+                        'float' => (float)$envValue,
+                        'string' => (string)$envValue,
+                        'array' => is_string($envValue) ? explode(',', $envValue) : (array)$envValue,
+                        'json' => json_decode($envValue, true),
+                        default => $value,
                     };
                     $value = $envValue;
                 }
@@ -82,14 +83,14 @@ class CoreServiceProvider extends ServiceProvider
         $capsule = new Capsule();
 
         $capsule->addConnection([
-            'driver'    => Config::get('database.driver', 'mysql'),
-            'host'      => Config::get('database.host'),
-            'database'  => Config::get('database.database'),
-            'username'  => Config::get('database.username'),
-            'password'  => Config::get('database.password'),
-            'charset'   => Config::get('database.charset', 'utf8'),
+            'driver' => Config::get('database.driver', 'mysql'),
+            'host' => Config::get('database.host'),
+            'database' => Config::get('database.database'),
+            'username' => Config::get('database.username'),
+            'password' => Config::get('database.password'),
+            'charset' => Config::get('database.charset', 'utf8'),
             'collation' => Config::get('database.collation', 'utf8_unicode_ci'),
-            'prefix'    => Config::get('database.prefix', ''),
+            'prefix' => Config::get('database.prefix', ''),
         ]);
 
         $capsule->setAsGlobal();

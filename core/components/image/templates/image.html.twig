@@ -3,5 +3,9 @@
     css.variables[position] ?? 'align-items-start'
 ] %}
 <div class="{{ wrapper_class|css }}">
-    <img src="{{ image|image_url }}" alt="">
+    {% if image.id is not empty %}
+        <img src="{{ image.id|image_url }}" alt="">
+    {% else %}
+        <img src="https://placehold.co/500x500" width="500" height="500" alt="">
+    {% endif %}
 </div>

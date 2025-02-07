@@ -1,6 +1,24 @@
 admin.upload:
-    path: /admin/files/upload/image
-    controller: Puzzle\file\Controller\FileController::uploadImage
+    path: /admin/files/upload
+    controller: Puzzle\file\Controller\FileController::upload
     methods: POST
+    options:
+        middlewares: [ 'auth' ]
+admin.save:
+    path: /admin/files/{file}/save
+    controller: Puzzle\file\Controller\FileController::save
+    methods: POST
+    options:
+        middlewares: [ 'auth' ]
+admin.index:
+    path: /admin/files
+    controller: Puzzle\file\Controller\FileController::index
+    methods: GET
+    options:
+        middlewares: [ 'auth' ]
+admin.size:
+    path: /admin/files/{file}/{size}/{filename}
+    controller: Puzzle\file\Controller\FileController::size
+    methods: GET
     options:
         middlewares: [ 'auth' ]

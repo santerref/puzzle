@@ -16,7 +16,14 @@ class CreateFilesTable implements InstallScriptInterface
             $table->string('filemime');
             $table->unsignedInteger('filesize');
             $table->string('path');
+            $table->string('title')->nullable();
+            $table->string('alt')->nullable();
             $table->boolean('permanent')->default(false);
+            $table->boolean('is_image')->default(false);
+            $table->unsignedInteger('width')->nullable();
+            $table->unsignedInteger('height')->nullable();
+            $table->unsignedInteger('focal_point_x')->default(50);
+            $table->unsignedInteger('focal_point_y')->default(50);
             $table->timestamps();
         });
     }
