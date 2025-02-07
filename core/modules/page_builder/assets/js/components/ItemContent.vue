@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import {Component} from '@modules/page_builder/assets/js/types/page-builder';
-import {computed, h, onMounted, ref, render, useTemplateRef, watch} from 'vue';
+import {computed, h, onBeforeUnmount, onMounted, ref, render, useTemplateRef, watch} from 'vue';
 import {useElementHover} from '@vueuse/core';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
@@ -84,6 +84,27 @@ watch(() => pageBuilder.componentHover, (hoverComponent: Component | null) => {
     }
 });
 
+const instances = new Map<HTMLElement, any>();
+
+function mountComponent(el: HTMLElement, newComponent: any) {
+    const vNode = h(Item, {
+        componentUuid: newComponent.id,
+        key: newComponent.id + '_' + el.dataset.position,
+        position: newComponent.position,
+        componentCount: newComponent.children.length
+    });
+
+    render(vNode, el);
+    instances.set(el, vNode);
+}
+
+onBeforeUnmount(() => {
+    instances.forEach((_, el) => {
+        render(null, el);
+        instances.delete(el);
+    });
+});
+
 const setCurrentTarget = (): void => {
     if (componentType.value.container) {
         pageBuilder.setTarget(props.component, props.component.position);
@@ -98,30 +119,16 @@ const renderChildren = () => {
             childrenElements.forEach(async (el) => {
                 if (el instanceof HTMLElement) {
                     const position = el.dataset.position ?? null;
-                    let newComponent;
-                    if (props.component.is_new) {
+                    let newComponent = props.component.children.find((child: Component) => child.position === key);
+                    if (typeof newComponent === 'undefined') {
                         newComponent = await pageBuilder.createComponent(<string>el.dataset.component, {
                             component: props.component,
                             position
                         });
-                    } else {
-                        newComponent = props.component.children.find((child: Component) => child.position === key);
-                        if (typeof newComponent === 'undefined') {
-                            newComponent = await pageBuilder.createComponent(<string>el.dataset.component, {
-                                component: props.component,
-                                position
-                            });
-                        }
                     }
                     if (typeof newComponent !== 'undefined') {
                         newComponent.locked = (el.dataset.locked ?? 'false') === 'true';
-
-                        render(h(Item, {
-                            componentUuid: newComponent.id,
-                            key: newComponent.id + '_' + el.dataset.position,
-                            position: newComponent.position,
-                            componentCount: newComponent.children.length
-                        }), el);
+                        mountComponent(el, newComponent);
                     }
                 }
             });
