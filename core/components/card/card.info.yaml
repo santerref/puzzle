@@ -1,5 +1,5 @@
 name: Card
-version: 0.0.1
+version: 0.1.0
 placeholder: true
 settings:
     template: templates/card.html.twig
