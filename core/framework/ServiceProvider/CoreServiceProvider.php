@@ -4,14 +4,11 @@ namespace Puzzle\ServiceProvider;
 
 use GuzzleHttp\Client;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
 use Puzzle\Config;
+use Puzzle\Logger\LoggerFactory;
 use Puzzle\ThirdParty\Twig\PuzzleExtension;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Component\Asset\Packages;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Tag\TaggedValue;
 use Symfony\Component\Yaml\Yaml;
@@ -22,10 +19,19 @@ class CoreServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->registerLogger();
         $this->registerConfig();
         $this->registerTwig();
         $this->registerStorage();
         $this->registerHttpClient();
+    }
+
+    private function registerLogger(): void
+    {
+        $this->container->register('logger_factory', LoggerFactory::class)
+            ->addArgument($this->container)
+            ->setPublic(true);
+        $this->container->setAlias(LoggerFactory::class, 'logger_factory');
     }
 
     private function registerConfig(): void

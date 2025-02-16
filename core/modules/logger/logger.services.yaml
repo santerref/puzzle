@@ -1,0 +1,4 @@
+services:
+  logger.event_subscriber.record_log_database:
+    class: Puzzle\logger\EventSubscriber\RecordLogDatabase
+    tags: [ 'event.event_subscriber' ]

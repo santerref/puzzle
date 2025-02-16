@@ -43,7 +43,8 @@
         "symfony/security-csrf": "^7.2",
         "oomphinc/composer-installers-extender": "^2.0",
         "league/glide": "^2.3",
-        "league/glide-symfony": "^2.0"
+        "league/glide-symfony": "^2.0",
+        "symfony/monolog-bundle": "^3.10"
     },
     "require-dev": {
         "symfony/var-dumper": "^7.2",

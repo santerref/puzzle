@@ -1,4 +1,7 @@
-/var/
+/var/cache/*
+!/var/cache/.gitkeep
+/var/logs/*
+!/var/logs/.gitkeep
 /vendor/
 /.idea/
 node_modules/
@@ -16,3 +19,8 @@ package-lock.json
 /storage/private/*
 !/storage/private/.gitkeep
 /public/storage
+.DS_Store
+/palettes/custom/*
+!/palettes/custom/.gitkeep
+/palettes/contrib/*
+!/palettes/contrib/.gitkeep
