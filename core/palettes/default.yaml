@@ -1,0 +1,8 @@
+version: 0.1.0
+colors:
+    white:
+        label: White
+        code: '#FFFFFF'
+    gray:
+        label: Gray
+        code: '#CCCCCC'
