@@ -2,8 +2,8 @@
 
 namespace Puzzle\ServiceProvider;
 
-use Puzzle\Component\ComponentDiscovery;
-use Puzzle\Component\Renderer;
+use Puzzle\Core\Component\ComponentDiscovery;
+use Puzzle\Core\Component\Renderer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;

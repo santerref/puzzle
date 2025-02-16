@@ -5,7 +5,7 @@ namespace Puzzle\page_builder\Entity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Puzzle\Entity\Entity;
+use Puzzle\Storage\Entity\Entity;
 use Puzzle\page\Entity\Page;
 
 class Component extends Entity

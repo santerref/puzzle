@@ -2,7 +2,7 @@
 
 namespace Puzzle\logger\Entity;
 
-use Puzzle\Entity\Entity;
+use Puzzle\Storage\Entity\Entity;
 
 class Log extends Entity
 {

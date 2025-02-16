@@ -3,7 +3,7 @@
 namespace Puzzle\logger\Setup\Install;
 
 use Illuminate\Database\Schema\Blueprint;
-use Puzzle\Setup\InstallScriptInterface;
+use Puzzle\Core\Setup\InstallScriptInterface;
 use Puzzle\Storage\Database;
 
 class CreateLogsTable implements InstallScriptInterface

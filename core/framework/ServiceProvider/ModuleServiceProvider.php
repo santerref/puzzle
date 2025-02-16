@@ -2,7 +2,7 @@
 
 namespace Puzzle\ServiceProvider;
 
-use Puzzle\Module\ModuleDiscovery;
+use Puzzle\Core\Module\ModuleDiscovery;
 
 class ModuleServiceProvider extends ServiceProvider
 {

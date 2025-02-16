@@ -5,8 +5,8 @@ namespace Tests;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Puzzle\Bootstrap;
-use Puzzle\Component\ComponentDiscovery;
-use Puzzle\Component\Renderer;
+use Puzzle\Core\Component\ComponentDiscovery;
+use Puzzle\Core\Component\Renderer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 #[CoversClass(Bootstrap::class)]

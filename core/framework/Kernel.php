@@ -4,9 +4,9 @@ namespace Puzzle;
 
 use Puzzle\Event\BootFinishedEvent;
 use Puzzle\Event\ResponsePrepareEvent;
+use Puzzle\Http\Controller\EntityResolver;
+use Puzzle\Http\Controller\ServiceResolver;
 use Puzzle\Http\Middleware\CoreMiddleware;
-use Puzzle\ThirdParty\Symfony\Controller\EntityResolver;
-use Puzzle\ThirdParty\Symfony\Controller\ServiceResolver;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;

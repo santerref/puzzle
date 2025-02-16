@@ -4,7 +4,7 @@ namespace Puzzle\page\Entity;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Puzzle\page_builder\Entity\Component;
-use Puzzle\Entity\Entity;
+use Puzzle\Storage\Entity\Entity;
 
 class Page extends Entity
 {

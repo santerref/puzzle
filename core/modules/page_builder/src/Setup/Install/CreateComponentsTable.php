@@ -3,8 +3,8 @@
 namespace Puzzle\page_builder\Setup\Install;
 
 use Illuminate\Database\Schema\Blueprint;
+use Puzzle\Core\Setup\InstallScriptInterface;
 use Puzzle\Storage\Database;
-use Puzzle\Setup\InstallScriptInterface;
 
 class CreateComponentsTable implements InstallScriptInterface
 {

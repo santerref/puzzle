@@ -3,7 +3,7 @@
 namespace Puzzle\user\Entity;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Puzzle\Entity\Entity;
+use Puzzle\Storage\Entity\Entity;
 
 class User extends Entity
 {

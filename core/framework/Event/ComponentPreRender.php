@@ -2,7 +2,7 @@
 
 namespace Puzzle\Event;
 
-use Puzzle\Component\ComponentType;
+use Puzzle\Core\Component\ComponentType;
 use Puzzle\page_builder\Entity\Component;
 use Symfony\Contracts\EventDispatcher\Event;
 

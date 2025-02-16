@@ -3,9 +3,9 @@
 namespace Puzzle\page_builder\Controller\Api;
 
 use Illuminate\Support\Str;
-use Puzzle\Component\ComponentDiscovery;
+use Puzzle\Core\Component\ComponentDiscovery;
 use Puzzle\page_builder\Entity\Component;
-use Puzzle\Component\Renderer;
+use Puzzle\Core\Component\Renderer;
 use Puzzle\page\Entity\Page;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

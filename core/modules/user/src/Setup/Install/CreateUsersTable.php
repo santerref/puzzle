@@ -4,7 +4,7 @@ namespace Puzzle\user\Setup\Install;
 
 use Illuminate\Database\Schema\Blueprint;
 use Puzzle\Storage\Database;
-use Puzzle\Setup\InstallScriptInterface;
+use Puzzle\Core\Setup\InstallScriptInterface;
 
 class CreateUsersTable implements InstallScriptInterface
 {

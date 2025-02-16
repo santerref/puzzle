@@ -2,7 +2,7 @@
 
 namespace Puzzle\Storage;
 
-use Puzzle\Entity\Model;
+use Puzzle\Storage\Entity\Model;
 
 interface StorageInterface
 {

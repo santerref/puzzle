@@ -2,9 +2,11 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Puzzle\Bootstrap;
+use Puzzle\Core\Setup\Installer;
 use Puzzle\Event\InstallerFinishedEvent;
-use Puzzle\Setup\Installer;
 use Puzzle\Storage\Database;
+
+use function Symfony\Component\Clock\now;
 
 require '../autoload.php';
 
@@ -16,8 +18,12 @@ if (!Database::schema()->hasTable('installer_scripts')) {
     });
 }
 
-$installer = new Installer($container);
-$installer->run();
+$state = $container->get('state');
+if (!$state->get('installed_at')) {
+    $installer = new Installer($container);
+    $installer->run();
+    $state->set('installed_at', now());
 
-$eventDispatcher = $container->get('event_dispatcher');
-$eventDispatcher->dispatch(new InstallerFinishedEvent($container), InstallerFinishedEvent::NAME);
+    $eventDispatcher = $container->get('event_dispatcher');
+    $eventDispatcher->dispatch(new InstallerFinishedEvent($container), InstallerFinishedEvent::NAME);
+}

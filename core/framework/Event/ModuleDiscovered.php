@@ -2,7 +2,7 @@
 
 namespace Puzzle\Event;
 
-use Puzzle\Module\Module;
+use Puzzle\Core\Module\Module;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Contracts\EventDispatcher\Event;
 
