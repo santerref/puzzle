@@ -67,7 +67,7 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         return (await response.json()) as Page;
     }
 
-    async function createComponent(componentTypeId: string, target?: Target): Promise<Component> {
+    async function createComponent(componentTypeId: string, target?: Target, weight?: number): Promise<Component> {
         const componentType = getComponentType(componentTypeId);
         const response = await fetch(`/api/components/${componentType.id}/render`, {
             method: 'POST'
@@ -76,6 +76,10 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         const component = await response.json() as Component;
         component.children = [];
         component.position = null;
+
+        if (weight) {
+            component.weight = weight;
+        }
 
         if (target) {
             component.position = target.position;

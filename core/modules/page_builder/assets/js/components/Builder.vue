@@ -37,7 +37,7 @@
                             </button>
                             <ul class="pl-2">
                                 <TreeItem
-                                    v-for="component in pageBuilder.components"
+                                    v-for="component in sortedComponents"
                                     :key="component.id"
                                     :component="component"
                                 />
@@ -91,7 +91,11 @@ import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-b
 import NestedComponent from '@modules/page_builder/assets/js/components/NestedComponent.vue';
 import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue';
 import Editor from '@modules/page_builder/assets/js/components/Editor.vue';
+import {computed} from 'vue';
+import {sortBy} from 'lodash';
 
 const pageBuilder = usePageBuilderStore();
 pageBuilder.initialize();
+
+const sortedComponents = computed(() => sortBy(pageBuilder.components, 'weight'));
 </script>

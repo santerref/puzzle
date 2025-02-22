@@ -114,6 +114,7 @@ const setCurrentTarget = (): void => {
 const html = useTemplateRef('html');
 const renderChildren = () => {
     if (html.value) {
+        let i = 0;
         for (let key in componentType.value.settings?.positions) {
             const childrenElements = html.value.querySelectorAll(`component-placeholder[data-uuid="${props.component.id}"][data-position="${key}"]`);
             childrenElements.forEach(async (el) => {
@@ -124,7 +125,7 @@ const renderChildren = () => {
                         newComponent = await pageBuilder.createComponent(<string>el.dataset.component, {
                             component: props.component,
                             position
-                        });
+                        }, (++i));
                     }
                     if (typeof newComponent !== 'undefined') {
                         newComponent.locked = (el.dataset.locked ?? 'false') === 'true';

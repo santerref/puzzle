@@ -8,7 +8,7 @@
                 <div class="space-y-4">
                     <component
                         :is="pascalCase(field.field_type)"
-                        v-for="field in model.component_fields"
+                        v-for="field in clonedModel.component_fields"
                         :key="field.id"
                         v-model="field[field.value_type+'_value']"
                         :field="field"
@@ -39,18 +39,20 @@ import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-b
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
 import {computed} from 'vue';
 import {pascalCase} from 'change-case';
+import cloneDeep from 'clone-deep';
 
 const model = defineModel<Component>({required: true});
+const clonedModel = cloneDeep(model.value);
 
 const pageBuilder = usePageBuilderStore();
-const componentType = computed(() => pageBuilder.getComponentType(model.value.component_type));
+const componentType = computed(() => pageBuilder.getComponentType(clonedModel.component_type));
 
 const save = async function () {
-    const response = await fetch(`/api/components/${model.value.component_type}/render`, {
+    const response = await fetch(`/api/components/${clonedModel.component_type}/render`, {
         method: 'PUT',
         body: JSON.stringify({
-            component_fields: model.value.component_fields,
-            uuid: model.value.id
+            component_fields: clonedModel.component_fields,
+            uuid: clonedModel.id
         }),
         headers: {
             'Content-Type': 'application/json'
