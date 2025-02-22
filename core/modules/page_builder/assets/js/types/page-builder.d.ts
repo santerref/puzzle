@@ -4,7 +4,7 @@ export type ComponentType = {
     version: string
     template: string
     settings: ComponentTypeSettings
-    fields: Record<string, Field>
+    fields: Field[]
 }
 
 export type Page = {
@@ -72,9 +72,11 @@ export type Component = {
 }
 
 export type Field = {
+    id: string
     type: string
     label: string
     default_value: string
+    weight: number
     value?: string
     settings?: Record<string, any>
 }

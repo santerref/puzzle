@@ -58,7 +58,7 @@ class ComponentType implements \JsonSerializable
             'version' => $this->version,
             'template' => $this->getTemplate(),
             'settings' => $this->settings,
-            'fields' => $this->fields
+            'fields' => array_values($this->fields)
         ];
     }
 

@@ -123,20 +123,23 @@
                         v-for="file in mediaStore.media"
                         :key="file.id"
                     >
-                        <input
-                            type="checkbox"
-                            :checked="selectedMedia.includes(file.id)"
-                            :disabled="isDisabled(file.id)"
-                            @change="toggleSelection(file.id)"
-                        >
-                        <img
-                            class="rounded-md"
-                            :src="`/admin/files/${file.id}/50x50/${file.filename}`"
-                            :alt="file.alt ?? ''"
-                            width="50"
-                            height="50"
-                        >
-                        {{ file.filename }}
+                        <label :for="`media_${file.id}`">
+                            <input
+                                :id="`media_${file.id}`"
+                                type="checkbox"
+                                :checked="selectedMedia.includes(file.id)"
+                                :disabled="isDisabled(file.id)"
+                                @change="toggleSelection(file.id)"
+                            >
+                            <img
+                                class="rounded-md"
+                                :src="`/admin/files/${file.id}/50x50/${file.filename}`"
+                                :alt="file.alt ?? ''"
+                                width="50"
+                                height="50"
+                            >
+                            {{ file.filename }}
+                        </label>
                     </div>
                 </div>
 

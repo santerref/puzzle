@@ -29,6 +29,7 @@ class CreateComponentFieldsTable implements InstallScriptInterface
             $table->json('json_value')->nullable();
             $table->boolean('bool_value')->nullable()->index();
             $table->binary('blob_value')->nullable();
+            $table->integer('weight')->default(0);
             $table->timestamps();
             $table->index(['component_id', 'field_name']);
         });

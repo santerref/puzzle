@@ -74,10 +74,10 @@ class ComponentController
                 ['id' => $id],
                 array_diff_key($component, array_flip(['original', 'children']))
             );
-            foreach ($component['component_fields'] as $componentField) {
+            foreach ($component['component_fields'] as $key => $componentField) {
                 $savedComponent->componentFields()->updateOrCreate(
                     ['id' => $componentField['id']],
-                    $componentField
+                    $componentField + ['weight' => $key]
                 );
             }
             $savedComponents[] = $savedComponent->id;

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label class="font-medium mb-2 block">{{ field.label }}</label>
+        <label class="font-medium mb-2 block">{{ fieldType.label }}</label>
         <ckeditor
             v-if="editor"
             v-model="model"
@@ -16,11 +16,11 @@ import {Ckeditor, useCKEditorCloud} from '@ckeditor/ckeditor5-vue';
 import type {ComponentField, ComponentType} from '@modules/page_builder/assets/js/types/page-builder';
 
 const model = defineModel<string>();
-defineProps<{
+const props = defineProps<{
     field: ComponentField,
     componentType: ComponentType
 }>();
-
+const fieldType = computed(() => props.componentType.fields.find((field) => field.id === props.field.field_name));
 const cloud = useCKEditorCloud({
     version: '44.1.0',
     premium: false

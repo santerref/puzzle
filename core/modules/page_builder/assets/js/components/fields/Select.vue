@@ -28,5 +28,5 @@ const props = defineProps<{
 }>();
 const model = defineModel<string>();
 
-const fieldType = computed(() => props.componentType.fields[props.field.field_name]);
+const fieldType = computed(() => props.componentType.fields.find((field) => field.id === props.field.field_name));
 </script>

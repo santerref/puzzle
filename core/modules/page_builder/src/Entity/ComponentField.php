@@ -19,6 +19,7 @@ class ComponentField extends Entity
         'text_value',
         'json_value',
         'blob_value',
+        'weight',
     ];
 
     protected $casts = [
@@ -29,7 +30,8 @@ class ComponentField extends Entity
         'varchar_value' => 'string',
         'text_value' => 'string',
         'json_value' => 'array',
-        'bool_value' => 'boolean'
+        'bool_value' => 'boolean',
+        'weight' => 'integer',
     ];
 
     public function component(): BelongsTo

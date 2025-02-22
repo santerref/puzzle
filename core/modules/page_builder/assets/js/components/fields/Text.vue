@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label class="font-medium mb-2 block">{{ field.label }}</label>
+        <label class="font-medium mb-2 block">{{ fieldType.label }}</label>
         <div>
             <input
                 v-model="model"
@@ -12,11 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import type {ComponentField, ComponentType} from '@modules/page_builder/assets/js/types/page-builder';
+import type {ComponentField, ComponentType, Field} from '@modules/page_builder/assets/js/types/page-builder';
+import {computed} from 'vue';
 
-defineProps<{
+const props = defineProps<{
     field: ComponentField,
   componentType: ComponentType
 }>();
 const model = defineModel<string>();
+
+const fieldType = computed(() => <Field>props.componentType.fields.find((field) => field.id === props.field.field_name));
 </script>

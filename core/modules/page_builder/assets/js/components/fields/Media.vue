@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import MediaLibrary from '@modules/page_builder/assets/js/components/MediaLibrary.vue';
-import {ComponentField, type ComponentType} from '@modules/page_builder/assets/js/types/page-builder';
+import {ComponentField, type ComponentType, Field} from '@modules/page_builder/assets/js/types/page-builder';
 import {computed, ref} from 'vue';
 import {get} from 'lodash';
 import {useMediaStore} from '@modules/page_builder/assets/js/stores/media';
@@ -60,7 +60,7 @@ const setSelectedMedia = (value: string[]) => {
 const selectedMedia = ref<any[]>(model.value ?? []);
 const media = computed(() => mediaStore.media.filter(media => selectedMedia.value.find(selected => selected.id === media.id)));
 
-const fieldType = computed(() => props.componentType.fields[props.field.field_name]);
+const fieldType = computed(() => <Field>props.componentType.fields.find((field) => field.id === props.field.field_name));
 const settings = computed(() => fieldType.value.settings);
 
 const imageOnly = computed<boolean>(() => Boolean(get(settings.value, 'image_only', false)));

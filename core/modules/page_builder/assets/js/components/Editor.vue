@@ -8,7 +8,7 @@
                 <div class="space-y-4">
                     <component
                         :is="pascalCase(field.field_type)"
-                        v-for="field in clonedModel.component_fields"
+                        v-for="field in sortedFields"
                         :key="field.id"
                         v-model="field[field.value_type+'_value']"
                         :field="field"
@@ -39,6 +39,7 @@ import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-b
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
 import {computed} from 'vue';
 import {pascalCase} from 'change-case';
+import {sortBy} from 'lodash';
 import cloneDeep from 'clone-deep';
 
 const model = defineModel<Component>({required: true});
@@ -46,6 +47,8 @@ const clonedModel = cloneDeep(model.value);
 
 const pageBuilder = usePageBuilderStore();
 const componentType = computed(() => pageBuilder.getComponentType(clonedModel.component_type));
+
+const sortedFields = computed(() => sortBy(clonedModel.component_fields, 'weight'));
 
 const save = async function () {
     const response = await fetch(`/api/components/${clonedModel.component_type}/render`, {
