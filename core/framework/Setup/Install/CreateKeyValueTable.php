@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\core\Setup\Install;
+namespace Puzzle\Setup\Install;
 
 use Illuminate\Database\Schema\Blueprint;
 use Puzzle\Core\Setup\InstallScriptInterface;
@@ -11,8 +11,7 @@ class CreateKeyValueTable implements InstallScriptInterface
     public function install(): void
     {
         Database::schema()->create('key_value', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('type');
             $table->binary('value');
         });

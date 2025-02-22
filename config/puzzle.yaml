@@ -1,2 +1,0 @@
-dev_mode: !env DEV_MODE:bool
-debug: !env DEBUG:bool

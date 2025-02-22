@@ -4,9 +4,10 @@ namespace Puzzle\page_builder\Controller\Api;
 
 use Illuminate\Support\Str;
 use Puzzle\Core\Component\ComponentDiscovery;
-use Puzzle\page_builder\Entity\Component;
 use Puzzle\Core\Component\Renderer;
 use Puzzle\page\Entity\Page;
+use Puzzle\page_builder\ComponentFactory;
+use Puzzle\page_builder\Entity\Component;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,30 +15,24 @@ class ComponentController
 {
     public function __construct(
         protected ComponentDiscovery $componentDiscovery,
-        protected Renderer $renderer
+        protected Renderer $renderer,
+        protected ComponentFactory $componentFactory
     ) {
     }
 
     public function index(): JsonResponse
     {
         $components = $this->componentDiscovery->getComponents();
-        return new JsonResponse(array_values(array_map(function ($component) {
-            return $component->toArray();
-        }, $components)));
+        return new JsonResponse(array_values($components));
     }
 
     public function render(string $id): JsonResponse
     {
         $componentType = $this->componentDiscovery->get($id);
 
-        $component = new Component([
-            'id' => Str::uuid(),
-            'form_values' => $componentType->getDefaultValues(),
-            'component_type' => $componentType->getType(),
-        ]);
+        $component = $this->componentFactory->create($componentType);
         $component->setAttribute('rendered_html', $this->renderer->render($componentType, $component, [
-            'page_builder' => true,
-            'uuid' => $component->getAttribute('id')
+            'page_builder' => true
         ]));
 
         return new JsonResponse($component);
@@ -109,4 +104,5 @@ class ComponentController
             ])
         ]);
     }
+
 }

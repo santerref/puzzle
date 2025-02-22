@@ -3,7 +3,7 @@
         <div class="flex justify-between py-0.5 px-2 hover:bg-stone-100">
             <div>
                 <button
-                    v-if="componentType.container"
+                    v-if="componentType.settings.container"
                     :class="{'bg-stone-200':pageBuilder.currentTargetIs(component)}"
                     class="cursor-pointer text-blue-500 underline"
                     @click.prevent="pageBuilder.setTarget(component, component.position)"

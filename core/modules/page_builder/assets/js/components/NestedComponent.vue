@@ -33,6 +33,6 @@ const draggableComponents = computed({
 });
 
 const getComponentHash = (component: Component): string => {
-    return hash(component.form_values);
+    return hash(component.component_fields);
 };
 </script>

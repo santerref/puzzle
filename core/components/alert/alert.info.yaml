@@ -1,9 +1,8 @@
 name: Alert
 version: 0.1.0
-settings:
-    fields:
-        text:
-            label: Text
-            type: text
-            default_value: 'This is the content of an alert.'
-    template: templates/alert.html.twig
+template: templates/alert.html.twig
+fields:
+    text:
+        label: Text
+        type: text
+        default_value: 'This is the content of an alert.'

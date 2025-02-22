@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\Exception;
+namespace Puzzle\Exceptions;
 
 class UnserializableValueException extends \Exception
 {

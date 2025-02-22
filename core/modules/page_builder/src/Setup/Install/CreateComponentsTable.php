@@ -15,7 +15,6 @@ class CreateComponentsTable implements InstallScriptInterface
             $table->foreignUuid('page_id')->references('id')->on('pages')->cascadeOnDelete();
             $table->string('component_type');
             $table->binary('rendered_html');
-            $table->binary('form_values');
             $table->foreignUuid('parent')->nullable()->default(null)
                 ->references('id')->on('components')
                 ->cascadeOnDelete();

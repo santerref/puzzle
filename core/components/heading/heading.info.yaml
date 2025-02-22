@@ -1,7 +1,7 @@
 name: Heading
 version: 0.1.0
+template: templates/heading.html.twig
 settings:
-    template: templates/heading.html.twig
     css:
         variables:
             text: 'font-medium'
@@ -11,14 +11,16 @@ settings:
             h4: 'text-lg mb-3'
             h5: 'text-normal mb-2'
             h6: 'text-sm mb-2'
-    fields:
-        text:
-            label: Title
-            type: input_text
-            default_value: 'Title level 2'
-        heading:
-            label: Heading
-            type: dropdown
+fields:
+    text:
+        label: Title
+        type: text
+        default_value: 'Title level 2'
+    heading:
+        label: Heading
+        type: select
+        default_value: h2
+        settings:
             options:
                 h1: H1
                 h2: H2
@@ -26,4 +28,3 @@ settings:
                 h4: H4
                 h5: H5
                 h6: H6
-            default_value: h2

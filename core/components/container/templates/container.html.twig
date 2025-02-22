@@ -1,5 +1,5 @@
-{% if context.component.children.where('position', context.component.position).count %}
-    {% for child in context.component.children.where('position', context.component.position).all %}
+{% if component.children.where('position', component.position).count %}
+    {% for child in component.children.where('position',component.position).all %}
         {% if child.children %}
             {{ render(child) }}
         {% else %}

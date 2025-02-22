@@ -1,9 +1,8 @@
 <?php
 
-namespace Puzzle\core;
+namespace Puzzle\Core;
 
-use Puzzle\core\Entity\KeyValue;
-use Puzzle\Exception\UnserializableValueException;
+use Puzzle\Exceptions\UnserializableValueException;
 use Puzzle\Storage\Database;
 use Symfony\Component\Serializer\Serializer;
 
@@ -15,11 +14,11 @@ class State
 
     public function get(string $key, mixed $defaultValue = null): mixed
     {
-        if (!Database::table('key_value')->exists()) {
+        if (!Database::schema()->hasTable('key_value')) {
             return $defaultValue;
         }
 
-        $keyValue = KeyValue::where('name', $key)->first();
+        $keyValue = Database::table('key_value')->where('name', $key)->first();
         if (!empty($keyValue)) {
             return match ($keyValue->type) {
                 'json' => $this->serializer->decode($keyValue->value, 'json'),
@@ -31,7 +30,7 @@ class State
 
     public function set(string $key, mixed $value): void
     {
-        KeyValue::updateOrCreate([
+        Database::table('key_value')->updateOrInsert([
             'name' => $key
         ], [
             'value' => $this->serializer->serialize($value, 'json'),
@@ -53,6 +52,6 @@ class State
 
     public function delete($key): bool
     {
-        KeyValue::where('name', $key)->delete();
+        Database::table('key_value')->where('name', $key)->delete();
     }
 }

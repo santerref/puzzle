@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Puzzle\Core\Config;
 use Puzzle\Core\Logger\LoggerFactory;
+use Puzzle\Core\State;
 use Puzzle\Puzzle;
 use Puzzle\Template\Twig\PuzzleExtension;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
@@ -16,8 +17,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Yaml\Tag\TaggedValue;
-use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -26,7 +25,7 @@ class CoreServiceProvider extends ServiceProvider
     public function register(): void
     {
         Puzzle::setContainer($this->container);
-        $this->registerSerializer();
+        $this->registerState();
         $this->registerLogger();
         $this->registerConfig();
         $this->registerTwig();
@@ -34,7 +33,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerHttpClient();
     }
 
-    private function registerSerializer(): void
+    private function registerState(): void
     {
         $this->container->register('serializer.json_encoder', JsonEncoder::class);
 
@@ -49,6 +48,11 @@ class CoreServiceProvider extends ServiceProvider
             ])
             ->setPublic(true);
         $this->container->setAlias(Serializer::class, 'serializer');
+
+        $this->container->register('state', State::class)
+            ->addArgument(new Reference('serializer'))
+            ->setPublic(true);
+        $this->container->setAlias(State::class, 'state');
     }
 
     private function registerLogger(): void
@@ -61,30 +65,15 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerConfig(): void
     {
+        $container = $this->container;
         $configDirectory = PUZZLE_ROOT . '/config';
         $finder = new Finder();
-        $finder->files()->in($configDirectory)->name('*.yaml')->depth('== 0');
+        $finder->files()->in($configDirectory)->name('*.php')->depth('== 0');
 
         $mergedConfig = [];
         foreach ($finder as $file) {
             $configName = $file->getFilenameWithoutExtension();
-            $parsedConfig = Yaml::parseFile($file->getRealPath(), Yaml::PARSE_CUSTOM_TAGS);
-            array_walk_recursive($parsedConfig, function (&$value) {
-                if ($value instanceof TaggedValue) {
-                    [$env, $cast] = array_pad(explode(':', $value->getValue(), 2), 2, 'string');
-                    $envValue = getenv($env) ?: $_ENV[$env] ?? null;
-                    $envValue = match ($cast) {
-                        'bool' => filter_var($envValue, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false,
-                        'int' => (int)$envValue,
-                        'float' => (float)$envValue,
-                        'string' => (string)$envValue,
-                        'array' => is_string($envValue) ? explode(',', $envValue) : (array)$envValue,
-                        'json' => json_decode($envValue, true),
-                        default => $value,
-                    };
-                    $value = $envValue;
-                }
-            });
+            $parsedConfig = require $file->getRealPath();
             $mergedConfig[$configName] = $parsedConfig;
         }
 
@@ -100,7 +89,7 @@ class CoreServiceProvider extends ServiceProvider
             PUZZLE_ROOT . '/core/components'
         ]);
         $twig = new Environment($loader, [
-            'cache' => Puzzle::config()->get('twig.cache'),
+            'cache' => Puzzle::config()->get('twig.cache', true),
             'debug' => Puzzle::config()->get('puzzle.dev_mode', false)
         ]);
         $packages = new Packages();
@@ -122,7 +111,7 @@ class CoreServiceProvider extends ServiceProvider
             'username' => Puzzle::config()->get('database.username'),
             'password' => Puzzle::config()->get('database.password'),
             'charset' => Puzzle::config()->get('database.charset', 'utf8'),
-            'collation' => Puzzle::config()->get('database.collation', 'utf8_unicode_ci'),
+            'collation' => Puzzle::config()->get('database.collation', 'utf8mb4_unicode_ci'),
             'prefix' => Puzzle::config()->get('database.prefix', ''),
         ]);
 

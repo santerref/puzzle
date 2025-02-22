@@ -2,8 +2,8 @@
 
 namespace Puzzle\Core\Component;
 
-use Puzzle\page_builder\Entity\Component;
 use Puzzle\Event\ComponentPreRender;
+use Puzzle\page_builder\Entity\Component;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Twig\Environment;
 
@@ -19,11 +19,17 @@ class Renderer
     {
         $event = new ComponentPreRender($componentType, $component);
         $this->eventDispatcher->dispatch($event, ComponentPreRender::NAME);
-        $formValues = $component->getAttribute('form_values');
+        $r = array_merge(
+            ['component' => $component->toTemplateArgs()],
+            [
+                'css' => $componentType->getSetting('css', []),
+                'context' => $context
+            ]
+        );
         return $this->twig->render(
             $componentType->getTemplate(),
             array_merge(
-                $formValues,
+                ['component' => $component->toTemplateArgs()],
                 [
                     'css' => $componentType->getSetting('css', []),
                     'context' => $context

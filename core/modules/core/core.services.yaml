@@ -1,5 +1,0 @@
-services:
-    state:
-        class: Puzzle\core\State
-        arguments:
-            - '@serializer'

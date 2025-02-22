@@ -1,2 +1,2 @@
-{% set classes = [css.variables[heading], css.variables.text]|css %}
-<{{ heading }} class="{{ classes }}">{{ text }}</{{ heading }}>
+{% set classes = [css.variables[component.fields.heading], css.variables.text]|css %}
+<{{ component.fields.heading }} class="{{ classes }}">{{ component.fields.text }}</{{ component.fields.heading }}>

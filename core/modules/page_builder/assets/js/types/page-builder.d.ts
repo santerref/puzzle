@@ -1,13 +1,10 @@
 export type ComponentType = {
-    name: string
     id: string
+    name: string
     version: string
-    container: boolean
-    root: boolean
-    hidden: boolean
-    has_fields: boolean
-    placeholder: boolean
+    template: string
     settings: ComponentTypeSettings
+    fields: Record<string, Field>
 }
 
 export type Page = {
@@ -23,12 +20,13 @@ export type ComponentSettings = {
 }
 
 export type ComponentTypeSettings = {
-    fields: Record<string, Field>
-    template: string
-    css?: object
-    parents?: string[] | boolean
-    default_position?: string
-    positions?: Record<string, Position>
+    root: boolean
+    container: boolean
+    placeholder: boolean
+    hidden: boolean
+    css: object
+    default_position: string | null
+    positions: Record<string, Position>
 }
 
 export type Position = {
@@ -46,6 +44,17 @@ export type Target = {
     position: string | null
 }
 
+export type ComponentField = {
+    id: string
+    field_name: string
+    field_type: string
+    int_value: number
+    varchar_value: string
+    text_value: string
+    json_value: JSON
+    blob_value: any
+}
+
 export type Component = {
     id: string
     original: Component
@@ -53,7 +62,7 @@ export type Component = {
     parent: string | null
     component_type: string
     rendered_html: string
-    form_values: Record<string, any>
+    component_fields: ComponentField[]
     locked: boolean | number
     position: string | null
     is_new: boolean
@@ -61,9 +70,9 @@ export type Component = {
 }
 
 export type Field = {
-    default_value: string
-    value: string
     type: string
     label: string
-    options?: object
+    default_value: string
+    value?: string
+    settings?: Record<string, any>
 }

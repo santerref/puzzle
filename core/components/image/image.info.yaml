@@ -1,24 +1,25 @@
 name: Image
 version: 0.1.0
+template: templates/image.html.twig
 settings:
-    template: templates/image.html.twig
     css:
         variables:
             left: 'justify-start'
             center: 'justify-center'
             right: 'justify-end'
-    fields:
-        image:
-            label: Image
-            type: media
-            options:
-                image_only: true
-                cardinality: 1
-        position:
-            label: Image position
-            type: dropdown
+fields:
+    image:
+        label: Image
+        type: media
+        settings:
+            image_only: true
+            cardinality: 1
+    position:
+        label: Image position
+        type: select
+        default_value: left
+        settings:
             options:
                 left: Left
                 center: Center
                 right: Right
-            default_value: left

@@ -2,6 +2,7 @@
 
 namespace Puzzle;
 
+use Dotenv\Dotenv;
 use Puzzle\Compiler\HttpMiddlewarePass;
 use Puzzle\Compiler\RegisterEventSubscribersPass;
 use Puzzle\Compiler\RoutePriorityPass;
@@ -14,24 +15,23 @@ use Puzzle\ServiceProvider\ModuleServiceProvider;
 use Puzzle\ServiceProvider\RoutingServiceProvider;
 use Puzzle\ServiceProvider\SecurityServiceProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Dotenv\Dotenv;
 
 class Bootstrap
 {
     public static function boot(): ContainerBuilder
     {
-        $dotEnv = new Dotenv();
-        $dotEnv->loadEnv(PUZZLE_ROOT . '/.env');
+        $dotenv = Dotenv::createImmutable(PUZZLE_ROOT);
+        $dotenv->load();
 
         $container = new ContainerBuilder();
 
         (new SecurityServiceProvider($container))->register();
         (new CoreServiceProvider($container))->register();
         (new RoutingServiceProvider($container))->register();
-        (new ComponentServiceProvider($container))->register();
-        (new ModuleServiceProvider($container))->register();
         (new EventServiceProvider($container))->register();
         (new HttpServiceProvider($container))->register();
+        (new ModuleServiceProvider($container))->register();
+        (new ComponentServiceProvider($container))->register();
 
         $container->addCompilerPass(new RoutePriorityPass());
         $container->addCompilerPass(new RegisterEventSubscribersPass());

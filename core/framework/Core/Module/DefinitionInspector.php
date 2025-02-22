@@ -2,7 +2,7 @@
 
 namespace Puzzle\Core\Module;
 
-use Puzzle\Exception\InvalidModuleDefinitionException;
+use Puzzle\Exceptions\InvalidModuleDefinitionException;
 use z4kn4fein\SemVer\SemverException;
 use z4kn4fein\SemVer\Version;
 

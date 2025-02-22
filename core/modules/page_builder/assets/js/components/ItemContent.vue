@@ -6,18 +6,18 @@
         :class="{
             'outline-stone-800':!placeholder && showToolbar,
             'outline-blue-800':placeholder && showToolbar,'outline-2 z-10':showToolbar,
-            'cursor-pointer':componentType.container
+            'cursor-pointer':componentType.settings.container
         }"
         @mouseenter.stop="pageBuilder.setComponentHover(component)"
         @mouseleave.stop="pageBuilder.setComponentHover(null)"
         @click.prevent="setCurrentTarget"
     >
-        <template v-if="component.children.length && !componentType.placeholder">
+        <template v-if="component.children.length && !componentType.settings.placeholder">
             <slot/>
         </template>
         <template v-else>
             <div
-                v-if="componentType.container && component.children.length === 0"
+                v-if="componentType.settings.container && component.children.length === 0"
                 class="p-5 flex justify-center"
             >
                 <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
@@ -32,7 +32,7 @@
         </template>
 
         <div
-            v-if="showToolbar && !componentType.container"
+            v-if="showToolbar && !componentType.settings.container"
             class="text-stone-100 right-0 flex outline-2 gap-4 py-2 absolute rounded-bl-md top-0 px-2 shadow-lg"
             :class="{' bg-stone-800 outline-stone-800':!placeholder,' bg-blue-800 outline-blue-800':placeholder}"
         >
@@ -70,7 +70,7 @@ const componentType = computed(() => pageBuilder.getComponentType(props.componen
 const showToolbar = computed(() => pageBuilder.componentHover?.id === props.component.id);
 const componentBox = ref();
 const hover = useElementHover(componentBox);
-const placeholder = computed(() => componentType.value.placeholder);
+const placeholder = computed(() => componentType.value.settings.placeholder);
 
 watch(hover, (newValue) => {
     if (!newValue) {
@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
 });
 
 const setCurrentTarget = (): void => {
-    if (componentType.value.container) {
+    if (componentType.value.settings.container) {
         pageBuilder.setTarget(props.component, props.component.position);
     }
 };

@@ -4,3 +4,5 @@ services:
         tags: [ 'event.event_subscriber' ]
         arguments:
             - '@http_client'
+    component.factory:
+        class: Puzzle\page_builder\ComponentFactory

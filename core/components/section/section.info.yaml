@@ -1,10 +1,9 @@
 name: Section
 version: 0.1.0
-root: true
-placeholder: true
+template: templates/section.html.twig
 settings:
-    template: templates/section.html.twig
-    parents: false
+    root: true
+    placeholder: true
     css:
         variables:
             container:
@@ -17,37 +16,6 @@ settings:
             background_color:
                 white: 'bg-white'
                 light_brown: 'bg-stone-200'
-    fields:
-        container:
-            label: Container
-            type: dropdown
-            options:
-                standard: Standard
-                narrow: Narrow
-            default_value: standard
-        columns:
-            label: Columns
-            type: dropdown
-            options:
-                1: One column
-                2: Two columns (50/50)
-                3: Three columns (33/33/33)
-            default_value: 1
-        vertical_spacing:
-            label: Vertical spacing
-            type: dropdown
-            options:
-                small: Small
-                standard: Standard
-                large: Large
-            default_value: standard
-        background_color:
-            label: Background color
-            type: dropdown # @TODO: With palette, create a field of type "colors". People can decide available colors for a component.
-            options:
-                white: White
-                light_brown: Light brown
-            default_value: white
     default_position: col_1
     positions:
         col_1:
@@ -65,3 +33,38 @@ settings:
             conditions:
                 -   field: columns
                     value: '3'
+fields:
+    container:
+        label: Container
+        type: select
+        default_value: standard
+        settings:
+            options:
+                standard: Standard
+                narrow: Narrow
+    columns:
+        label: Columns
+        type: select
+        default_value: 1
+        settings:
+            options:
+                1: One column
+                2: Two columns (50/50)
+                3: Three columns (33/33/33)
+    vertical_spacing:
+        label: Vertical spacing
+        type: select
+        default_value: standard
+        settings:
+            options:
+                small: Small
+                standard: Standard
+                large: Large
+    background_color:
+        label: Background color
+        type: select # @TODO: With palette, create a field of type "colors". People can decide available colors for a component.
+        default_value: white
+        settings:
+            options:
+                white: White
+                light_brown: Light brown

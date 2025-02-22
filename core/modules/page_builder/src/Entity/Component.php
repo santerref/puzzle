@@ -5,15 +5,14 @@ namespace Puzzle\page_builder\Entity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Puzzle\Storage\Entity\Entity;
 use Puzzle\page\Entity\Page;
+use Puzzle\Storage\Entity\Entity;
 
 class Component extends Entity
 {
     protected $fillable = [
         'component_type',
         'rendered_html',
-        'form_values',
         'id',
         'position',
         'locked',
@@ -22,7 +21,6 @@ class Component extends Entity
     ];
 
     protected $casts = [
-        'form_values' => 'array',
         'is_new' => 'boolean'
     ];
 
@@ -49,10 +47,36 @@ class Component extends Entity
         return $this->hasMany(Component::class, 'parent')->orderBy('weight');
     }
 
+    public function componentFields(): HasMany
+    {
+        return $this->hasMany(ComponentField::class);
+    }
+
     public function isNew(): Attribute
     {
         return Attribute::make(
-            get: fn () => !$this->exists,
+            get: fn() => !$this->exists,
         );
+    }
+
+    public function toTemplateArgs(): array
+    {
+        $args = [
+            'id' => $this->id,
+            'component_type' => $this->component_type,
+            'rendered_html' => $this->rendered_html,
+            'position' => $this->position,
+            'locked' => $this->locked,
+            'parent' => $this->parent,
+            'weight' => $this->weight,
+        ];
+
+        $fields = [];
+        foreach ($this->componentFields as $componentField) {
+            $fields[$componentField->field_name] = $componentField->value;
+        }
+        $args['fields'] = $fields;
+
+        return $args;
     }
 }

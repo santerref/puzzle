@@ -3,6 +3,7 @@
 namespace Puzzle\Core\Module;
 
 use Puzzle\Core\Module\Bootstrapper\ControllerBootstrapper;
+use Puzzle\Core\Module\Bootstrapper\FieldTypeBootstrapper;
 use Puzzle\Core\Module\Bootstrapper\RoutingBootstrapper;
 use Puzzle\Core\Module\Bootstrapper\ServiceBootstrapper;
 use Puzzle\Core\Module\Bootstrapper\TemplateBootstrapper;
@@ -16,7 +17,8 @@ class ModuleDiscovery
         ServiceBootstrapper::class,
         RoutingBootstrapper::class,
         TemplateBootstrapper::class,
-        ControllerBootstrapper::class
+        ControllerBootstrapper::class,
+        FieldTypeBootstrapper::class,
     ];
 
     protected array $modules = [];

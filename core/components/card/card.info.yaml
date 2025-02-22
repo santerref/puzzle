@@ -1,8 +1,8 @@
 name: Card
 version: 0.1.0
-placeholder: true
+template: templates/card.html.twig
 settings:
-    template: templates/card.html.twig
+    placeholder: true
     positions:
         image:
             label: Image

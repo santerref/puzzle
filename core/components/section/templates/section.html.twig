@@ -1,5 +1,5 @@
 {% set container_class = [
-    css.variables.container[container],
+    css.variables.container[component.fields.container],
 ]|css %}
 {% set grid_class = {
     '1': 'grid-cols-1',
@@ -8,17 +8,17 @@
 } %}
 {# @TODO: Server side, provide default values if they do not exist, don't use ??. #}
 {% set vertical_spacing_class = css.variables.vertical_spacing[(vertical_spacing ?? 'standard')] %}
-{% set background_color_class = css.variables.background_color[(background_color ?? 'white')] %}
+{% set background_color_class = css.variables.background_color[(component.fields.background_color ?? 'white')] %}
 <div class="px-4 {{ [vertical_spacing_class, background_color_class]|css }}">
     <div class="{{ container_class }}">
-        <div class="grid gap-4 {{ grid_class[columns] }}">
-            {% for column in 1..columns %}
+        <div class="grid gap-4 {{ grid_class[component.fields.columns] }}">
+            {% for column in 1..component.fields.columns %}
                 <div>
                     {% embed '@module_page_builder/placeholder.html.twig' with { position: 'col_' ~ column } %}
                         {% block placeholder %}
                             <component-placeholder
                                 data-component="container"
-                                data-uuid="{{ context.uuid }}"
+                                data-uuid="{{ component.id }}"
                                 data-position="{{ 'col_' ~ column }}"
                             >
                             </component-placeholder>

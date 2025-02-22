@@ -23,7 +23,8 @@ class GenerateDefaultImage implements EventSubscriberInterface
     public function onComponentPreRender(ComponentPreRender $event)
     {
         $componentType = $event->getComponentType();
-        if ($componentType->getType() != 'image' || Puzzle::config()->get(false, 'unsplash.enabled')) {
+        $enabled = Puzzle::config()->get('unsplash.enabled', false);
+        if ($componentType->getType() != 'image' || !Puzzle::config()->get('unsplash.enabled', false)) {
             return;
         }
 

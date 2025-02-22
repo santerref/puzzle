@@ -3,85 +3,78 @@
 namespace Puzzle\Core\Component;
 
 use Illuminate\Support\Arr;
+use Puzzle\Puzzle;
 
-class ComponentType
+class ComponentType implements \JsonSerializable
 {
     public function __construct(
         protected string $id,
-        protected string $path,
-        protected array $info,
-        protected string $version
+        protected string $name,
+        protected string $version,
+        protected string $template,
+        protected array $settings = [],
+        protected array $fields = []
     ) {
+        $this->settings = array_merge($this->getDefaultSettings(), $this->settings);
     }
 
     public static function createFromInfo(string $id, string $path, array $info, string $version): self
     {
-        if (empty($info['settings'])) {
-            $info['settings'] = [];
+        $settings = $info['settings'] ?? [];
+        $fields = [];
+        foreach ($info['fields'] ?? [] as $key => &$field) {
+            $fieldType = Puzzle::fieldType($field['type']);
+            $fieldSettings = $field['settings'] ?? [];
+            $fieldType->validateSettings($fieldSettings);
+            $fields[$key] = new Field(
+                $key,
+                $fieldType,
+                $field['label'],
+                $field['default_value'] ?? null,
+                $fieldSettings
+            );
         }
-        foreach ($info['settings']['fields'] ?? [] as &$field) {
-            $field['value'] = '';
-        }
-        $info['id'] = $id;
-        return new ComponentType($id, $path, $info, $version);
+        return new ComponentType($id, $info['name'], $version, $info['template'], $settings, $fields);
     }
 
-    public function isRoot(): bool
+    protected function getDefaultSettings(): array
     {
-        if (!empty($this->info['root'])) {
-            return filter_var($this->info['root'], FILTER_VALIDATE_BOOLEAN);
-        }
-        return false;
-    }
-
-    public function isHidden(): bool
-    {
-        if (!empty($this->info['hidden'])) {
-            return filter_var($this->info['hidden'], FILTER_VALIDATE_BOOLEAN);
-        }
-        return false;
-    }
-
-    public function isContainer(): bool
-    {
-        if (!empty($this->info['container'])) {
-            return filter_var($this->info['container'], FILTER_VALIDATE_BOOLEAN);
-        }
-        return false;
-    }
-
-    public function isPlaceholder(): bool
-    {
-        if (!empty($this->info['placeholder'])) {
-            return filter_var($this->info['placeholder'], FILTER_VALIDATE_BOOLEAN);
-        }
-        return false;
-    }
-
-    public function hasFields(): bool
-    {
-        return !empty($this->info['settings']['fields']);
+        return [
+            'root' => false,
+            'container' => false,
+            'placeholder' => false,
+            'hidden' => false,
+            'positions' => [],
+            'css' => [],
+            'default_position' => null
+        ];
     }
 
     public function toArray(): array
     {
-        return array_merge($this->info, [
-            'container' => $this->isContainer(),
-            'root' => $this->isRoot(),
-            'hidden' => $this->isHidden(),
-            'placeholder' => $this->isPlaceholder(),
-            'has_fields' => $this->hasFields(),
-        ]);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'version' => $this->version,
+            'template' => $this->getTemplate(),
+            'settings' => $this->settings,
+            'fields' => $this->fields
+        ];
     }
 
     public function getSetting(string $key, mixed $defaultValue): mixed
     {
-        return Arr::get($this->info['settings'], $key, $defaultValue);
+        return Arr::get($this->settings, $key, $defaultValue);
     }
 
-    public function getPath(): string
+    public function getSettings(): array
     {
-        return $this->path;
+        return $this->settings;
+    }
+
+    public function getFields(): array
+    {
+        return $this->fields;
     }
 
     public function getVersion(): string
@@ -96,30 +89,16 @@ class ComponentType
 
     public function getTemplate(): string
     {
-        return $this->id . '/' . $this->info['settings']['template'];
-    }
-
-    public function getInfo(): array
-    {
-        return $this->info;
-    }
-
-    public function setInfo(array $info): void
-    {
-        $this->info = $info;
+        return $this->id . '/' . $this->template;
     }
 
     public function version(): string
     {
-        return $this->info['version'];
+        return $this->version;
     }
 
-    public function getDefaultValues(): array
+    public function jsonSerialize(): array
     {
-        $values = [];
-        foreach (Arr::get($this->info, 'settings.fields', []) as $key => $field) {
-            $values[$key] = Arr::get($field, 'default_value');
-        }
-        return $values;
+        return $this->toArray();
     }
 }

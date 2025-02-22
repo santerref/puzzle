@@ -36,10 +36,10 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
 
     const availableComponentTypes = computed<ComponentType[]>(() => {
         if (isRoot.value) {
-            return componentTypes.value.filter((componentType: ComponentType) => componentType.root);
+            return componentTypes.value.filter((componentType: ComponentType) => componentType.settings.root);
         }
         return componentTypes.value.filter((componentType: ComponentType) => {
-            return !componentType.root && !componentType.hidden;
+            return !componentType.settings.root && !componentType.settings.hidden;
         });
     });
 

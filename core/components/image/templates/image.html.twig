@@ -1,10 +1,10 @@
 {% set wrapper_class = [
     'flex',
-    css.variables[position] ?? 'align-items-start'
+    css.variables[component.fields.position] ?? 'align-items-start'
 ] %}
 <div class="{{ wrapper_class|css }}">
     {% if image is not empty %}
-        {% for id in image.split(',') ?? [image] %}
+        {% for id in component.fields.image.split(',') ?? [component.fields.image] %}
             {{ id|responsive_image }}
         {% endfor %}
     {% else %}

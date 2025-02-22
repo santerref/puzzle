@@ -1,6 +1,6 @@
 name: Container
 version: 0.1.0
-container: true
-hidden: true
+template: templates/container.html.twig
 settings:
-    template: templates/container.html.twig
+    container: true
+    hidden: true
