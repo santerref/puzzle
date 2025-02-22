@@ -13,6 +13,7 @@ class ComponentField extends Entity
         'id',
         'field_name',
         'field_type',
+        'value_type',
         'int_value',
         'varchar_value',
         'text_value',
@@ -22,20 +23,13 @@ class ComponentField extends Entity
 
     protected $casts = [
         'field_name' => 'string',
-        'field_type' => FieldValueType::class,
+        'field_type' => 'string',
+        'value_type' => FieldValueType::class,
         'int_value' => 'integer',
         'varchar_value' => 'string',
         'text_value' => 'string',
         'json_value' => 'array',
         'bool_value' => 'boolean'
-    ];
-
-    protected $appends = [
-        'value'
-    ];
-
-    protected $with = [
-        'children'
     ];
 
     public function component(): BelongsTo
@@ -46,8 +40,7 @@ class ComponentField extends Entity
     public function value(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->{$this->field_type->value . '_value'},
-            set: fn($value) => $this->{$this->field_type->value . '_value'} = $value
+            get: fn() => $this->{$this->value_type->value . '_value'}
         );
     }
 }

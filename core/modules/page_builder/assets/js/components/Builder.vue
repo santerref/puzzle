@@ -81,7 +81,7 @@
         </div>
         <editor
             v-if="pageBuilder.currentComponentSettings !== null"
-            :component="pageBuilder.currentComponentSettings"
+            v-model="pageBuilder.currentComponentSettings"
         />
     </template>
 </template>

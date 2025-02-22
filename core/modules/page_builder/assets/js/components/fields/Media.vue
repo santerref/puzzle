@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import MediaLibrary from '@modules/page_builder/assets/js/components/MediaLibrary.vue';
-import {Field} from '@modules/page_builder/assets/js/types/page-builder';
+import {ComponentField} from '@modules/page_builder/assets/js/types/page-builder';
 import {computed, ref} from 'vue';
 import {get} from 'lodash';
 import {useMediaStore} from '@modules/page_builder/assets/js/stores/media';
@@ -39,7 +39,7 @@ import {useMediaStore} from '@modules/page_builder/assets/js/stores/media';
 const model = defineModel<string>();
 const mediaStore = useMediaStore();
 const props = defineProps<{
-    field: Field
+    field: ComponentField
 }>();
 
 const emit = defineEmits<{

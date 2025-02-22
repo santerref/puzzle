@@ -25,7 +25,7 @@ class Component extends Entity
     ];
 
     protected $appends = [
-        'is_new'
+        'is_new',
     ];
 
     protected $hidden = [
@@ -34,7 +34,8 @@ class Component extends Entity
     ];
 
     protected $with = [
-        'children'
+        'children',
+        'componentFields'
     ];
 
     public function page(): BelongsTo

@@ -7,7 +7,6 @@ use Puzzle\Core\Component\ComponentDiscovery;
 use Puzzle\Core\Component\Renderer;
 use Puzzle\page\Entity\Page;
 use Puzzle\page_builder\ComponentFactory;
-use Puzzle\page_builder\Entity\Component;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,7 +29,7 @@ class ComponentController
     {
         $componentType = $this->componentDiscovery->get($id);
 
-        $component = $this->componentFactory->create($componentType);
+        $component = $this->componentFactory->create(Str::uuid(), $componentType);
         $component->setAttribute('rendered_html', $this->renderer->render($componentType, $component, [
             'page_builder' => true
         ]));
@@ -72,6 +71,12 @@ class ComponentController
                 ['id' => $id],
                 array_diff_key($component, array_flip(['original', 'children']))
             );
+            foreach ($component['component_fields'] as $componentField) {
+                $savedComponent->componentFields()->updateOrCreate(
+                    ['id' => $componentField['id']],
+                    $componentField
+                );
+            }
             $savedComponents[] = $savedComponent->id;
             $idMapping[$savedComponent->id] = $savedComponent->id;
         }
@@ -87,22 +92,15 @@ class ComponentController
     ): JsonResponse {
         $componentType = $this->componentDiscovery->get($id);
         $payload = $request->toArray();
-        $formValues = $payload['form_values'];
+        $componentFields = $payload['component_fields'];
         $uuid = $payload['uuid'] ?? Str::uuid();
 
-        $component = new Component([
-            'id' => $uuid,
-            'form_values' => $formValues,
-            'component_type' => $componentType->getType(),
-        ]);
+        $component = $this->componentFactory->create($uuid, $componentType, $componentFields);
+        $component->setAttribute('rendered_html', $this->renderer->render($componentType, $component, [
+            'page_builder' => true
+        ]));
 
-        return new JsonResponse([
-            'form_values' => $formValues,
-            'rendered_html' => $this->renderer->render($componentType, $component, [
-                'page_builder' => true,
-                'uuid' => $uuid
-            ])
-        ]);
+        return new JsonResponse($component);
     }
 
 }

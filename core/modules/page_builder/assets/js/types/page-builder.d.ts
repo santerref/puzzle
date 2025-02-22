@@ -48,11 +48,13 @@ export type ComponentField = {
     id: string
     field_name: string
     field_type: string
+    value_type: string
     int_value: number
     varchar_value: string
     text_value: string
     json_value: JSON
     blob_value: any
+    value: any
 }
 
 export type Component = {

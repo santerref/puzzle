@@ -19,10 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import type {Field} from '@modules/page_builder/assets/js/types/page-builder';
+import type {ComponentField} from '@modules/page_builder/assets/js/types/page-builder';
 
 defineProps<{
-    field: Field
+    field: ComponentField
 }>();
 const model = defineModel<string>();
 </script>

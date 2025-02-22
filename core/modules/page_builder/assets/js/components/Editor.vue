@@ -7,10 +7,10 @@
                 </h1>
                 <div class="space-y-4">
                     <component
-                        :is="pascalCase(field.type)"
-                        v-for="(field,key) in componentType.settings.fields"
-                        :key="key"
-                        v-model="form[key]"
+                        :is="pascalCase(field.field_type)"
+                        v-for="field in model.component_fields"
+                        :key="field.id"
+                        v-model="field[field.value_type+'_value']"
                         :field="field"
                     />
                 </div>
@@ -38,32 +38,24 @@ import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-b
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
 import {computed} from 'vue';
 import {pascalCase} from 'change-case';
-import cloneDeep from 'clone-deep';
 
-const props = defineProps<{
-    component: Component
-}>();
+const model = defineModel<Component>({required: true});
 
 const pageBuilder = usePageBuilderStore();
-const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
-//@TODO: If have new fields, make sure to assign default values. Maybe server-side.
-const form = Object.fromEntries(
-    Object.entries(cloneDeep(props.component.form_values)).map(([key, value]) => [key, String(value)])
-);
+const componentType = computed(() => pageBuilder.getComponentType(model.value.component_type));
 
 const save = async function () {
-    const response = await fetch(`/api/components/${props.component.component_type}/refresh`, {
+    const response = await fetch(`/api/components/${model.value.component_type}/refresh`, {
         method: 'PUT',
         body: JSON.stringify({
-            form_values: form,
-            uuid: props.component.id
+            component_fields: model.value.component_fields,
+            uuid: model.value.id
         }),
         headers: {
             'Content-Type': 'application/json'
         }
     });
-    const partialComponent = await response.json();
-    Object.assign(props.component, partialComponent);
+    Object.assign(model.value, await response.json());
     pageBuilder.closeSettings();
 };
 </script>

@@ -14,7 +14,8 @@ class CreateComponentFieldsTable implements InstallScriptInterface
             $table->uuid('id')->primary();
             $table->foreignUuid('component_id')->references('id')->on('components')->cascadeOnDelete();
             $table->string('field_name');
-            $table->enum('field_type', [
+            $table->string('field_type');
+            $table->enum('value_type', [
                 'int',
                 'varchar',
                 'text',

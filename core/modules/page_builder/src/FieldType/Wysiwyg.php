@@ -9,6 +9,6 @@ class Wysiwyg extends FieldTypeBase
 {
     public function valueType(): FieldValueType
     {
-        return FieldValueType::Varchar;
+        return FieldValueType::Text;
     }
 }

@@ -9,6 +9,6 @@ class Media extends FieldTypeBase
 {
     public function valueType(): FieldValueType
     {
-        return FieldValueType::Varchar;
+        return FieldValueType::Json;
     }
 }
