@@ -3,8 +3,8 @@
 namespace Puzzle\page_builder\EventSubscriber;
 
 use GuzzleHttp\Client;
-use Puzzle\Puzzle;
 use Puzzle\Event\ComponentPreRender;
+use Puzzle\Puzzle;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class GenerateDefaultImage implements EventSubscriberInterface
@@ -23,11 +23,11 @@ class GenerateDefaultImage implements EventSubscriberInterface
     public function onComponentPreRender(ComponentPreRender $event)
     {
         $componentType = $event->getComponentType();
-        $enabled = Puzzle::config()->get('unsplash.enabled', false);
         if ($componentType->getType() != 'image' || !Puzzle::config()->get('unsplash.enabled', false)) {
             return;
         }
 
+        //@TODO: Refactor, this is not possible now.
         $formValues = $event->getComponent()->getAttribute('form_values');
         if (empty($formValues['image'])) {
             $formValues['image'] = $this->getUnsplashRandomImage();

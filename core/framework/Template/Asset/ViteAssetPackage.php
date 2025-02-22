@@ -9,22 +9,22 @@ use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
 class ViteAssetPackage extends PathPackage
 {
-    protected bool $isDevMode;
+    protected bool $production;
 
     public function __construct(string $basePath)
     {
-        $this->isDevMode = Puzzle::config()->get('puzzle.dev_mode', false);
+        $this->production = Puzzle::config()->get('puzzle.production', false);
         $manifestPath = PUZZLE_ROOT . '/public/static/manifest.json';
-        $versionStrategy = $this->isDevMode
-            ? new EmptyVersionStrategy()
-            : new ViteManifestVersionStrategy($manifestPath);
+        $versionStrategy = $this->production
+            ? new ViteManifestVersionStrategy($manifestPath)
+            : new EmptyVersionStrategy();
 
         parent::__construct($basePath, $versionStrategy);
     }
 
     public function getUrl(string $path): string
     {
-        if ($this->isDevMode) {
+        if (!$this->production) {
             return sprintf(
                 'https://vite.puzzle.ddev.site' . $this->getBasePath() . '%s',
                 ltrim($path, '/')

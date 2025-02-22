@@ -90,10 +90,10 @@ class CoreServiceProvider extends ServiceProvider
         ]);
         $twig = new Environment($loader, [
             'cache' => Puzzle::config()->get('twig.cache', true),
-            'debug' => Puzzle::config()->get('puzzle.dev_mode', false)
+            'debug' => Puzzle::config()->get('puzzle.debug', false)
         ]);
         $packages = new Packages();
-        $twig->addGlobal('dev_mode', Puzzle::config()->get('puzzle.dev_mode', false));
+        $twig->addGlobal('production', Puzzle::config()->get('puzzle.production', false));
         $twig->addExtension(new AssetExtension($packages));
         $twig->addExtension(new PuzzleExtension($this->container));
         $this->container->set('twig', $twig);

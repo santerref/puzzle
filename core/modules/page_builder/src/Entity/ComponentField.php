@@ -46,7 +46,8 @@ class ComponentField extends Entity
     public function value(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->{$this->field_type->value . '_value'}
+            get: fn() => $this->{$this->field_type->value . '_value'},
+            set: fn($value) => $this->{$this->field_type->value . '_value'} = $value
         );
     }
 }

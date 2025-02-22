@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'dev_mode' => env('DEV_MODE', false),
+    'production' => env('PRODUCTION', false),
     'debug' => env('DEBUG', false),
 ];

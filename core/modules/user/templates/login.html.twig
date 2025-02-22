@@ -24,7 +24,7 @@
                         {% include '@module_core/admin/components/input-text.html.twig' with {
                             label: 'Email',
                             input_name: 'email',
-                            input_value: dev_mode ? 'john.doe@example.com' : ''
+                            input_value: not production ? 'john.doe@example.com' : ''
                         } %}
                     </div>
                     <div>
@@ -32,7 +32,7 @@
                             label: 'Password',
                             input_name: 'password',
                             input_type: 'password',
-                            input_value: dev_mode ? 'admin' : ''
+                            input_value: not production ? 'admin' : ''
                         } %}
                     </div>
                 </div>
@@ -41,7 +41,7 @@
         </div>
     </div>
 </div>
-{% if dev_mode %}
+{% if not production %}
     <script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
 {% endif %}
 </body>
