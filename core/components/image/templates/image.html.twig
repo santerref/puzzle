@@ -3,9 +3,9 @@
     css.variables[component.fields.position] ?? 'align-items-start'
 ] %}
 <div class="{{ wrapper_class|css }}">
-    {% if image is not empty %}
-        {% for id in component.fields.image.split(',') ?? [component.fields.image] %}
-            {{ id|responsive_image }}
+    {% if component.fields.image is not empty %}
+        {% for media in component.fields.image %}
+            {{ media.id|responsive_image }}
         {% endfor %}
     {% else %}
         <img src="https://placehold.co/500x500" width="500" height="500" alt="">

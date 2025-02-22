@@ -70,6 +70,7 @@ class Component extends Entity
             'locked' => $this->locked,
             'parent' => $this->parent,
             'weight' => $this->weight,
+            'children' => $this->children
         ];
 
         $fields = [];

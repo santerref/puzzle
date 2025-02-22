@@ -13,11 +13,12 @@
 <script setup lang="ts">
 import {computed} from 'vue';
 import {Ckeditor, useCKEditorCloud} from '@ckeditor/ckeditor5-vue';
-import type {ComponentField} from '@modules/page_builder/assets/js/types/page-builder';
+import type {ComponentField, ComponentType} from '@modules/page_builder/assets/js/types/page-builder';
 
 const model = defineModel<string>();
 defineProps<{
-    field: ComponentField
+    field: ComponentField,
+    componentType: ComponentType
 }>();
 
 const cloud = useCKEditorCloud({

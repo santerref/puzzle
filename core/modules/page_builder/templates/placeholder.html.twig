@@ -1,7 +1,7 @@
 {% if context.page_builder %}
     {% block placeholder %}{% endblock %}
 {% else %}
-    {% for child in context.component.children.where('position', position).all %}
+    {% for child in component.children.where('position', position).all %}
         {% if child.children %}
             {{ render(child) }}
         {% else %}

@@ -12,6 +12,7 @@
                         :key="field.id"
                         v-model="field[field.value_type+'_value']"
                         :field="field"
+                        :component-type="componentType"
                     />
                 </div>
             </div>
@@ -45,7 +46,7 @@ const pageBuilder = usePageBuilderStore();
 const componentType = computed(() => pageBuilder.getComponentType(model.value.component_type));
 
 const save = async function () {
-    const response = await fetch(`/api/components/${model.value.component_type}/refresh`, {
+    const response = await fetch(`/api/components/${model.value.component_type}/render`, {
         method: 'PUT',
         body: JSON.stringify({
             component_fields: model.value.component_fields,

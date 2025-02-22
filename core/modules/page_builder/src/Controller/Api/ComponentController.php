@@ -25,11 +25,14 @@ class ComponentController
         return new JsonResponse(array_values($components));
     }
 
-    public function render(string $id): JsonResponse
+    public function render(string $id, Request $request): JsonResponse
     {
         $componentType = $this->componentDiscovery->get($id);
+        $payload = $request->isMethod('PUT') ? $request->toArray() : [];
+        $componentFields = $payload['component_fields'] ?? [];
+        $uuid = $payload['uuid'] ?? Str::uuid();
 
-        $component = $this->componentFactory->create(Str::uuid(), $componentType);
+        $component = $this->componentFactory->create($uuid, $componentType, $componentFields);
         $component->setAttribute('rendered_html', $this->renderer->render($componentType, $component, [
             'page_builder' => true
         ]));
@@ -84,23 +87,6 @@ class ComponentController
         if (count($savedComponents) !== count($components)) {
             $this->saveComponents($page, $components, $idMapping, $savedComponents);
         }
-    }
-
-    public function refresh(
-        string $id,
-        Request $request
-    ): JsonResponse {
-        $componentType = $this->componentDiscovery->get($id);
-        $payload = $request->toArray();
-        $componentFields = $payload['component_fields'];
-        $uuid = $payload['uuid'] ?? Str::uuid();
-
-        $component = $this->componentFactory->create($uuid, $componentType, $componentFields);
-        $component->setAttribute('rendered_html', $this->renderer->render($componentType, $component, [
-            'page_builder' => true
-        ]));
-
-        return new JsonResponse($component);
     }
 
 }

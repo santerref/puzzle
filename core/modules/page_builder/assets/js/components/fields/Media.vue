@@ -31,29 +31,38 @@
 
 <script setup lang="ts">
 import MediaLibrary from '@modules/page_builder/assets/js/components/MediaLibrary.vue';
-import {ComponentField} from '@modules/page_builder/assets/js/types/page-builder';
+import {ComponentField, type ComponentType} from '@modules/page_builder/assets/js/types/page-builder';
 import {computed, ref} from 'vue';
 import {get} from 'lodash';
 import {useMediaStore} from '@modules/page_builder/assets/js/stores/media';
 
-const model = defineModel<string>();
+const model = defineModel<object[]>();
 const mediaStore = useMediaStore();
 const props = defineProps<{
-    field: ComponentField
+    field: ComponentField,
+    componentType: ComponentType
 }>();
 
 const emit = defineEmits<{
-    (e: 'update:modelValue')
+    (e: 'update:modelValue', value: any[]): void
 }>();
 
 const setSelectedMedia = (value: string[]) => {
-    emit('update:modelValue', value.join(','));
-    selectedMedia.value = value;
+    const media = value.map((uuid) => {
+        return {
+            id: uuid
+        };
+    });
+    emit('update:modelValue', media);
+    selectedMedia.value = media;
 };
 
-const selectedMedia = ref<string[]>(model.value ? model.value.split(',') : []);
-const media = computed(() => mediaStore.media.filter(media => selectedMedia.value.includes(media.id)));
+const selectedMedia = ref<any[]>(model.value ?? []);
+const media = computed(() => mediaStore.media.filter(media => selectedMedia.value.find(selected => selected.id === media.id)));
 
-const imageOnly = computed<boolean>(() => Boolean(get(props.field, 'options.image_only', false)));
-const cardinality = computed<number>(() => Number(get(props.field, 'options.cardinality', -1)));
+const fieldType = computed(() => props.componentType.fields[props.field.field_name]);
+const settings = computed(() => fieldType.value.settings);
+
+const imageOnly = computed<boolean>(() => Boolean(get(settings.value, 'image_only', false)));
+const cardinality = computed<number>(() => Number(get(settings.value, 'cardinality', -1)));
 </script>

@@ -19,13 +19,6 @@ class Renderer
     {
         $event = new ComponentPreRender($componentType, $component);
         $this->eventDispatcher->dispatch($event, ComponentPreRender::NAME);
-        $r = array_merge(
-            ['component' => $component->toTemplateArgs()],
-            [
-                'css' => $componentType->getSetting('css', []),
-                'context' => $context
-            ]
-        );
         return $this->twig->render(
             $componentType->getTemplate(),
             array_merge(

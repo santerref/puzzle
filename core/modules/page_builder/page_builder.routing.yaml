@@ -13,13 +13,7 @@ components:
 components.create:
     path: /api/components/{id}/render
     controller: Puzzle\page_builder\Controller\Api\ComponentController::render
-    methods: POST
-    options:
-        middlewares: [ 'auth' ]
-components.refresh:
-    path: /api/components/{id}/refresh
-    controller: Puzzle\page_builder\Controller\Api\ComponentController::refresh
-    methods: PUT
+    methods: [POST, PUT]
     options:
         middlewares: [ 'auth' ]
 components.undo:
