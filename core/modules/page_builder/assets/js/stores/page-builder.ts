@@ -32,7 +32,7 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
             });
         };
 
-        return assignWeight(components.value);
+        return assignWeight(components.value).filter(component => isMounted(component.id));
     });
 
     const availableComponentTypes = computed<ComponentType[]>(() => {
@@ -100,6 +100,11 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
 
     function setMounted(uuid: string, mounted: boolean): void {
         mountedComponents.value[uuid] = mounted;
+    }
+
+    function isMounted(uuid: string): boolean {
+        return mountedComponents.value.hasOwnProperty(uuid) &&
+            mountedComponents.value[uuid] === true;
     }
 
     function removeComponent(component: Component, children: Component[] | null = null): boolean {
@@ -192,6 +197,7 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         currentTargetIs,
         removeComponent,
         setMounted,
-        mountedComponents
+        mountedComponents,
+        isMounted
     };
 });

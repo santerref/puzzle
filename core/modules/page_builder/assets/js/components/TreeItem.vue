@@ -49,6 +49,6 @@ const componentType = computed(() => pageBuilder.getComponentType(props.componen
 const hasFields = computed(() => !isEmpty(componentType.value.fields));
 const sortedChildren = computed(() => sortBy(props.component.children, 'weight'));
 const mounted = computed(() => {
-    return pageBuilder.mountedComponents.hasOwnProperty(props.component.id) && pageBuilder.mountedComponents[props.component.id] === true;
+    return pageBuilder.isMounted(props.component.id);
 });
 </script>

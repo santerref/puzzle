@@ -19,6 +19,8 @@ class ComponentField extends Entity
         'text_value',
         'json_value',
         'blob_value',
+        'bool_value',
+        'component_id',
         'weight',
     ];
 
@@ -32,6 +34,11 @@ class ComponentField extends Entity
         'json_value' => 'array',
         'bool_value' => 'boolean',
         'weight' => 'integer',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function component(): BelongsTo
