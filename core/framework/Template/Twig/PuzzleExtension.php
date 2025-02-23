@@ -46,7 +46,6 @@ class PuzzleExtension extends AbstractExtension
 
     public function children($children)
     {
-        //@TODO: Check if context of page builder or not.l
         if (true) {
             return '<Children/>';
         }

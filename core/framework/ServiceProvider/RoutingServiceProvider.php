@@ -14,6 +14,9 @@ class RoutingServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $request = Request::createFromGlobals();
+        $this->container->set('request', $request);
+
         $routeCollectionDefinition = new Definition(RouteCollection::class);
         $this->container->setDefinition('router.route_collection', $routeCollectionDefinition)
             ->setPublic(true);

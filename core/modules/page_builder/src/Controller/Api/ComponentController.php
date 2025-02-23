@@ -31,11 +31,7 @@ class ComponentController
         $payload = $request->isMethod('PUT') ? $request->toArray() : [];
         $componentFields = $payload['component_fields'] ?? [];
         $uuid = $payload['uuid'] ?? Str::uuid();
-
         $component = $this->componentFactory->create($uuid, $componentType, $componentFields);
-        $component->setAttribute('rendered_html', $this->renderer->render($componentType, $component, [
-            'page_builder' => true
-        ]));
 
         return new JsonResponse($component);
     }

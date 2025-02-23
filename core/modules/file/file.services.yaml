@@ -3,5 +3,5 @@ services:
         class: Puzzle\file\EventSubscriber\TransliterateFileName
         tags: [ 'event.event_subscriber' ]
     file.twig_extension:
-        class: Puzzle\file\Twig\TwigExtension
+        class: Puzzle\file\Template\TwigExtension
         tags: [ 'twig.twig_extension' ]

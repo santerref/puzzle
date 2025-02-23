@@ -15,17 +15,18 @@ class Renderer
     ) {
     }
 
-    public function render(ComponentType $componentType, Component $component, array $context = []): string
+    public function render(ComponentType $componentType, Component $component): string
     {
         $event = new ComponentPreRender($componentType, $component);
         $this->eventDispatcher->dispatch($event, ComponentPreRender::NAME);
         return $this->twig->render(
             $componentType->getTemplate(),
             array_merge(
-                ['component' => $component->toTemplateArgs()],
+                [
+                    'component' => $component->toTemplateArgs()
+                ],
                 [
                     'css' => $componentType->getSetting('css', []),
-                    'context' => $context
                 ]
             )
         );

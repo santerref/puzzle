@@ -58,7 +58,8 @@ const save = async function () {
             uuid: clonedModel.id
         }),
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Puzzle-Page-Uuid': pageBuilder.page.id
         }
     });
     Object.assign(model.value, await response.json());

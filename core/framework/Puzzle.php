@@ -36,4 +36,9 @@ class Puzzle
 
         return static::$container->get($serviceId);
     }
+
+    public static function service(string $id)
+    {
+        return static::$container->get($id);
+    }
 }

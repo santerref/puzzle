@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\file\Twig;
+namespace Puzzle\file\Template;
 
 use Puzzle\file\Entity\File;
 use Twig\Extension\AbstractExtension;

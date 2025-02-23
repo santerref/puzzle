@@ -6,3 +6,10 @@ services:
             - '@http_client'
     component.factory:
         class: Puzzle\page_builder\ComponentFactory
+    page_builder.twig_extension:
+        class: Puzzle\page_builder\Template\TwigExtension
+        tags: [ 'twig.twig_extension' ]
+        arguments:
+            - '@request'
+            - '@router'
+            - '@router.route_collection'

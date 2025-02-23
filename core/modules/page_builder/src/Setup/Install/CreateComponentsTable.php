@@ -14,11 +14,10 @@ class CreateComponentsTable implements InstallScriptInterface
             $table->uuid('id')->primary();
             $table->foreignUuid('page_id')->references('id')->on('pages')->cascadeOnDelete();
             $table->string('component_type');
-            $table->binary('rendered_html');
             $table->foreignUuid('parent')->nullable()->default(null)
                 ->references('id')->on('components')
                 ->cascadeOnDelete();
-            $table->unsignedInteger('weight');
+            $table->unsignedInteger('weight')->default(0);
             $table->string('position')->nullable();
             $table->boolean('locked')->default(false);
             $table->timestamps();

@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Puzzle\page\Entity\Page;
+use Puzzle\Puzzle;
 use Puzzle\Storage\Entity\Entity;
 
 class Component extends Entity
 {
     protected $fillable = [
         'component_type',
-        'rendered_html',
         'id',
         'position',
         'locked',
@@ -21,11 +21,13 @@ class Component extends Entity
     ];
 
     protected $casts = [
-        'is_new' => 'boolean'
+        'is_new' => 'boolean',
+        'locked' => 'boolean'
     ];
 
     protected $appends = [
         'is_new',
+        'rendered_html'
     ];
 
     protected $hidden = [
@@ -60,12 +62,28 @@ class Component extends Entity
         );
     }
 
+    public function renderedHtml(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $renderer = Puzzle::service('component.renderer');
+                $componentDiscovery = Puzzle::service('component_discovery');
+
+                if (!empty($this->component_type)) {
+                    $componentType = $componentDiscovery->get($this->component_type);
+                    return $renderer->render($componentType, $this);
+                }
+
+                return '';
+            }
+        );
+    }
+
     public function toTemplateArgs(): array
     {
         $args = [
             'id' => $this->id,
             'component_type' => $this->component_type,
-            'rendered_html' => $this->rendered_html,
             'position' => $this->position,
             'locked' => $this->locked,
             'parent' => $this->parent,

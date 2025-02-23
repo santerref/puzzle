@@ -79,7 +79,10 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     async function createComponent(componentTypeId: string, target?: Target, weight?: number): Promise<Component> {
         const componentType = getComponentType(componentTypeId);
         const response = await fetch(`/api/components/${componentType.id}/render`, {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'X-Puzzle-Page-Uuid': page.value.id
+            }
         });
 
         const component = await response.json() as Component;

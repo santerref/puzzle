@@ -17,11 +17,13 @@ class PageController
         return $this->responseFactory->createTwigTemplateResponse(
             '@module_page/page.html.twig',
             [
-                'page' => Page::where('slug', $slug)->with([
-                    'components' => function ($query) {
-                        $query->whereNull('parent')->orderBy('weight');
-                    }
-                 ])->first()
+                'context' => [
+                    'page' => Page::where('slug', $slug)->with([
+                        'components' => function ($query) {
+                            $query->whereNull('parent')->orderBy('weight');
+                        }
+                    ])->first()
+                ]
             ]
         );
     }

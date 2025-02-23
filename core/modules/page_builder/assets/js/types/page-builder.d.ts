@@ -8,6 +8,7 @@ export type ComponentType = {
 }
 
 export type Page = {
+    id: string
     title: string
     slug: string
     components: Component[]

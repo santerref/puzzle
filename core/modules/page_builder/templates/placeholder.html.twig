@@ -1,4 +1,4 @@
-{% if context.page_builder %}
+{% if page_builder %}
     {% block placeholder %}{% endblock %}
 {% else %}
     {% for child in component.children.where('position', position).all %}

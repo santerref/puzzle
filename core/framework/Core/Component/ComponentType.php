@@ -44,6 +44,7 @@ class ComponentType implements \JsonSerializable
             'container' => false,
             'placeholder' => false,
             'hidden' => false,
+            'live' => false,
             'positions' => [],
             'css' => [],
             'default_position' => null

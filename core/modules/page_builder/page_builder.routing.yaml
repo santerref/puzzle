@@ -4,27 +4,32 @@ admin.launch:
     methods: GET
     options:
         middlewares: [ 'auth' ]
-components:
+        page_builder: true
+api.components:
     path: /api/components
     controller: Puzzle\page_builder\Controller\Api\ComponentController::index
     methods: GET
     options:
         middlewares: [ 'auth' ]
-components.create:
+        page_builder: true
+api.components.render:
     path: /api/components/{id}/render
     controller: Puzzle\page_builder\Controller\Api\ComponentController::render
-    methods: [POST, PUT]
+    methods: [ POST, PUT ]
     options:
         middlewares: [ 'auth' ]
-components.undo:
-    path: /api/components/{id}/undo
-    controller: Puzzle\page_builder\Controller\Api\ComponentController::undo
-    methods: PUT
-    options:
-        middlewares: [ 'auth' ]
-components.pages.save:
+        page_builder: true
+api.components.pages.save:
     path: /api/pages/{page}/components
     controller: Puzzle\page_builder\Controller\Api\ComponentController::save
     methods: PUT
     options:
         middlewares: [ 'auth' ]
+        page_builder: true
+api.pages.fetch:
+    path: /api/pages/{uuid}
+    controller: Puzzle\page\Controller\Api\PageController::fetch
+    methods: GET
+    options:
+        middlewares: [ 'auth' ]
+        page_builder: true

@@ -14,6 +14,7 @@ class ComponentFactory
     {
         $component = new Component([
             'id' => $uuid,
+            'live' => $componentType->getSetting('live', false),
             'component_type' => $componentType->getType(),
         ]);
 
