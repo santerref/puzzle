@@ -64,7 +64,7 @@ class ComponentController
     //@TODO: Refactor and move right place.
     protected function saveComponents(Page $page, array $components, array &$idMapping, array &$savedComponents)
     {
-        foreach ($components as $component) {
+        foreach ($components as $componentWeight => $component) {
             if ($component['parent'] && !isset($idMapping[$component['parent']])) {
                 break;
             }
@@ -72,12 +72,12 @@ class ComponentController
             $id = $component['id'];
             $savedComponent = $page->components()->updateOrCreate(
                 ['id' => $id],
-                array_diff_key($component, array_flip(['original', 'children']))
+                array_diff_key($component, array_flip(['original', 'children'])) + ['weight' => $componentWeight]
             );
-            foreach ($component['component_fields'] as $key => $componentField) {
+            foreach ($component['component_fields'] as $componentFieldWeight => $componentField) {
                 $savedComponent->componentFields()->updateOrCreate(
                     ['id' => $componentField['id']],
-                    $componentField + ['weight' => $key]
+                    $componentField + ['weight' => $componentFieldWeight]
                 );
             }
             $savedComponents[] = $savedComponent->id;

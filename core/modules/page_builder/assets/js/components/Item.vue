@@ -1,19 +1,21 @@
 <template>
     <item-content
         v-if="component"
+        :key="component.id"
         :component="component"
         :component-count="componentCount"
     >
-        <nested-component v-model="component.children"/>
+        <nested-component v-model="sortedChildren"/>
     </item-content>
 </template>
 
 <script setup lang="ts">
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
-import {computed} from 'vue';
+import {computed, onMounted, onUnmounted} from 'vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
 import ItemContent from '@modules/page_builder/assets/js/components/ItemContent.vue';
 import NestedComponent from '@modules/page_builder/assets/js/components/NestedComponent.vue';
+import {sortBy} from 'lodash';
 
 const pageBuilder = usePageBuilderStore();
 const props = withDefaults(defineProps<{
@@ -42,4 +44,14 @@ const component = computed<Component>(() => {
 
     return <Component>findComponentByUUID(pageBuilder.components, props.componentUuid);
 });
+
+onMounted(() => {
+    pageBuilder.setMounted(props.componentUuid, true);
+});
+
+onUnmounted(() => {
+    pageBuilder.setMounted(props.componentUuid, false);
+});
+
+const sortedChildren = computed(() => sortBy(component.value.children, 'weight'));
 </script>

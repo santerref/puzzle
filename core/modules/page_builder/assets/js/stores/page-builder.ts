@@ -13,6 +13,7 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     const isLoading = ref<boolean>(true);
     const componentHover = ref<Component | null>(null);
     const currentComponentSettings = ref<Component | null>(null);
+    const mountedComponents = ref<Record<string, boolean>>({});
 
     const saveRequired = computed(() => !deepEqual(page.value.components, components.value));
     const page = computed<Page>(() => <Page>currentPage.value);
@@ -95,6 +96,10 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         }
 
         return component;
+    }
+
+    function setMounted(uuid: string, mounted: boolean): void {
+        mountedComponents.value[uuid] = mounted;
     }
 
     function removeComponent(component: Component, children: Component[] | null = null): boolean {
@@ -185,6 +190,8 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         hasTarget,
         unsetTarget,
         currentTargetIs,
-        removeComponent
+        removeComponent,
+        setMounted,
+        mountedComponents
     };
 });

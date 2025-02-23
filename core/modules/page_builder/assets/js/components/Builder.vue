@@ -65,7 +65,7 @@
                     <div>
                         <nested-component
                             v-if="pageBuilder.components.length"
-                            v-model="pageBuilder.components"
+                            v-model="sortedComponents"
                         />
                         <div
                             v-else

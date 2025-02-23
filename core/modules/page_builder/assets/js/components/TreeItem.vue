@@ -1,5 +1,5 @@
 <template>
-    <li>
+    <li v-if="mounted">
         <div class="flex justify-between py-0.5 px-2 hover:bg-stone-100">
             <div>
                 <button
@@ -48,4 +48,7 @@ const pageBuilder = usePageBuilderStore();
 const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
 const hasFields = computed(() => !isEmpty(componentType.value.fields));
 const sortedChildren = computed(() => sortBy(props.component.children, 'weight'));
+const mounted = computed(() => {
+    return pageBuilder.mountedComponents.hasOwnProperty(props.component.id) && pageBuilder.mountedComponents[props.component.id] === true;
+});
 </script>

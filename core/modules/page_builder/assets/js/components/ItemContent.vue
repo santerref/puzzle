@@ -127,13 +127,12 @@ const renderChildren = () => {
                             position
                         }, (++i));
                     }
-                    if (typeof newComponent !== 'undefined') {
-                        newComponent.locked = (el.dataset.locked ?? 'false') === 'true';
-                        mountComponent(el, newComponent);
-                    }
+                    newComponent.locked = (el.dataset.locked ?? 'false') === 'true';
+                    mountComponent(el, newComponent);
                 }
             });
         }
+
     }
 };
 

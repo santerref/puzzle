@@ -50,7 +50,7 @@ class Component extends Entity
 
     public function componentFields(): HasMany
     {
-        return $this->hasMany(ComponentField::class);
+        return $this->hasMany(ComponentField::class)->orderBy('weight');
     }
 
     public function isNew(): Attribute
