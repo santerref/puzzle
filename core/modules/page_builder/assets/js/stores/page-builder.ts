@@ -72,7 +72,11 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     }
 
     async function loadPage(): Promise<Page> {
-        const response = await fetch(`/api/pages/${currentPageUuid.value}`);
+        const response = await fetch(`/api/pages/${currentPageUuid.value}`, {
+            headers: {
+                'X-Puzzle-Page-Uuid': currentPageUuid.value
+            }
+        });
         return (await response.json()) as Page;
     }
 
