@@ -19,6 +19,14 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     const page = computed<Page>(() => <Page>currentPage.value);
     const loading = computed<boolean>(() => isLoading.value);
     const isRoot = computed<boolean>(() => currentTarget.value === null);
+    const target = computed<Target | null>(() => {
+        if (currentTarget.value) {
+            if (!isMounted(currentTarget.value.component.id)) {
+                unsetTarget();
+            }
+        }
+        return currentTarget.value;
+    });
 
     const flatComponents = computed(() => {
         const assignWeight = (components: Component[]): Component[] => {
@@ -163,13 +171,13 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     }
 
     function hasTarget(): boolean {
-        return currentTarget.value !== null;
+        return target.value !== null;
     }
 
     function currentTargetIs(component: Component): boolean {
-        return currentTarget.value !== null &&
-            currentTarget.value.component.id === component.id &&
-            currentTarget.value.position === component.position;
+        return target.value !== null &&
+            target.value.component.id === component.id &&
+            target.value.position === component.position;
     }
 
     return {
