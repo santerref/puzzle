@@ -143,7 +143,10 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     async function save(): Promise<void> {
         const response = await fetch(`/api/pages/${currentPageUuid.value}/components`, {
             method: 'PUT',
-            body: JSON.stringify(flatComponents.value)
+            body: JSON.stringify(flatComponents.value),
+            headers: {
+                'X-Puzzle-Page-Uuid': currentPageUuid.value
+            }
         });
         const updatedPage = await response.json();
         currentPage.value = cloneDeep(updatedPage);
