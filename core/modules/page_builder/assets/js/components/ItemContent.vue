@@ -60,10 +60,10 @@ import {useElementHover} from '@vueuse/core';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     component: Component,
-    componentCount: number
-}>();
+    componentCount: number,
+}>(), {});
 const pageBuilder = usePageBuilderStore();
 
 const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
@@ -91,7 +91,8 @@ function mountComponent(el: HTMLElement, newComponent: any) {
         componentUuid: newComponent.id,
         key: newComponent.id + '_' + el.dataset.position,
         position: newComponent.position,
-        componentCount: newComponent.children.length
+        componentCount: newComponent.children.length,
+        cssClass: el.dataset.class ?? null
     });
 
     render(vNode, el);

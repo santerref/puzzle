@@ -1,6 +1,14 @@
 {% if page_builder %}
-    {% block placeholder %}{% endblock %}
+    <component-placeholder
+        data-component="{{ component_type }}"
+        data-uuid="{{ component_uuid }}"
+        data-position="{{ position }}"
+        data-locked="{{ locked ? 'true' : 'false' }}"
+        {% if css_class is defined %}data-class="{{ css_class }}"{% endif %}
+    >
+    </component-placeholder>
 {% else %}
+    {% if children_prefix is defined %}{{ children_prefix|raw }}{% endif %}
     {% for child in component.children.where('position', position).all %}
         {% if child.children %}
             {{ render(child) }}
@@ -8,4 +16,5 @@
             {{ child.rendered_html|raw }}
         {% endif %}
     {% endfor %}
+    {% if children_suffix is defined %}{{ children_suffix|raw }}{% endif %}
 {% endif %}

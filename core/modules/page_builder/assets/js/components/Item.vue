@@ -4,6 +4,7 @@
         :key="component.id"
         :component="component"
         :component-count="componentCount"
+        :class="cssClass"
     >
         <nested-component v-model="sortedChildren"/>
     </item-content>
@@ -21,9 +22,11 @@ const pageBuilder = usePageBuilderStore();
 const props = withDefaults(defineProps<{
     componentUuid: string,
     position?: string | null,
-    componentCount: number
+    componentCount: number,
+    cssClass?: string | null
 }>(), {
-    position: null
+    position: null,
+    cssClass: null
 });
 
 const component = computed<Component>(() => {
