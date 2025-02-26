@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import {Component} from '@modules/page_builder/assets/js/types/page-builder';
+import type {Component} from '@modules/page_builder/assets/js/types/page-builder.ts';
 import {computed, h, onBeforeUnmount, onMounted, ref, render, useTemplateRef, watch} from 'vue';
 import {useElementHover} from '@vueuse/core';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';

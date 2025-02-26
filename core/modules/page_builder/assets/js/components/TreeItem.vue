@@ -26,7 +26,7 @@
             class="pl-2"
         >
             <TreeItem
-                v-for="child in sortedChildren"
+                v-for="child in component.children"
                 :key="child.id"
                 :component="child"
             />
@@ -38,7 +38,7 @@
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
 import {computed} from 'vue';
-import {isEmpty, sortBy} from 'lodash';
+import {isEmpty} from 'lodash';
 
 const props = defineProps<{
     component: Component
@@ -47,7 +47,6 @@ const props = defineProps<{
 const pageBuilder = usePageBuilderStore();
 const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
 const hasFields = computed(() => !isEmpty(componentType.value.fields));
-const sortedChildren = computed(() => sortBy(props.component.children, 'weight'));
 const mounted = computed(() => {
     return pageBuilder.isMounted(props.component.id);
 });
