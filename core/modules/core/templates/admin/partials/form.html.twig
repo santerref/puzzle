@@ -1,0 +1,10 @@
+{% set is_post = method is not defined or method is defined and method != 'GET' %}
+{% set method = method ?: 'POST' %}
+<form{% if is_post %} method="post"{% endif %} action="{{ action }}">
+    {% block body %}{% endblock %}
+    {% block actions %}{% endblock %}
+    {% if is_post %}
+        <input type="hidden" name="_method" value="{{ method }}">
+        {{ csrf_token() }}
+    {% endif %}
+</form>

@@ -3,21 +3,8 @@
     {% include '@module_core/script.html.twig' with { src: asset('js/page.ts', 'module_page') } %}
 {% endblock %}
 {% block content %}
-    <form method="post" action="/admin/pages">
-        <div class="mb-4 space-y-4">
-            <div>
-                {% include '@module_core/admin/components/input-text.html.twig' with {
-                    label: 'Page title',
-                    input_name: 'title'
-                } %}
-            </div>
-            <div>
-                {% include '@module_core/admin/components/input-text.html.twig' with {
-                    label: 'Slug',
-                    input_name: 'slug'
-                } %}
-            </div>
-        </div>
-        {% include '@module_core/admin/components/button.html.twig' with {title: 'Create'} %}
-    </form>
+    {% include '@module_page/admin/partials/form.html.twig' with {
+        action: '/admin/pages',
+        submit_button_title: 'Create'
+    } %}
 {% endblock %}

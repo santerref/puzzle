@@ -1,0 +1,11 @@
+services:
+    core.event_subscriber.update_form_request:
+        class: Puzzle\core\EventSubscriber\UpdateFormRequestMethod
+        tags: [ 'event.event_subscriber' ]
+        arguments:
+            - '@router'
+    core.event_subscriber.validate_csrf_token:
+        class: Puzzle\core\EventSubscriber\ValidateCsrfToken
+        tags: [ 'event.event_subscriber' ]
+        arguments:
+            - '@csrf_token_manager'

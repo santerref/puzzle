@@ -14,9 +14,6 @@ class CreatePagesTable implements InstallScriptInterface
             $table->uuid('id')->primary();
             $table->string('title');
             $table->string('slug');
-            $table->foreignUuid('parent')->nullable()->default(null)
-                ->references('id')->on('pages')
-                ->nullOnDelete();
             $table->unsignedInteger('weight')->default(0);
             $table->timestamps();
         });

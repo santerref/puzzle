@@ -29,6 +29,28 @@ class PageController
         return $this->responseFactory->createTwigTemplateResponse('@module_page/admin/create.html.twig');
     }
 
+    public function edit(Page $page): Response
+    {
+        return $this->responseFactory->createTwigTemplateResponse(
+            '@module_page/admin/edit.html.twig',
+            [
+                'page' => $page
+            ]
+        );
+    }
+
+    public function update(Page $page, Request $request): Response
+    {
+        $page->update($request->request->all());
+        return $this->responseFactory->createInternalRedirectResponse('page.admin');
+    }
+
+    public function destroy(Page $page): Response
+    {
+        $page->delete();
+        return $this->responseFactory->createInternalRedirectResponse('page.admin');
+    }
+
     public function store(Request $request): Response
     {
         $page = Page::create($request->request->all());

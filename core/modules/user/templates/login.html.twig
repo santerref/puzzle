@@ -21,14 +21,14 @@
             <form method="post" action="/login">
                 <div class="mb-4 space-y-4">
                     <div>
-                        {% include '@module_core/admin/components/input-text.html.twig' with {
+                        {% include '@module_core/admin/partials/input-text.html.twig' with {
                             label: 'Email',
                             input_name: 'email',
                             input_value: not production ? 'john.doe@example.com' : ''
                         } %}
                     </div>
                     <div>
-                        {% include '@module_core/admin/components/input-text.html.twig' with {
+                        {% include '@module_core/admin/partials/input-text.html.twig' with {
                             label: 'Password',
                             input_name: 'password',
                             input_type: 'password',
@@ -36,7 +36,8 @@
                         } %}
                     </div>
                 </div>
-                {% include '@module_core/admin/components/button.html.twig' with {title: 'Login'} %}
+                {% include '@module_core/admin/partials/button.html.twig' with {title: 'Login'} %}
+                {{ csrf_token() }}
             </form>
         </div>
     </div>

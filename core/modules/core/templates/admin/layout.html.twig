@@ -37,5 +37,8 @@
     <script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
 {% endif %}
 {% block before_body_close %}{% endblock %}
+{% if not page_builder %}
+    <script type="module" src="{{ asset('js/admin.ts', 'module_core') }}"></script>
+{% endif %}
 </body>
 </html>

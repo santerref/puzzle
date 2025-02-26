@@ -1,0 +1,8 @@
+{% extends '@module_core/admin/layout.html.twig' %}
+{% block content %}
+    {% include '@module_page/admin/partials/form.html.twig' with {
+        action: '/admin/pages/'~page.id,
+        method: 'PUT',
+        submit_button_title: 'Save'
+    } %}
+{% endblock %}

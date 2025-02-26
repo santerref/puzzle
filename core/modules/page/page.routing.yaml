@@ -10,6 +10,24 @@ admin.create:
     methods: GET
     options:
         middlewares: [ 'auth' ]
+admin.edit:
+    path: /admin/pages/{page}/edit
+    controller: Puzzle\page\Controller\Admin\PageController::edit
+    methods: GET
+    options:
+        middlewares: [ 'auth' ]
+admin.update:
+    path: /admin/pages/{page}
+    controller: Puzzle\page\Controller\Admin\PageController::update
+    methods: PUT
+    options:
+        middlewares: [ 'auth' ]
+admin.delete:
+    path: /admin/pages/{page}
+    controller: Puzzle\page\Controller\Admin\PageController::destroy
+    methods: DELETE
+    options:
+        middlewares: [ 'auth' ]
 admin.store:
     path: /admin/pages
     controller: Puzzle\page\Controller\Admin\PageController::store

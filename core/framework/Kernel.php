@@ -3,6 +3,7 @@
 namespace Puzzle;
 
 use Puzzle\Event\BootFinishedEvent;
+use Puzzle\Event\KernelRequest;
 use Puzzle\Event\ResponsePrepareEvent;
 use Puzzle\Http\Controller\EntityResolver;
 use Puzzle\Http\Controller\ServiceResolver;
@@ -49,6 +50,21 @@ readonly class Kernel
         );
 
         try {
+            $session = $this->container->get('session');
+            if (!$session->isStarted()) {
+                $session->start();
+            }
+
+            $request->setSession($session);
+            $requestStack = $this->container->get('request_stack');
+            $requestStack->push($request);
+
+            $kernelRequestEvent = new KernelRequest($request);
+            $eventDispatcher->dispatch(
+                $kernelRequestEvent,
+                KernelRequest::NAME
+            );
+
             $routeParameters = $router->match($request->getPathInfo());
             $request->attributes->add($routeParameters);
 
@@ -66,12 +82,12 @@ readonly class Kernel
             $middlewares[] = new CoreMiddleware($controllerResolver, $argumentResolver);
 
             $response = $this->applyMiddlewares($request, $middlewares);
-            $event = new ResponsePrepareEvent($response, $this->container);
+            $responsePrepareEvent = new ResponsePrepareEvent($response, $this->container);
             $eventDispatcher->dispatch(
-                $event,
+                $responsePrepareEvent,
                 ResponsePrepareEvent::NAME
             );
-            $response = $event->getResponse();
+            $response = $responsePrepareEvent->getResponse();
         } catch (ResourceNotFoundException $e) {
             $response = new Response('Not Found', 404);
         } catch (Exception $e) {

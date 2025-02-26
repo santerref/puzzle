@@ -4,6 +4,7 @@ namespace Puzzle\ServiceProvider;
 
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
@@ -21,14 +22,18 @@ class SecurityServiceProvider extends ServiceProvider
     {
         $sessionDefinition = new Definition(Session::class);
         $sessionDefinition->setPublic(true);
-        $sessionDefinition->addMethodCall('start');
         $this->container->setDefinition('session', $sessionDefinition);
         $this->container->setAlias(Session::class, 'session');
+
+        $requestStackDefinition = new Definition(RequestStack::class);
+        $requestStackDefinition->setPublic(true);
+        $this->container->setDefinition('request_stack', $requestStackDefinition);
+        $this->container->setAlias(RequestStack::class, 'request_stack');
 
         $tokenStorageDefinition = new Definition(SessionTokenStorage::class);
         $tokenStorageDefinition
             ->setPublic(true)
-            ->setArgument(0, new Reference(Session::class));
+            ->setArgument(0, new Reference(RequestStack::class));
         $this->container->setDefinition(SessionTokenStorage::class, $tokenStorageDefinition);
 
         $csrfTokenManagerDefinition = new Definition(CsrfTokenManager::class);
