@@ -22,6 +22,7 @@ I am creating Puzzle to simplify building pages with reusable components, addres
 * eslint
 * Vite 6
 * TailwindCSS 4
+* AlpineJS
 
 Components will be able to load content from external APIs or internal data sources. Abstraction between component and
 data sources.
