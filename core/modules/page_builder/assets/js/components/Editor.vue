@@ -59,7 +59,8 @@ const save = async function () {
         }),
         headers: {
             'Content-Type': 'application/json',
-            'X-Puzzle-Page-Uuid': pageBuilder.page.id
+            'X-Puzzle-Page-Uuid': pageBuilder.page.id,
+            'X-Puzzle-Csrf-Token': window.csrfToken
         }
     });
     Object.assign(model.value, await response.json());

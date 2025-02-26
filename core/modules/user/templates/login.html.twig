@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 {% include '@module_core/admin/partials/button.html.twig' with {title: 'Login'} %}
-                {{ csrf_token() }}
+                {% include '@module_core/admin/partials/csrf-token.html.twig' %}
             </form>
         </div>
     </div>

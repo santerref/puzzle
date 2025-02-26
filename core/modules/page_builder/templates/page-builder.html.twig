@@ -3,6 +3,7 @@
     <link href="{{ asset('css/page-builder.css', 'module_page_builder') }}" rel="stylesheet">
     <script>
         window.pageUuid = '{{ page.id }}';
+        window.csrfToken = '{{ csrf_token() }}';
     </script>
 {% endblock %}
 {% block before_content %}

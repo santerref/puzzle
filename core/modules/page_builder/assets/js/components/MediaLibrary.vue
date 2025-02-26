@@ -233,6 +233,9 @@ async function uploadFile(event: any): Promise<any> {
         const response = await fetch('/admin/files/upload', {
             method: 'POST',
             body: formData,
+            headers: {
+                'X-Puzzle-Csrf-Token': window.csrfToken
+            }
         });
 
         const result = await response.json();
@@ -261,6 +264,9 @@ async function save(): Promise<any> {
         const response = await fetch(`/admin/files/${currentFile.value.id}/save`, {
             method: 'POST',
             body: JSON.stringify(data),
+            headers: {
+                'X-Puzzle-Csrf-Token': window.csrfToken
+            }
         });
 
         mediaStore.media.unshift(await response.json() as StorageFile);

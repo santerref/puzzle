@@ -85,7 +85,8 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         const response = await fetch(`/api/components/${componentType.id}/render`, {
             method: 'POST',
             headers: {
-                'X-Puzzle-Page-Uuid': page.value.id
+                'X-Puzzle-Page-Uuid': page.value.id,
+                'X-Puzzle-Csrf-Token': window.csrfToken
             }
         });
 
@@ -145,7 +146,8 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
             method: 'PUT',
             body: JSON.stringify(flatComponents.value),
             headers: {
-                'X-Puzzle-Page-Uuid': currentPageUuid.value
+                'X-Puzzle-Page-Uuid': currentPageUuid.value,
+                'X-Puzzle-Csrf-Token': window.csrfToken
             }
         });
         const updatedPage = await response.json();

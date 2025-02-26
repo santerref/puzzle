@@ -27,6 +27,11 @@ class ValidateCsrfToken implements EventSubscriberInterface
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             $submittedToken = $request->request->get('_csrf_token');
+
+            if (empty($submittedToken)) {
+                $submittedToken = $request->headers->get('X-Puzzle-Csrf-Token');
+            }
+
             if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('form_csrf', $submittedToken))) {
                 throw new InvalideCsrfTokenException();
             }

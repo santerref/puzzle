@@ -2,6 +2,7 @@ export {};
 
 declare global {
     interface Window {
-        pageUuid: string
+        pageUuid: string,
+        csrfToken: string
     }
 }

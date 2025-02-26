@@ -28,7 +28,7 @@ class PuzzleExtension extends AbstractExtension
             new TwigFunction('dd', [$this, 'dd']),
             new TwigFunction('route', [$this, 'route']),
             new TwigFunction('render', [$this, 'render'], ['is_safe' => ['html']]),
-            new TwigFunction('csrf_token', [$this, 'csrfToken'], ['is_safe' => ['html']]),
+            new TwigFunction('csrf_token', [$this, 'csrfToken']),
         ];
     }
 
@@ -80,13 +80,6 @@ class PuzzleExtension extends AbstractExtension
     public function csrfToken()
     {
         $csrfTokenManager = $this->container->get('csrf_token_manager');
-        $csrfToken = $csrfTokenManager->getToken('form_csrf')->getValue(); // One global token
-
-        return '<input type="hidden" name="_csrf_token" value="' .
-            htmlspecialchars(
-                $csrfToken,
-                ENT_QUOTES,
-                'UTF-8'
-            ) . '">';
+        return $csrfTokenManager->getToken('form_csrf')->getValue();
     }
 }
