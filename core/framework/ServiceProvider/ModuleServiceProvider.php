@@ -9,7 +9,7 @@ class ModuleServiceProvider extends ServiceProvider
     //@TODO: Move this constants into configuration?
     private const MODULE_DIRECTORIES = [
         PUZZLE_ROOT . '/core/modules',
-        PUZZLE_ROOT . '/modules'
+        PUZZLE_ROOT . '/extend/modules'
     ];
 
     public function register(): void
