@@ -63,7 +63,7 @@ const save = async function () {
             'X-Puzzle-Csrf-Token': window.csrfToken
         }
     });
-    Object.assign(model.value, (({ children, ...rest }) => rest)(await response.json()));
+    Object.assign(model.value, Object.fromEntries(Object.entries(await response.json()).filter(([key]) => key !== 'children')));
     pageBuilder.closeSettings();
 };
 </script>

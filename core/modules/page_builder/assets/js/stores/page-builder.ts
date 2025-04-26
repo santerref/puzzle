@@ -19,12 +19,9 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     const page = computed<Page>(() => <Page>currentPage.value);
     const loading = computed<boolean>(() => isLoading.value);
     const isRoot = computed<boolean>(() => currentTarget.value === null);
+
+    //@TODO Remove target and keep only currentTarget.
     const target = computed<Target | null>(() => {
-        if (currentTarget.value) {
-            if (!isMounted(currentTarget.value.component.id)) {
-                unsetTarget();
-            }
-        }
         return currentTarget.value;
     });
 
@@ -109,6 +106,10 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         } else {
             component.parent = null;
             components.value.push(component);
+        }
+
+        if (componentType.settings.container && !currentTarget.value) {
+            setTarget(component, component.position);
         }
 
         return component;

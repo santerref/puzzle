@@ -37,7 +37,7 @@ class ComponentFactory
                     'json_value' => null,
                     'bool_value' => null,
                     'blob_value' => null,
-                    'weight' => 0,
+                    'weight' => $field->weight(),
                 ]);
                 $componentField->setAttribute(
                     $field->getFieldType()->valueType()->value . '_value',

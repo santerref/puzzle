@@ -22,6 +22,7 @@ class ComponentType implements \JsonSerializable
     {
         $settings = $info['settings'] ?? [];
         $fields = [];
+        $weight = 0;
         foreach ($info['fields'] ?? [] as $key => &$field) {
             $fieldType = Puzzle::fieldType($field['type']);
             $fieldSettings = $field['settings'] ?? [];
@@ -31,6 +32,7 @@ class ComponentType implements \JsonSerializable
                 $fieldType,
                 $field['label'],
                 $field['default_value'] ?? null,
+                $weight++,
                 $fieldSettings
             );
         }

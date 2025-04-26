@@ -56,5 +56,8 @@ onMounted(() => {
 
 onUnmounted(() => {
     pageBuilder.setMounted(props.componentUuid, false);
+    if (pageBuilder.currentTarget && pageBuilder.currentTarget.component.id === props.componentUuid) {
+        pageBuilder.unsetTarget();
+    }
 });
 </script>

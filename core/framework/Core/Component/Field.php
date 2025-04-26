@@ -11,6 +11,7 @@ class Field implements \JsonSerializable
         protected FieldTypeInterface $fieldType,
         protected string $label,
         protected mixed $defaultValue,
+        protected int $weight,
         protected array $settings = []
     ) {
     }
@@ -18,6 +19,11 @@ class Field implements \JsonSerializable
     public function id(): string
     {
         return $this->id;
+    }
+
+    public function weight()
+    {
+        return $this->weight;
     }
 
     public function getFieldType(): FieldTypeInterface

@@ -34,6 +34,6 @@ const draggableComponents = computed({
 });
 
 const getComponentHash = (component: Component): string => {
-    return hash(component.component_fields);
+    return hash(component.component_fields.sort((a, b) => a.weight - b.weight));
 };
 </script>
