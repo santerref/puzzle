@@ -2,12 +2,11 @@
     <draggable
         v-model="draggableComponents"
         handle=".handle"
-        @start="drag=true"
-        @end="drag=false"
+        :item-key="itemKey"
+        :group="group"
+        @change="updateParent"
         @dragover.prevent
         @dragenter.prevent
-        :item-key="itemKey"
-        :group="{ name: 'pagebuilder', pull: false, put: false }"
     >
         <template #item="{element}">
             <div>
@@ -23,24 +22,41 @@
 
 <script setup lang="ts">
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import hash from 'object-hash';
-import draggable from 'vuedraggable';
+import draggable from 'vuedraggable/src/vuedraggable';
 
-const drag = ref(false);
+const updateParent = function (event) {
+    if (props.component && event.hasOwnProperty('added')) {
+        if (event.added.element.parent !== props.component.id) {
+            event.added.element.parent = props.component.id;
+        }
+    }
+};
 
-const props = defineProps<{
-    modelValue: Component[]
-}>();
+const props = withDefaults(defineProps<{
+    modelValue: Component[],
+    container?: boolean,
+    component?: Component | null
+}>(), {
+    container: false,
+    component: null
+});
 
 const itemKey = function (element) {
     return getComponentHash(element);
-}
+};
 
 const emits = defineEmits<{
     (e: 'update:modelValue', value: Component[]): void
 }>();
+
+const group = computed(() => props.container ? {name: 'container', pull: true, put: true} : {
+    name: 'section',
+    pull: false,
+    put: false
+});
 
 const draggableComponents = computed({
     get: () => props.modelValue,

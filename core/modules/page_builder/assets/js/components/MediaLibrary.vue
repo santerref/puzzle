@@ -191,7 +191,7 @@ const selectedMedia = ref<string[]>([]);
 
 const open = () => {
     showMediaSelector.value = true;
-    selectedMedia.value.push(...props.selected)
+    selectedMedia.value.push(...props.selected);
 };
 
 const isImage = computed(() => currentFile.value && currentFile.value.is_image === true);

@@ -9,6 +9,8 @@
         <nested-component
             v-model="component.children"
             :class="cssClass"
+            :container="container"
+            :component="component"
         />
     </item-content>
 </template>
@@ -49,6 +51,8 @@ const component = computed<Component>(() => {
 
     return <Component>findComponentByUUID(pageBuilder.components, props.componentUuid);
 });
+
+const container = computed(() => component.value && component.value.component_type === 'container');
 
 onMounted(() => {
     pageBuilder.setMounted(props.componentUuid, true);
