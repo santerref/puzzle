@@ -1,6 +1,6 @@
 <template>
     <template v-if="!pageBuilder.loading">
-        <div class="bg-stone-100 w-full p-3 flex gap-4 justify-end">
+        <div class="w-full p-3 flex gap-4 justify-end">
             <a
                 class="text-white bg-stone-600 px-4 py-2 font-medium"
                 target="_blank"
@@ -21,44 +21,46 @@
             </button>
         </div>
         <div class="grid grid-cols-12">
-            <div class="col-span-3 px-4 pb-4 bg-stone-100">
-                <div class="mb-4 bg-white p-5 ">
-                    <p class="font-semibold mb-2">
-                        Components Tree
-                    </p>
-                    <ul class="mt-2">
-                        <li>
+            <div class="col-span-3">
+                <div class="mx-4 shadow-lg rounded px-4 py-6 max-w-full w-[400px] border border-stone-200">
+                    <div class="mb-4 bg-white px-5">
+                        <p class="font-semibold mb-2">
+                            Components Tree
+                        </p>
+                        <ul class="mt-2">
+                            <li>
+                                <button
+                                    class="cursor-pointer text-blue-500 underline"
+                                    :class="{'bg-stone-200':!pageBuilder.hasTarget()}"
+                                    @click.prevent="pageBuilder.unsetTarget()"
+                                >
+                                    Root
+                                </button>
+                                <ul class="pl-2">
+                                    <TreeItem
+                                        v-for="component in sortedComponents"
+                                        :key="component.id"
+                                        :component="component"
+                                    />
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <ul class="grid grid-cols-2 gap-4">
+                        <li
+                            v-for="componentType in pageBuilder.availableComponentTypes"
+                            :key="componentType.id"
+                        >
                             <button
-                                class="cursor-pointer text-blue-500 underline"
-                                :class="{'bg-stone-200':!pageBuilder.hasTarget()}"
-                                @click.prevent="pageBuilder.unsetTarget()"
+                                class=" bg-white border border-stone-100 text-stone-600 text-sm font-medium uppercase rounded shadow block w-full py-2 px-4 cursor-pointer min-h-[100px]"
+                                @click.prevent="pageBuilder.createComponent(componentType.id)"
                             >
-                                Root
+                                {{ componentType.name }}
                             </button>
-                            <ul class="pl-2">
-                                <TreeItem
-                                    v-for="component in sortedComponents"
-                                    :key="component.id"
-                                    :component="component"
-                                />
-                            </ul>
                         </li>
                     </ul>
                 </div>
-
-                <ul class="grid grid-cols-2 gap-4">
-                    <li
-                        v-for="componentType in pageBuilder.availableComponentTypes"
-                        :key="componentType.id"
-                    >
-                        <button
-                            class=" bg-white border border-stone-100 text-stone-600 text-sm font-medium uppercase rounded shadow block w-full py-2 px-4 cursor-pointer min-h-[100px]"
-                            @click.prevent="pageBuilder.createComponent(componentType.id)"
-                        >
-                            {{ componentType.name }}
-                        </button>
-                    </li>
-                </ul>
             </div>
             <div class="col-span-9">
                 <div class="container m-auto">

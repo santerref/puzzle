@@ -152,7 +152,7 @@
                 </button>
             </div>
             <div
-                class="z-20 bg-black/20 fixed inset-0"
+                class="z-20 bg-black/60 fixed inset-0"
                 @click.prevent="close"
             />
         </div>
@@ -171,10 +171,13 @@ const emit = defineEmits<{
     (e: 'close', selectedMedia: string[]): void
 }>();
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     cardinality: number,
-    imageOnly: boolean
-}>();
+    imageOnly: boolean,
+    selected?: string[]
+}>(),{
+    selected: () => [] as string[]
+});
 
 const showMediaSelector = ref<boolean>(false);
 const currentFile = ref<StorageFile | null>(null);
@@ -188,6 +191,7 @@ const selectedMedia = ref<string[]>([]);
 
 const open = () => {
     showMediaSelector.value = true;
+    selectedMedia.value.push(...props.selected)
 };
 
 const isImage = computed(() => currentFile.value && currentFile.value.is_image === true);

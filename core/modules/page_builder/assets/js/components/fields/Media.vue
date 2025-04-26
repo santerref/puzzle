@@ -3,6 +3,7 @@
         v-slot="{open}"
         :cardinality="cardinality"
         :image-only="imageOnly"
+        :selected="selected"
         @close="setSelectedMedia"
     >
         <label class="font-medium mb-2 block">Media</label>
@@ -59,6 +60,7 @@ const setSelectedMedia = (value: string[]) => {
 
 const selectedMedia = ref<any[]>(model.value ?? []);
 const media = computed(() => mediaStore.media.filter(media => selectedMedia.value.find(selected => selected.id === media.id)));
+const selected = computed(() => selectedMedia.value.map(item => item.id));
 
 const fieldType = computed(() => <Field>props.componentType.fields.find((field) => field.id === props.field.field_name));
 const settings = computed(() => fieldType.value.settings);

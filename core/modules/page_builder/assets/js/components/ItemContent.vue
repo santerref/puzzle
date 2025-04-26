@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder.ts';
-import {computed, h, onBeforeUnmount, onMounted, ref, render, useTemplateRef, watch} from 'vue';
+import {computed, createApp, onBeforeUnmount, onMounted, ref, useTemplateRef, watch} from 'vue';
 import {useElementHover} from '@vueuse/core';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
@@ -87,21 +87,20 @@ watch(() => pageBuilder.componentHover, (hoverComponent: Component | null) => {
 const instances = new Map<HTMLElement, any>();
 
 function mountComponent(el: HTMLElement, newComponent: any) {
-    const vNode = h(Item, {
+    const app = createApp(Item, {
         componentUuid: newComponent.id,
-        key: newComponent.id + '_' + el.dataset.position,
         position: newComponent.position,
         componentCount: newComponent.children.length,
         cssClass: el.dataset.class ?? null
     });
 
-    render(vNode, el);
-    instances.set(el, vNode);
+    app.mount(el);
+    instances.set(el, app);
 }
 
 onBeforeUnmount(() => {
-    instances.forEach((_, el) => {
-        render(null, el);
+    instances.forEach((app, el) => {
+        app.unmount();
         instances.delete(el);
     });
 });

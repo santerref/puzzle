@@ -1,28 +1,42 @@
 <template>
-    <VueDraggable
+    <draggable
         v-model="draggableComponents"
         handle=".handle"
+        @start="drag=true"
+        @end="drag=false"
+        @dragover.prevent
+        @dragenter.prevent
+        :item-key="itemKey"
+        :group="{ name: 'pagebuilder', pull: false, put: false }"
     >
-        <item
-            v-for="component in modelValue"
-            :id="component.id"
-            :key="getComponentHash(component)"
-            :component-count="modelValue.length"
-            :component-uuid="component.id"
-        />
-    </VueDraggable>
+        <template #item="{element}">
+            <div>
+                <item
+                    :id="element.id"
+                    :component-count="draggableComponents.length"
+                    :component-uuid="element.id"
+                />
+            </div>
+        </template>
+    </draggable>
 </template>
 
 <script setup lang="ts">
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import hash from 'object-hash';
-import {VueDraggable} from 'vue-draggable-plus';
+import draggable from 'vuedraggable';
+
+const drag = ref(false);
 
 const props = defineProps<{
     modelValue: Component[]
 }>();
+
+const itemKey = function (element) {
+    return getComponentHash(element);
+}
 
 const emits = defineEmits<{
     (e: 'update:modelValue', value: Component[]): void
