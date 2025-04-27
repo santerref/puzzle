@@ -19,7 +19,10 @@
             </div>
         </template>
         <template #header>
-            <div class="relative" v-if="draggableComponents.length === 0 && container && !hideHeader">
+            <div
+                v-if="draggableComponents.length === 0 && container && !hideHeader"
+                class="relative"
+            >
                 <div class="p-5 absolute left-0 right-0 top-0 flex opacity-70 justify-center">
                     <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
                         Drag or click here to add components to the container
@@ -45,7 +48,7 @@ const updateParent = function (event) {
     }
 };
 
-const hideHeader = ref(false)
+const hideHeader = ref(false);
 
 const props = withDefaults(defineProps<{
     modelValue: Component[],
@@ -69,10 +72,6 @@ const group = computed(() => props.container ? {name: 'container', pull: true, p
     pull: false,
     put: false
 });
-
-const move = function(evt, originalEvent) {
-   alert('bob')
-}
 
 const draggableComponents = computed({
     get: () => props.modelValue,
