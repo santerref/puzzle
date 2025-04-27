@@ -5,8 +5,9 @@
         :item-key="itemKey"
         :group="group"
         @change="updateParent"
-        @dragover.prevent
-        @dragenter.prevent
+        @add="hideHeader = true"
+        @dragenter="hideHeader = true"
+        @remove="hideHeader = false"
     >
         <template #item="{element}">
             <div>
@@ -17,12 +18,21 @@
                 />
             </div>
         </template>
+        <template #header>
+            <div class="relative" v-if="draggableComponents.length === 0 && container && !hideHeader">
+                <div class="p-5 absolute left-0 right-0 top-0 flex opacity-70 justify-center">
+                    <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
+                        Drag or click here to add components to the container
+                    </p>
+                </div>
+            </div>
+        </template>
     </draggable>
 </template>
 
 <script setup lang="ts">
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import hash from 'object-hash';
 import draggable from 'vuedraggable/src/vuedraggable';
@@ -34,6 +44,8 @@ const updateParent = function (event) {
         }
     }
 };
+
+const hideHeader = ref(false)
 
 const props = withDefaults(defineProps<{
     modelValue: Component[],
@@ -57,6 +69,10 @@ const group = computed(() => props.container ? {name: 'container', pull: true, p
     pull: false,
     put: false
 });
+
+const move = function(evt, originalEvent) {
+   alert('bob')
+}
 
 const draggableComponents = computed({
     get: () => props.modelValue,

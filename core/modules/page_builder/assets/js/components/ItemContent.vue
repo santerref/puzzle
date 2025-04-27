@@ -2,7 +2,7 @@
     <!-- eslint-disable vue/no-v-html -->
     <div
         ref="componentBox"
-        class="relative"
+        class="relative min-h-full flex flex-col"
         :class="{
             'outline-stone-800':!placeholder && showToolbar,
             'outline-blue-800':placeholder && showToolbar,'outline-2 z-10':showToolbar,
@@ -12,24 +12,14 @@
         @mouseleave.stop="pageBuilder.setComponentHover(null)"
         @click.prevent="setCurrentTarget"
     >
-        <template v-if="component.children.length && !componentType.settings.placeholder">
+        <template v-if="componentType.settings.container">
             <slot/>
         </template>
-        <template v-else>
-            <div
-                v-if="componentType.settings.container && component.children.length === 0"
-                class="p-5 flex justify-center"
-            >
-                <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
-                    Click here to add components to the container
-                </p>
-            </div>
-            <div
-                v-else
-                ref="html"
-                v-html="component.rendered_html"
-            />
-        </template>
+        <div
+            v-else
+            ref="html"
+            v-html="component.rendered_html"
+        />
 
         <div
             v-if="showToolbar && !componentType.settings.container"
@@ -37,7 +27,6 @@
             :class="{' bg-stone-800 outline-stone-800':!placeholder,' bg-blue-800 outline-blue-800':placeholder}"
         >
             <i
-                v-if="componentCount > 1"
                 class="pi handle text-stone-100 pi-arrows-alt hover:cursor-grab"
             />
             <i
