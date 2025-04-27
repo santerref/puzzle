@@ -2,6 +2,7 @@
     <component-placeholder
         data-component="{{ component_type }}"
         data-uuid="{{ component_uuid }}"
+        {% if weight is defined %}data-weight="{{ weight }}"{% endif %}
         data-position="{{ position }}"
         data-locked="{{ locked ? 'true' : 'false' }}"
         {% if css_class is defined %}data-class="{{ css_class }}"{% endif %}

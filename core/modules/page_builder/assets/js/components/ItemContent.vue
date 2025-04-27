@@ -52,6 +52,7 @@ import {useElementHover} from '@vueuse/core';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
 import {useHoverStore} from '@modules/page_builder/assets/js/stores/hover';
+import {sortBy} from 'lodash';
 
 const menuVisible = ref(false);
 const menuPosition = ref({x: 0, y: 0});
@@ -138,27 +139,54 @@ const setCurrentTarget = (): void => {
 };
 
 const html = useTemplateRef('html');
-const renderChildren = () => {
+const renderChildren = async () => {
     if (html.value) {
         let i = 0;
+        const newComponents: { el: HTMLElement, position: string | null, add: boolean, component: Component }[] = [];
+        const tasks: Promise<void>[] = [];
         for (let key in componentType.value.settings?.positions) {
             const childrenElements = html.value.querySelectorAll(`component-placeholder[data-uuid="${props.component.id}"][data-position="${key}"]`);
-            childrenElements.forEach(async (el) => {
+            childrenElements.forEach((el) => {
                 if (el instanceof HTMLElement) {
-                    const position = el.dataset.position ?? null;
-                    let newComponent = props.component.children.find((child: Component) => child.position === key);
-                    if (typeof newComponent === 'undefined') {
-                        newComponent = await pageBuilder.createComponent(<string>el.dataset.component, {
-                            component: props.component,
-                            position
-                        }, (++i));
-                    }
-                    newComponent.locked = (el.dataset.locked ?? 'false') === 'true';
-                    mountComponent(el, newComponent);
+                    const task = (async () => {
+                        const position = el.dataset.position ?? null;
+                        const weight = el.dataset.weight !== undefined ? parseInt(el.dataset.weight) : (++i);
+                        let newComponent = props.component.children.find((child: Component) => child.position === key);
+                        let add = true;
+                        if (typeof newComponent === 'undefined') {
+                            newComponent = await pageBuilder.createComponent(<string>el.dataset.component, {
+                                component: props.component,
+                                position
+                            }, weight, false);
+                        } else {
+                            newComponent.weight = weight;
+                            add = false;
+                        }
+                        newComponent.locked = (el.dataset.locked ?? 'false') === 'true';
+                        newComponents.push({
+                            el,
+                            position,
+                            add,
+                            component: newComponent
+                        });
+                    })();
+                    tasks.push(task);
                 }
             });
         }
 
+        await Promise.all(tasks);
+        const sortedNewComponents = sortBy(newComponents, 'component.weight');
+
+        sortedNewComponents.forEach((item) => {
+            if (item.add) {
+                pageBuilder.addComponent(item.component, {
+                    component: props.component,
+                    position: item.position
+                });
+            }
+            mountComponent(item.el, item.component);
+        });
     }
 };
 

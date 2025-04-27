@@ -77,7 +77,22 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         return (await response.json()) as Page;
     }
 
-    async function createComponent(componentTypeId: string, target?: Target, weight?: number): Promise<Component> {
+    function addComponent(component: Component, target?: Target) {
+        if (target) {
+            component.position = target.position;
+            component.parent = target.component.id;
+            target.component.children.splice(target.component.children.length, 0, component);
+        } else if (currentTarget.value) {
+            component.position = currentTarget.value.position;
+            component.parent = currentTarget.value.component.id;
+            currentTarget.value.component.children.splice(currentTarget.value.component.children.length, 0, component);
+        } else {
+            component.parent = null;
+            components.value.push(component);
+        }
+    }
+
+    async function createComponent(componentTypeId: string, target?: Target, weight?: number, add: boolean = true): Promise<Component> {
         const componentType = getComponentType(componentTypeId);
         const response = await fetch(`/api/components/${componentType.id}/render`, {
             method: 'POST',
@@ -95,17 +110,8 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
             component.weight = weight;
         }
 
-        if (target) {
-            component.position = target.position;
-            component.parent = target.component.id;
-            target.component.children.splice(target.component.children.length, 0, component);
-        } else if (currentTarget.value) {
-            component.position = currentTarget.value.position;
-            component.parent = currentTarget.value.component.id;
-            currentTarget.value.component.children.splice(currentTarget.value.component.children.length, 0, component);
-        } else {
-            component.parent = null;
-            components.value.push(component);
+        if (add) {
+            addComponent(component, target);
         }
 
         if (componentType.settings.container && !currentTarget.value) {
@@ -195,6 +201,7 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
 
     return {
         componentTypes,
+        addComponent,
         components,
         page,
         loading,

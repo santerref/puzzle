@@ -8,17 +8,17 @@
                 <div>
                     {% embed '@module_core/admin/partials/form.html.twig' with { method: 'DELETE', action: '/admin/pages/' ~ page.id } %}
                         {% block actions %}
-                            <button class="underline text-blue-500 cursor-pointer">Delete</button>
+                            <button class="underline text-indigo-500 cursor-pointer">Delete</button>
                         {% endblock %}
                     {% endembed %}
-                    <a class="underline text-blue-500" href="{{ route('page.admin.edit', {page: page.id}) }}">Edit</a>
-                    <a class="underline text-blue-500" href="{{ route('page_builder.admin.launch', {uuid: page.id}) }}">Builder</a>
-                    <a class="underline text-blue-500" target="_blank"
+                    <a class="underline text-indigo-500" href="{{ route('page.admin.edit', {page: page.id}) }}">Edit</a>
+                    <a class="underline text-indigo-500" href="{{ route('page_builder.admin.launch', {uuid: page.id}) }}">Builder</a>
+                    <a class="underline text-indigo-500" target="_blank"
                        href="{{ route('page.show', {slug: page.slug}) }}">Show</a>
                 </div>
             </div>
         {% endfor %}
     </div>
 
-    <a href="/admin/pages/create" class="underline text-blue-500">Add new page</a>
+    <a href="/admin/pages/create" class="underline text-indigo-500">Add new page</a>
 {% endblock %}

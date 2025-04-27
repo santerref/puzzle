@@ -30,7 +30,7 @@
                         <ul class="mt-2">
                             <li>
                                 <button
-                                    class="cursor-pointer text-blue-500 underline"
+                                    class="cursor-pointer text-indigo-500 underline"
                                     :class="{'bg-stone-200':!pageBuilder.hasTarget()}"
                                     @click.prevent="pageBuilder.unsetTarget()"
                                 >

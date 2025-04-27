@@ -5,7 +5,7 @@
                 <button
                     v-if="componentType.settings.container"
                     :class="{'bg-stone-200':pageBuilder.currentTargetIs(component)}"
-                    class="cursor-pointer text-blue-500 underline"
+                    class="cursor-pointer text-indigo-500 underline"
                     @click.prevent="pageBuilder.setTarget(component, component.position)"
                 >
                     {{ componentType.name }}

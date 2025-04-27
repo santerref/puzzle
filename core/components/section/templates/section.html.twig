@@ -11,6 +11,7 @@
                 {% include '@module_page_builder/placeholder.html.twig' with {
                     position: 'col_' ~ column,
                     component_type: 'container',
+                    weight: column-1,
                     component_uuid: component.id,
                     css_class: 'space-y-4 flex-grow',
                     children_prefix: '<div class="space-y-4">',

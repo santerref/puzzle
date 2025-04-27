@@ -7,7 +7,7 @@
         :component-count="componentCount"
     >
         <nested-component
-            v-model="component.children"
+            v-model="sortedChildren"
             :class="cssClass"
             :container="container"
             :component="component"
@@ -21,6 +21,7 @@ import {computed, onMounted, onUnmounted} from 'vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
 import ItemContent from '@modules/page_builder/assets/js/components/ItemContent.vue';
 import NestedComponent from '@modules/page_builder/assets/js/components/NestedComponent.vue';
+import {sortBy} from 'lodash';
 
 const pageBuilder = usePageBuilderStore();
 const props = withDefaults(defineProps<{
@@ -52,6 +53,7 @@ const component = computed<Component>(() => {
     return <Component>findComponentByUUID(pageBuilder.components, props.componentUuid);
 });
 
+const sortedChildren = computed(() => sortBy(component.value.children, 'weight'));
 const container = computed(() => component.value && component.value.component_type === 'container');
 
 onMounted(() => {
