@@ -1,18 +1,18 @@
 <template>
     <draggable
         v-model="draggableComponents"
-        handle=".handle"
         :item-key="itemKey"
         :group="group"
+        :class="{'min-h-[200px]':empty}"
         @change="updateParent"
-        @add="hideHeader = true"
-        @dragenter="hideHeader = true"
-        @remove="hideHeader = false"
+        @start="hover.lock"
+        @end="hover.unlock"
     >
         <template #item="{element}">
-            <div>
+            <div class="relative">
                 <item
                     :id="element.id"
+                    :data-uuid="element.id"
                     :component-count="draggableComponents.length"
                     :component-uuid="element.id"
                 />
@@ -20,35 +20,32 @@
         </template>
         <template #header>
             <div
-                v-if="draggableComponents.length === 0 && container && !hideHeader"
-                class="relative"
-            >
-                <div class="p-5 absolute left-0 right-0 top-0 flex opacity-70 justify-center">
-                    <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
-                        Drag or click here to add components to the container
-                    </p>
-                </div>
-            </div>
+                v-if="empty"
+                class="absolute -inset-1 border-2 bg-indigo-50 opacity-50 border-dashed border-indigo-300"
+            />
         </template>
     </draggable>
 </template>
 
 <script setup lang="ts">
 import type {Component} from '@modules/page_builder/assets/js/types/page-builder';
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import hash from 'object-hash';
 import draggable from 'vuedraggable/src/vuedraggable';
+import {useHoverStore} from '@modules/page_builder/assets/js/stores/hover';
 
 const updateParent = function (event) {
     if (props.component && event.hasOwnProperty('added')) {
         if (event.added.element.parent !== props.component.id) {
             event.added.element.parent = props.component.id;
+            event.added.element.position = props.component.position;
         }
     }
 };
 
-const hideHeader = ref(false);
+const hover = useHoverStore();
+const empty = computed(() => draggableComponents.value.length === 0 && props.container);
 
 const props = withDefaults(defineProps<{
     modelValue: Component[],

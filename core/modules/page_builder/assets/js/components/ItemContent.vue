@@ -2,15 +2,11 @@
     <!-- eslint-disable vue/no-v-html -->
     <div
         ref="componentBox"
-        class="relative min-h-full flex flex-col"
-        :class="{
-            'outline-stone-800':!placeholder && showToolbar,
-            'outline-blue-800':placeholder && showToolbar,'outline-2 z-10':showToolbar,
-            'cursor-pointer':componentType.settings.container
-        }"
+        class="relative min-h-full flex flex-col cursor-default"
         @mouseenter.stop="pageBuilder.setComponentHover(component)"
         @mouseleave.stop="pageBuilder.setComponentHover(null)"
         @click.prevent="setCurrentTarget"
+        @contextmenu.stop.prevent="onRightClick"
     >
         <template v-if="componentType.settings.container">
             <slot/>
@@ -22,22 +18,29 @@
         />
 
         <div
-            v-if="showToolbar && !componentType.settings.container"
-            class="text-stone-100 right-0 flex outline-2 gap-4 py-2 absolute rounded-bl-md top-0 px-2 shadow-lg"
-            :class="{' bg-stone-800 outline-stone-800':!placeholder,' bg-blue-800 outline-blue-800':placeholder}"
+            v-if="isCurrentHover && !componentType.settings.container"
+            class="absolute -inset-0.5 border pointer-events-none"
+            :class="{'border-purple-500':!placeholder,'border-indigo-400 border-dashed':placeholder}"
+        />
+        <div
+            v-if="menuVisible"
+            class="fixed bg-indigo-500 text-white border-indigo-700 rounded shadow-lg min-w-[160px] p-1 z-50"
+            :style="{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }"
         >
-            <i
-                class="pi handle text-stone-100 pi-arrows-alt hover:cursor-grab"
-            />
-            <i
-                class="pi pi-cog hover:cursor-pointer"
-                @click.prevent="pageBuilder.openSettings(component)"
-            />
-            <i
-                v-if="!component.locked"
-                class="pi text-stone-100 pi-trash hover:cursor-pointer"
-                @click.prevent="pageBuilder.removeComponent(component)"
-            />
+            <ul class="flex flex-col gap-2">
+                <li
+                    class="hover:bg-indigo-400 px-2 py-1 text-sm cursor-pointer"
+                    @click="handleAction('edit')"
+                >
+                    Edit
+                </li>
+                <li
+                    class="hover:bg-indigo-400 px-2 py-1 text-sm cursor-pointer"
+                    @click="handleAction('delete')"
+                >
+                    Delete
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -48,30 +51,64 @@ import {computed, createApp, onBeforeUnmount, onMounted, ref, useTemplateRef, wa
 import {useElementHover} from '@vueuse/core';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
+import {useHoverStore} from '@modules/page_builder/assets/js/stores/hover';
+
+const menuVisible = ref(false);
+const menuPosition = ref({x: 0, y: 0});
+
+// @TODO: Move to a store to keep only 1 open contextual menu open.
+function onRightClick(event: MouseEvent) {
+    event.preventDefault();
+    menuPosition.value = {x: event.clientX, y: event.clientY};
+    menuVisible.value = true;
+}
+
+function closeMenu() {
+    menuVisible.value = false;
+}
+
+function handleAction(action: string) {
+    if (action === 'edit') {
+        pageBuilder.openSettings(props.component);
+    }
+    if (action === 'delete') {
+        pageBuilder.removeComponent(props.component);
+    }
+    closeMenu();
+}
+
+document.addEventListener('click', () => {
+    if (menuVisible.value) {
+        closeMenu();
+    }
+});
 
 const props = withDefaults(defineProps<{
     component: Component,
     componentCount: number,
 }>(), {});
 const pageBuilder = usePageBuilderStore();
+const hover = useHoverStore();
 
 const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
-const showToolbar = computed(() => pageBuilder.componentHover?.id === props.component.id);
 const componentBox = ref();
-const hover = useElementHover(componentBox);
 const placeholder = computed(() => componentType.value.settings.placeholder);
+const isHovering = useElementHover(componentBox);
 
-watch(hover, (newValue) => {
-    if (!newValue) {
-        pageBuilder.setComponentHover(null);
+const isCurrentHover = computed(() => hover.currentHover === props.component.id);
+
+watch(isHovering, (hovered) => {
+    if (componentType.value.settings.container) {
+        return;
+    }
+
+    if (hovered) {
+        hover.pushHover(props.component.id);
+    } else {
+        hover.popHover(props.component.id);
     }
 });
 
-watch(() => pageBuilder.componentHover, (hoverComponent: Component | null) => {
-    if (hover.value && hoverComponent === null) {
-        pageBuilder.setComponentHover(props.component);
-    }
-});
 
 const instances = new Map<HTMLElement, any>();
 

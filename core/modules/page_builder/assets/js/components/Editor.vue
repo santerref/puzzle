@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed z-30 top-0 right-0 bottom-0 w-[700px] shadow-md p-5 bg-stone-50 max-h-full overflow-auto">
+    <div class="fixed z-30 top-0 right-0 bottom-0 w-[450px] shadow-lg p-5 bg-stone-50 max-h-full overflow-auto">
         <div class="flex flex-col min-h-full">
             <div class="flex-grow">
                 <h1 class="text-lg mb-4">
@@ -10,7 +10,7 @@
                         :is="pascalCase(field.field_type)"
                         v-for="field in sortedFields"
                         :key="field.id"
-                        v-model="field[field.value_type+'_value']"
+                        v-model="field[field.value_type + '_value']"
                         :field="field"
                         :component-type="componentType"
                     />
