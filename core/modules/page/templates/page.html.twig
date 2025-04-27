@@ -12,7 +12,7 @@
     <link href="{{ asset('css/tailwind.css', 'module_core') }}" rel="stylesheet">
 </head>
 <body>
-{% for component in page.components %}
+{% for component in page.components.whereNull('parent').sortBy('weight') %}
     {% if component.parent is empty %}
         {% if component.children %}
             {{ render(component) }}
