@@ -27,7 +27,7 @@
                         <p class="font-semibold mb-2">
                             Components Tree
                         </p>
-                        <ul class="mt-2">
+                        <ul class="mt-2 text-sm">
                             <li>
                                 <button
                                     class="cursor-pointer text-indigo-500 underline"
@@ -38,7 +38,7 @@
                                 </button>
                                 <ul class="pl-2">
                                     <TreeItem
-                                        v-for="component in sortedComponents"
+                                        v-for="component in pageBuilder.components"
                                         :key="component.id"
                                         :component="component"
                                     />
@@ -67,7 +67,7 @@
                     <div>
                         <nested-component
                             v-if="pageBuilder.components.length"
-                            v-model="sortedComponents"
+                            v-model="pageBuilder.components"
                         />
                         <div
                             v-else
@@ -85,6 +85,7 @@
             v-if="pageBuilder.currentComponentSettings !== null"
             v-model="pageBuilder.currentComponentSettings"
         />
+        <contextual-menu/>
     </template>
 </template>
 
@@ -93,11 +94,8 @@ import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-b
 import NestedComponent from '@modules/page_builder/assets/js/components/NestedComponent.vue';
 import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue';
 import Editor from '@modules/page_builder/assets/js/components/Editor.vue';
-import {computed} from 'vue';
-import {sortBy} from 'lodash';
+import ContextualMenu from '@modules/page_builder/assets/js/components/ContextualMenu.vue';
 
 const pageBuilder = usePageBuilderStore();
 pageBuilder.initialize();
-
-const sortedComponents = computed(() => sortBy(pageBuilder.components, 'weight'));
 </script>

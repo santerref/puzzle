@@ -19,28 +19,15 @@
 
         <div
             v-if="isCurrentHover && !componentType.settings.container"
-            class="absolute -inset-0.5 border pointer-events-none"
-            :class="{'border-purple-500':!placeholder,'border-indigo-400 border-dashed':placeholder}"
-        />
-        <div
-            v-if="menuVisible"
-            class="fixed bg-indigo-500 text-white border-indigo-700 rounded shadow-lg min-w-[160px] p-1 z-50"
-            :style="{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }"
+            class="absolute -inset-0.5 z-30 border pointer-events-none rounded"
+            :class="{'border-indigo-500':!placeholder,'border-indigo-500 border-dashed':placeholder}"
         >
-            <ul class="flex flex-col gap-2">
-                <li
-                    class="hover:bg-indigo-400 px-2 py-1 text-sm cursor-pointer"
-                    @click="handleAction('edit')"
-                >
-                    Edit
-                </li>
-                <li
-                    class="hover:bg-indigo-400 px-2 py-1 text-sm cursor-pointer"
-                    @click="handleAction('delete')"
-                >
-                    Delete
-                </li>
-            </ul>
+            <div
+                v-if="componentType"
+                class="absolute bg-indigo-500 text-white lowercase font-bold -translate-y-full left-2 rounded-tl rounded-tr text-xs px-1 py-0.5"
+            >
+                {{ componentType.name }}
+            </div>
         </div>
     </div>
 </template>
@@ -52,37 +39,15 @@ import {useElementHover} from '@vueuse/core';
 import Item from '@modules/page_builder/assets/js/components/Item.vue';
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
 import {useHoverStore} from '@modules/page_builder/assets/js/stores/hover';
+import {useContextualStore} from '@modules/page_builder/assets/js/stores/contextual';
 import {sortBy} from 'lodash';
 
-const menuVisible = ref(false);
-const menuPosition = ref({x: 0, y: 0});
+const contextual = useContextualStore();
 
 // @TODO: Move to a store to keep only 1 open contextual menu open.
 function onRightClick(event: MouseEvent) {
-    event.preventDefault();
-    menuPosition.value = {x: event.clientX, y: event.clientY};
-    menuVisible.value = true;
+    contextual.openMenu(event, props.component);
 }
-
-function closeMenu() {
-    menuVisible.value = false;
-}
-
-function handleAction(action: string) {
-    if (action === 'edit') {
-        pageBuilder.openSettings(props.component);
-    }
-    if (action === 'delete') {
-        pageBuilder.removeComponent(props.component);
-    }
-    closeMenu();
-}
-
-document.addEventListener('click', () => {
-    if (menuVisible.value) {
-        closeMenu();
-    }
-});
 
 const props = withDefaults(defineProps<{
     component: Component,

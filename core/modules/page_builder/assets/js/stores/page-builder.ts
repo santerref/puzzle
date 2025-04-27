@@ -77,6 +77,21 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         return (await response.json()) as Page;
     }
 
+    function findComponentByUUID(components: Component[], uuid: string): Component | null {
+        for (const component of components) {
+            if (component.id === uuid) {
+                return component;
+            }
+
+            const foundInChildren = findComponentByUUID(component.children, uuid);
+            if (foundInChildren) {
+                return foundInChildren;
+            }
+        }
+
+        return null;
+    }
+
     function addComponent(component: Component, target?: Target) {
         if (target) {
             component.position = target.position;
@@ -89,6 +104,11 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         } else {
             component.parent = null;
             components.value.push(component);
+        }
+
+        const componentType = getComponentType(component.component_type);
+        if (componentType.settings.container && !currentTarget.value) {
+            setTarget(component, component.position);
         }
     }
 
@@ -114,10 +134,6 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
             addComponent(component, target);
         }
 
-        if (componentType.settings.container && !currentTarget.value) {
-            setTarget(component, component.position);
-        }
-
         return component;
     }
 
@@ -131,6 +147,10 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
     }
 
     function removeComponent(component: Component, children: Component[] | null = null): boolean {
+        if (component.locked !== undefined && component.locked) {
+            return false;
+        }
+
         if (children === null) {
             children = components.value;
         }
@@ -218,6 +238,7 @@ export const usePageBuilderStore = defineStore('pageBuilder', () => {
         flatComponents,
         saveRequired,
         openSettings,
+        findComponentByUUID,
         closeSettings,
         currentComponentSettings,
         hasTarget,
