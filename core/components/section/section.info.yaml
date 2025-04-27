@@ -22,17 +22,22 @@ settings:
             label: Column 1
             conditions:
                 -   field: columns
-                    value: [ '1', '2', '3' ]
+                    value: [ '1', '2', '3', '4' ]
         col_2:
             label: Column 2
             conditions:
                 -   field: columns
-                    value: [ '2','3' ]
+                    value: [ '2', '3', '4' ]
         col_3:
             label: Column 3
             conditions:
                 -   field: columns
-                    value: '3'
+                    value: [ '3', '4' ]
+        col_4:
+            label: Column 4
+            conditions:
+                -   field: columns
+                    value: [ '4' ]
 fields:
     container:
         label: Container
@@ -48,9 +53,10 @@ fields:
         default_value: 1
         settings:
             options:
-                1: One column
-                2: Two columns (50/50)
-                3: Three columns (33/33/33)
+                1: One
+                2: Two (50%/50%)
+                3: Three (33%/33%/33%)
+                4: Four (25%/25%/25%/25%)
     vertical_spacing:
         label: Vertical spacing
         type: select
