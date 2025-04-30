@@ -10,7 +10,7 @@ I am creating Puzzle to simplify building pages with reusable components, addres
 
 * Symfony 7
 * Twig
-* PHP 8.3
+* PHP 8.4
 * PHPUnit
 * PHPCS
 * DDEV
