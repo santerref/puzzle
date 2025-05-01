@@ -2,7 +2,7 @@
 
 namespace Puzzle\Core\Setup;
 
-use Puzzle\Core\Module\ModuleDiscovery;
+use Puzzle\Core\Registry;
 use Puzzle\Event\InstallScriptFinishedEvent;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -14,19 +14,18 @@ class Installer
 
     private EventDispatcher $eventDispatcher;
 
-    private ModuleDiscovery $moduleDiscovery;
+    private Registry $moduleRegistry;
 
     public function __construct(ContainerBuilder $container)
     {
         $this->dependencyResolver = new DependencyResolver();
         $this->eventDispatcher = $container->get('event_dispatcher');
-        $this->moduleDiscovery = $container->get('module_discovery');
+        $this->moduleRegistry = $container->get('module_registry');
     }
 
     public function run(): void
     {
-        $this->discoverCoreInstallScripts();
-        $this->discoverModuleInstallScripts();
+        $this->discoverInstallScripts();
 
         $installScripts = $this->dependencyResolver->resolve();
         foreach ($installScripts as $className => $installScript) {
@@ -38,45 +37,43 @@ class Installer
         }
     }
 
-    protected function discoverCoreInstallScripts(): void
+    protected function discoverInstallScripts(): void
     {
         $finder = new Finder();
-        $finder->files()->in(PUZZLE_ROOT . '/core/framework/Setup/Install')->name('*.php');
-        $namespaceBase = 'Puzzle\\Setup\\Install';
 
-        foreach ($finder as $file) {
-            $relativePath = '/' . ltrim($file->getRelativePathname(), '/');
-            $className = $this->convertPathToNamespace($namespaceBase, $relativePath);
-            $className = preg_replace('/\\\\+/', '\\', $className);
-
-            if (class_exists($className)) {
-                $reflection = new \ReflectionClass($className);
-                if ($reflection->implementsInterface(InstallScriptInterface::class)) {
-                    $installScript = $reflection->newInstance();
-                    $this->dependencyResolver->addInstallScript($installScript);
-                }
+        $namespacePath = [
+            'Puzzle\\Setup\\Install' => realpath(PUZZLE_ROOT . '/core/framework/Setup/Install')
+        ];
+        foreach ($this->moduleRegistry->all() as $name => $module) {
+            $installDirectory = realpath($module->getPath() . '/src/Setup/Install');
+            if ($installDirectory) {
+                $namespacePath['Puzzle\\' . $name . '\\Setup\\Install'] = $installDirectory;
             }
         }
-    }
 
-    protected function discoverModuleInstallScripts(): void
-    {
-        foreach ($this->moduleDiscovery->getModules() as $name => $module) {
-            $namespaceBase = 'Puzzle\\' . $name;
-            $finder = new Finder();
-            $finder->files()->in($module->getPath())->path('src/Setup/Install')->name('*.php');
+        $pathNamespace = [];
+        foreach ($namespacePath as $namespace => $path) {
+            $pathNamespace[rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR] = $namespace;
+        }
+        $finder->files()->in(array_keys($pathNamespace))->name('*.php');
 
-            foreach ($finder as $file) {
-                $relativePath = '/' . ltrim($file->getRelativePathname(), '/');
-                $className = $this->convertPathToNamespace($namespaceBase, $relativePath);
-                $className = preg_replace('/\\\\+/', '\\', $className);
+        foreach ($finder as $file) {
+            $realPath = $file->getRealPath();
 
-                if (class_exists($className)) {
-                    $reflection = new \ReflectionClass($className);
-                    if ($reflection->implementsInterface(InstallScriptInterface::class)) {
-                        $installScript = $reflection->newInstance();
-                        $this->dependencyResolver->addInstallScript($installScript);
+            foreach ($pathNamespace as $basePath => $baseNamespace) {
+                if (str_starts_with($realPath, $basePath)) {
+                    $relativePath = '/' . ltrim($file->getRelativePathname(), '/');
+                    $className = $this->convertPathToNamespace($baseNamespace, $relativePath);
+                    $className = preg_replace('/\\\\+/', '\\', $className);
+
+                    if (class_exists($className)) {
+                        $reflection = new \ReflectionClass($className);
+                        if ($reflection->implementsInterface(InstallScriptInterface::class)) {
+                            $installScript = $reflection->newInstance();
+                            $this->dependencyResolver->addInstallScript($installScript);
+                        }
                     }
+                    break;
                 }
             }
         }

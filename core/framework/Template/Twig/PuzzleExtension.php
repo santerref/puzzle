@@ -59,7 +59,7 @@ class PuzzleExtension extends AbstractExtension
 
     public function render(Component $component)
     {
-        $components = $this->container->get('component_discovery')->getComponents();
+        $components = $this->container->get('component_registry')->all();
         return $this->container->get('component.renderer')->render(
             $components[$component->component_type],
             $component

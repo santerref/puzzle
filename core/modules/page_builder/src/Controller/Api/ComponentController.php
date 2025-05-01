@@ -3,7 +3,7 @@
 namespace Puzzle\page_builder\Controller\Api;
 
 use Illuminate\Support\Str;
-use Puzzle\Core\Component\ComponentDiscovery;
+use Puzzle\Core\Component\ComponentRegistry;
 use Puzzle\Core\Component\Renderer;
 use Puzzle\page\Entity\Page;
 use Puzzle\page_builder\ComponentFactory;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ComponentController
 {
     public function __construct(
-        protected ComponentDiscovery $componentDiscovery,
+        protected ComponentRegistry $componentRegistry,
         protected Renderer $renderer,
         protected ComponentFactory $componentFactory
     ) {
@@ -21,13 +21,13 @@ class ComponentController
 
     public function index(): JsonResponse
     {
-        $components = $this->componentDiscovery->getComponents();
+        $components = $this->componentRegistry->all();
         return new JsonResponse(array_values($components));
     }
 
     public function render(string $id, Request $request): JsonResponse
     {
-        $componentType = $this->componentDiscovery->get($id);
+        $componentType = $this->componentRegistry->get($id);
         $payload = $request->isMethod('PUT') ? $request->toArray() : [];
         $componentFields = $payload['component_fields'] ?? [];
         $uuid = $payload['uuid'] ?? Str::uuid();

@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'production' => env('PRODUCTION', false),
-    'debug' => env('DEBUG', false),
+    'env' => env('PUZZLE_ENV', 'local'),
+    'debug' => env('APP_DEBUG', false),
 ];

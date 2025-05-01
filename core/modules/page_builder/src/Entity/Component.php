@@ -67,10 +67,10 @@ class Component extends Entity
         return Attribute::make(
             get: function () {
                 $renderer = Puzzle::service('component.renderer');
-                $componentDiscovery = Puzzle::service('component_discovery');
+                $componentRegistry = Puzzle::service('component_registry');
 
                 if (!empty($this->component_type)) {
-                    $componentType = $componentDiscovery->get($this->component_type);
+                    $componentType = $componentRegistry->get($this->component_type);
                     return $renderer->render($componentType, $this);
                 }
 

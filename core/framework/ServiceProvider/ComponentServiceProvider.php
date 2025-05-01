@@ -2,27 +2,41 @@
 
 namespace Puzzle\ServiceProvider;
 
-use Puzzle\Core\Component\ComponentDiscovery;
+use Puzzle\Core\Component\ComponentRegistry;
+use Puzzle\Core\Component\ComponentType;
 use Puzzle\Core\Component\Renderer;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 class ComponentServiceProvider extends ServiceProvider
 {
-    //@TODO: Move this constants into configuration?
-    private const COMPONENT_DIRECTORIES = [
-        PUZZLE_ROOT . '/core/components'
-    ];
-
     public function register(): void
     {
-        $componentDiscovery = new Definition(ComponentDiscovery::class, [static::COMPONENT_DIRECTORIES]);
-        $this->container->setDefinition('component_discovery', $componentDiscovery)
+        $components = [];
+        $finder = new Finder();
+        $finder->files()->in([
+            PUZZLE_ROOT . '/core/components',
+            PUZZLE_ROOT . '/extend/components'
+        ])->name('*.info.yaml')->depth('== 1');
+
+        foreach ($finder as $file) {
+            $info = Yaml::parseFile($file->getRealPath());
+            $version = $info['version'];
+            $components[$file->getRelativePath()] = ComponentType::createFromInfo(
+                $file->getRelativePath(),
+                $file->getPath(),
+                $info,
+                $version
+            );
+        }
+
+        $componentRegistry = new Definition(ComponentRegistry::class, [$components]);
+        $this->container->setDefinition('component_registry', $componentRegistry)
             ->setPublic(true);
-        $this->container->setAlias(ComponentDiscovery::class, 'component_discovery')
+        $this->container->setAlias(ComponentRegistry::class, 'component_registry')
             ->setPublic(true);
-        $this->container->get('component_discovery')->discover();
 
         $this->container->register('component.renderer', Renderer::class)
             ->setArguments([

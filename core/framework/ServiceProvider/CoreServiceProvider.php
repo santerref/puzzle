@@ -93,7 +93,7 @@ class CoreServiceProvider extends ServiceProvider
             'debug' => Puzzle::config()->get('puzzle.debug', false)
         ]);
         $packages = new Packages();
-        $twig->addGlobal('production', Puzzle::config()->get('puzzle.production', false));
+        $twig->addGlobal('production', Puzzle::config()->get('puzzle.env') == 'production');
         $twig->addExtension(new AssetExtension($packages));
         $twig->addExtension(new PuzzleExtension($this->container));
         $this->container->set('twig', $twig);

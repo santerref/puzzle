@@ -1,17 +1,18 @@
 <?php
 
-namespace Puzzle\Core\Module;
+namespace Puzzle\ServiceProvider;
 
 use Puzzle\Core\Module\Bootstrapper\ControllerBootstrapper;
 use Puzzle\Core\Module\Bootstrapper\FieldTypeBootstrapper;
 use Puzzle\Core\Module\Bootstrapper\RoutingBootstrapper;
 use Puzzle\Core\Module\Bootstrapper\ServiceBootstrapper;
 use Puzzle\Core\Module\Bootstrapper\TemplateBootstrapper;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
+use Puzzle\Core\Module\Module;
+use Puzzle\Core\Palette\Palette;
+use Puzzle\Core\Registry;
+use Puzzle\Core\YamlLoader;
 
-class ModuleDiscovery
+class RegistrableServiceProvider extends ServiceProvider
 {
     protected static $bootstrappers = [
         ServiceBootstrapper::class,
@@ -21,49 +22,68 @@ class ModuleDiscovery
         FieldTypeBootstrapper::class,
     ];
 
-    protected array $modules = [];
-
-    public function __construct(
-        protected array $folders,
-        //@TODO: Is there a better way than have $container here.
-        protected ContainerBuilder $container
-    ) {
+    public function register(): void
+    {
+        $this->registerModules();
+        $this->registerPalettes();
     }
 
-    public function discover(): void
+    protected function registerPalettes(): void
     {
-        $definitionInspector = new DefinitionInspector();
-        $finder = new Finder();
-        $finder->files()->in($this->folders)->name('*.info.yaml')->depth('== 1');
+        $yamlLoader = new YamlLoader([
+            PUZZLE_ROOT . '/core/palettes',
+            PUZZLE_ROOT . '/extend/palettes'
+        ]);
+        $manifests = $yamlLoader->findManifests();
 
-        $discoveredModules = [];
-        foreach ($finder as $file) {
-            $name = $file->getRelativePath();
-            $definition = Yaml::parseFile($file->getRealPath());
-            $module = new Module($name, $file->getPath(), $definition);
-            $definitionInspector->inspect($module);
-            $discoveredModules[$name] = $module;
+        $palettes = [];
+        foreach ($manifests as $manifest) {
+            $name = $manifest->getFile()->getRelativePath();
+            $definition = $manifest->getDefinition();
+            $palette = new Palette($name, $manifest->getFile(), $definition);
+            $palette->validate();
+            $palettes[$name] = $palette;
         }
 
-        $sortedModules = $this->sort($discoveredModules);
-        foreach ($sortedModules as $moduleName) {
-            $this->modules[$moduleName] = $discoveredModules[$moduleName];
-        }
+        uasort($palettes, function (Palette $a, Palette $b) {
+            return strcasecmp($a->getDefinition()['name'], $b->getDefinition()['name']);
+        });
+
+        $this->container->set('palette_registry', new Registry($palettes));
     }
 
-    public function bootstrap(): void
+    protected function registerModules(): void
     {
+        $yamlLoader = new YamlLoader([
+            PUZZLE_ROOT . '/core/modules',
+            PUZZLE_ROOT . '/extend/modules'
+        ]);
+        $manifests = $yamlLoader->findManifests();
+
+        $modules = [];
+
+        foreach ($manifests as $manifest) {
+            $name = $manifest->getFile()->getRelativePath();
+            $definition = $manifest->getDefinition();
+            $module = new Module($name, $manifest->getFile(), $definition);
+            $module->validate();
+            $modules[$name] = $module;
+        }
+
+        $sortedModulesName = $this->sort($modules);
+        $sortedModules = [];
+        foreach ($sortedModulesName as $moduleName) {
+            $sortedModules[$moduleName] = $modules[$moduleName];
+        }
+
         foreach (static::$bootstrappers as $bootstrapperClass) {
             $bootstrapper = new $bootstrapperClass();
-            foreach ($this->modules as $module) {
+            foreach ($sortedModules as $module) {
                 $bootstrapper->bootstrap($module, $this->container);
             }
         }
-    }
 
-    public function getModules(): array
-    {
-        return $this->modules;
+        $this->container->set('module_registry', new Registry($sortedModules));
     }
 
     protected function sort(array $modules): array

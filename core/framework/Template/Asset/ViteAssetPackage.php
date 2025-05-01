@@ -13,7 +13,7 @@ class ViteAssetPackage extends PathPackage
 
     public function __construct(string $basePath)
     {
-        $this->production = Puzzle::config()->get('puzzle.production', false);
+        $this->production = Puzzle::config()->get('puzzle.env') == 'production';
         $manifestPath = PUZZLE_ROOT . '/public/static/manifest.json';
         $versionStrategy = $this->production
             ? new ViteManifestVersionStrategy($manifestPath)

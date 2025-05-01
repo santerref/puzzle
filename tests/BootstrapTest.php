@@ -5,7 +5,7 @@ namespace Tests;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Puzzle\Bootstrap;
-use Puzzle\Core\Component\ComponentDiscovery;
+use Puzzle\Core\Component\ComponentRegistry;
 use Puzzle\Core\Component\Renderer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -21,9 +21,9 @@ class BootstrapTest extends TestCase
         $this->assertTrue($container->has('router.route_collection'));
         $this->assertTrue($container->has('router'));
         $this->assertTrue($container->has('request.context'));
-        $this->assertTrue($container->has('component_discovery'));
+        $this->assertTrue($container->has('component_registry'));
         $this->assertTrue($container->has('component.renderer'));
-        $this->assertTrue($container->has(ComponentDiscovery::class));
+        $this->assertTrue($container->has(ComponentRegistry::class));
         $this->assertTrue($container->has(Renderer::class));
         $this->assertTrue($container->has('twig'));
     }

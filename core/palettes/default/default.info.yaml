@@ -1,0 +1,22 @@
+name: Default
+version: 0.1.0
+dark_mode: false
+
+colors:
+    primary:
+        name: Indigo
+        code: '#372aac'
+    secondary:
+        name: Gray
+        code: '#fbf9fa'
+    background:
+        name: White
+        code: '#FFFFFF'
+
+fonts:
+    -   name: "Inter"
+        url: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+
+settings:
+    button:
+        radius: "6px"

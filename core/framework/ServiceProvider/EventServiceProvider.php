@@ -11,7 +11,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class EventServiceProvider extends ServiceProvider
 {
     private static array $subscribers = [
-        LoadComponent::class,
         RecordInstallScript::class
     ];
 

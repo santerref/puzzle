@@ -23,4 +23,8 @@
             <directory>core</directory>
         </include>
     </source>
+
+    <php>
+        <env name="PUZZLE_ENV" value="test"/>
+    </php>
 </phpunit>
