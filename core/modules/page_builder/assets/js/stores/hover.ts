@@ -10,7 +10,7 @@ export const useHoverStore = defineStore('hover', () => {
             return;
         }
 
-        if (hoverStack.value[hoverStack.value.length - 1] !== componentId) {
+        if (!hoverStack.value.includes(componentId)) {
             hoverStack.value.push(componentId);
         }
     };
@@ -35,6 +35,7 @@ export const useHoverStore = defineStore('hover', () => {
 
     return {
         pushHover,
+        hoverStack,
         popHover,
         currentHover,
         lock,
