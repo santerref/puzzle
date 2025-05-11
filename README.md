@@ -1,4 +1,5 @@
-# <img src="https://github.com/user-attachments/assets/3a4396ec-194d-4b41-aba0-478d14ec5aec" width="200" height="56" alt="">
+# <img src="https://github.com/user-attachments/assets/5c615a20-1bbc-4cc6-a2ba-010c652319a8" width="200" height="63" alt="">
+
 
 New Open-Source CMS page builder that focuses on components rather than themes.
 
