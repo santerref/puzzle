@@ -9,7 +9,7 @@ class Registry
     ) {
     }
 
-    public function get(string $name): ?Registrable
+    public function get(string $name): mixed
     {
         return $this->items[$name] ?? null;
     }

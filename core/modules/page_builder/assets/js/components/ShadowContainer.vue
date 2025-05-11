@@ -1,14 +1,12 @@
 <template>
-    <div ref="host"></div>
+    <div ref="host"/>
 </template>
 
 <script lang="ts" setup>
 import {createApp, onMounted, ref} from 'vue';
-import NestedComponent from './NestedComponent.vue';
-import {usePageBuilderStore} from "@modules/page_builder/assets/js/stores/page-builder";
+import NestedComponent from '@modules/page_builder/assets/js/components/NestedComponent.vue';
 
 const host = ref<HTMLElement | null>(null);
-const pageBuilder = usePageBuilderStore();
 
 const props = defineProps<{
     modelValue: any[];

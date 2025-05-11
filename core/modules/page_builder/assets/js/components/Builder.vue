@@ -65,7 +65,10 @@
             <div class="col-span-9">
                 <div class="container m-auto">
                     <div>
-                        <shadow-container v-model="pageBuilder.components" v-if="pageBuilder.components.length"/>
+                        <shadow-container
+                            v-if="pageBuilder.components.length"
+                            v-model="pageBuilder.components"
+                        />
                         <div
                             v-else
                             class="flex items-center py-8"
@@ -91,7 +94,7 @@ import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-b
 import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue';
 import Editor from '@modules/page_builder/assets/js/components/Editor.vue';
 import ContextualMenu from '@modules/page_builder/assets/js/components/ContextualMenu.vue';
-import ShadowContainer from "@modules/page_builder/assets/js/components/ShadowContainer.vue";
+import ShadowContainer from '@modules/page_builder/assets/js/components/ShadowContainer.vue';
 
 const pageBuilder = usePageBuilderStore();
 pageBuilder.initialize();
