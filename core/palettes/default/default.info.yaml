@@ -16,7 +16,10 @@ colors:
 fonts:
     -   name: "Inter"
         url: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    -   name: "Roboto Mono"
+        url: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
 
 settings:
-    button:
-        radius: "6px"
+    font-family: "Inter"
+    mono-font-family: "Roboto Mono"
+    button-radius: "6px"

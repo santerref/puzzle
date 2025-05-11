@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Page</title>
 
+    <style>
+        :root {
+        {% for variable, value in css_variables %}{{ ('--palette-' ~  variable ~ ': ' ~ value ~ ';')|raw }}{% endfor %}
+        }
+    </style>
+
     {%- include '@module_page/links.html.twig' with {links: head_assets.links} -%}
     {%- include '@module_page/links.html.twig' with {links: head_assets.stylesheets} -%}
     {%- include '@module_page/scripts.html.twig' with {scripts: head_assets.scripts} -%}

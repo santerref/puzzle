@@ -52,6 +52,11 @@ abstract class Registrable
         return Arr::get($this->definition, $key, $default);
     }
 
+    public function has(string $key): bool
+    {
+        return Arr::has($this->definition, $key);
+    }
+
     protected function getValidator(): DefinitionValidatorInterface
     {
         return new BaseValidator();
