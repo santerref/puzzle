@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Page</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
-
-    <link href="{{ asset('css/tailwind.css', 'module_core') }}" rel="stylesheet">
+    {%- include '@module_page/links.html.twig' with {links: head_assets.links} -%}
+    {%- include '@module_page/links.html.twig' with {links: head_assets.stylesheets} -%}
+    {%- include '@module_page/scripts.html.twig' with {scripts: head_assets.scripts} -%}
 </head>
 <body>
 {% for component in page.components.whereNull('parent').sortBy('weight') %}
@@ -21,5 +19,7 @@
         {% endif %}
     {% endif %}
 {% endfor %}
+
+{% include '@module_page/scripts.html.twig' with {scripts: footer_assets.scripts} %}
 </body>
 </html>

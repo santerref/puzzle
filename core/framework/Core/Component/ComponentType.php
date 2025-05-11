@@ -12,6 +12,7 @@ class ComponentType implements \JsonSerializable
         protected string $name,
         protected string $version,
         protected string $template,
+        protected array $assets = [],
         protected array $settings = [],
         protected array $fields = []
     ) {
@@ -20,12 +21,13 @@ class ComponentType implements \JsonSerializable
 
     public static function createFromInfo(string $id, string $path, array $info, string $version): self
     {
-        $settings = $info['settings'] ?? [];
+        $assets = Arr::get($info, 'assets', []);
+        $settings = Arr::get($info, 'settings', []);
         $fields = [];
         $weight = 0;
         foreach ($info['fields'] ?? [] as $key => &$field) {
             $fieldType = Puzzle::fieldType($field['type']);
-            $fieldSettings = $field['settings'] ?? [];
+            $fieldSettings = Arr::get($field, 'settings', []);
             $fieldType->validateSettings($fieldSettings);
             $fields[$key] = new Field(
                 $key,
@@ -36,7 +38,7 @@ class ComponentType implements \JsonSerializable
                 $fieldSettings
             );
         }
-        return new ComponentType($id, $info['name'], $version, $info['template'], $settings, $fields);
+        return new ComponentType($id, $info['name'], $version, $info['template'], $assets, $settings, $fields);
     }
 
     protected function getDefaultSettings(): array

@@ -1,0 +1,6 @@
+services:
+    palette.event_subscriber.palette_assets:
+        class: Puzzle\palette\EventSubscriber\PaletteAssets
+        tags: [ 'event.event_subscriber' ]
+        arguments:
+            - '@palette_registry'

@@ -2,6 +2,7 @@
 
 namespace Puzzle\Core;
 
+use Illuminate\Support\Arr;
 use Puzzle\Core\Validator\BaseValidator;
 use Puzzle\Core\Validator\DefinitionValidatorInterface;
 use Puzzle\Exceptions\InvalidDefinitionException;
@@ -44,6 +45,11 @@ abstract class Registrable
                 sprintf('Invalid definition in "%s": %s', $this->file->getRealPath(), $e->getMessage()),
             );
         }
+    }
+
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return Arr::get($this->definition, $key, $default);
     }
 
     protected function getValidator(): DefinitionValidatorInterface

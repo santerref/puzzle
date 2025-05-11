@@ -2,5 +2,6 @@
 
 return [
     'env' => env('PUZZLE_ENV', 'local'),
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('PUZZLE_DEBUG', false),
+    'palette' => env('PUZZLE_PALETTE', 'default')
 ];

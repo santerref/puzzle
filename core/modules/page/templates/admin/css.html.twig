@@ -1,0 +1,9 @@
+{%- for link in links %}
+    <link rel="stylesheet"
+        {%- if stylesheet.hasNamespace %} href="{{ asset(stylesheet.href, stylesheet.namespace) }}"
+        {%- else %} href="{{ stylesheet.href }}"{% endif -%}
+        {%- for attr, val in stylesheet -%}
+          {% if attr not in ['href', 'namespace', 'hasNamespace'] %} {{ attr }}="{{ val }}"
+          {% endif %}
+        {%- endfor -%}>
+{% endfor -%}

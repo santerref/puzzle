@@ -65,10 +65,7 @@
             <div class="col-span-9">
                 <div class="container m-auto">
                     <div>
-                        <nested-component
-                            v-if="pageBuilder.components.length"
-                            v-model="pageBuilder.components"
-                        />
+                        <shadow-container v-model="pageBuilder.components" v-if="pageBuilder.components.length"/>
                         <div
                             v-else
                             class="flex items-center py-8"
@@ -91,10 +88,10 @@
 
 <script setup lang="ts">
 import {usePageBuilderStore} from '@modules/page_builder/assets/js/stores/page-builder';
-import NestedComponent from '@modules/page_builder/assets/js/components/NestedComponent.vue';
 import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue';
 import Editor from '@modules/page_builder/assets/js/components/Editor.vue';
 import ContextualMenu from '@modules/page_builder/assets/js/components/ContextualMenu.vue';
+import ShadowContainer from "@modules/page_builder/assets/js/components/ShadowContainer.vue";
 
 const pageBuilder = usePageBuilderStore();
 pageBuilder.initialize();

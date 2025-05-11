@@ -11,7 +11,19 @@ class TestCommand extends Command
 {
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $process = Process::fromShellCommandline('php vendor/bin/phpunit && php vendor/bin/phpcs && npm run lint');
+        $envFromXml = [];
+        $xml = simplexml_load_file(getcwd() . '/phpunit.xml');
+        foreach ($xml->php->env as $envVar) {
+            $name = (string)$envVar['name'];
+            $value = (string)$envVar['value'];
+            $envFromXml[$name] = $value;
+        }
+
+        $process = Process::fromShellCommandline(
+            'php vendor/bin/phpunit && php vendor/bin/phpcs && npm run lint',
+            getcwd(),
+            array_merge(getenv(), $envFromXml)
+        );
         return $process->run(function ($type, $buffer): void {
             echo $buffer;
         });

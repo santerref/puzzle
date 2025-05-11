@@ -1,0 +1,8 @@
+{%- for link in links %}
+    <link rel="{{ link.rel }}"
+        {%- if link.hasNamespace %} href="{{ asset(link.href, link.namespace) }}"
+        {%- elseif link.href %} href="{{ link.href }}"{% endif -%}
+        {%- for attr, val in link.attributes -%}
+        {%- if val %} {{ attr }}="{{ val }}"{%- else %} {{ attr }}{%- endif -%}
+        {%- endfor -%}>
+{% endfor -%}

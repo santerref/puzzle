@@ -24,3 +24,4 @@ package-lock.json
 !/palettes/custom/.gitkeep
 /palettes/contrib/*
 !/palettes/contrib/.gitkeep
+public/static/
