@@ -11,17 +11,21 @@
 
     <link href="{{ asset('css/tailwind.css', 'module_core') }}" rel="stylesheet">
 </head>
-<body class="bg-[#EFF1F5] antialiased">
+<body class="bg-indigo-100 antialiased">
 <div class="min-h-screen flex flex-col justify-center items-center">
     <img src="{{ asset('img/logo.svg', 'module_core') }}" width="360" alt="Puzzle">
-    <p class="max-w-[500px] text-lg mt-5 text-center text-[#444F6F]">
+    <p class="max-w-[500px] text-lg mt-5 text-center text-indigo-900">
         Puzzle is a future-focused, open-source CMS page builder that prioritizes reusable components over themes,
         making website creation more intuitive and lightweight.
     </p>
-    <p class="text-center mt-5 flex gap-4">
+    <p class="text-center text-indigo-900 mt-5 flex gap-4">
         <a href="https://github.com/santerref/puzzle" target="_blank" class="inline-block underline font-semibold">Github</a>
         <a href="https://github.com/santerref/puzzle/wiki" target="_blank" class="inline-block underline font-semibold">Documentation</a>
     </p>
 </div>
+
+{% if not production %}
+    <script type="module" src="https://vite.puzzle.ddev.site/@vite/client"></script>
+{% endif %}
 </body>
 </html>
