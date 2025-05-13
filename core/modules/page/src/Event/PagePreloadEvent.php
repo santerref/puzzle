@@ -21,7 +21,7 @@ class PagePreloadEvent extends Event
 
     protected array $links = [];
 
-    public function __construct(protected readonly array $components = [])
+    public function __construct(protected readonly array $componentTypes = [])
     {
     }
 
@@ -80,8 +80,8 @@ class PagePreloadEvent extends Event
         return $this->cssVariables;
     }
 
-    public function getComponents(): array
+    public function getComponentTypes(): array
     {
-        return $this->components;
+        return $this->componentTypes;
     }
 }

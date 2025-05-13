@@ -106,4 +106,35 @@ class ComponentType implements \JsonSerializable
     {
         return $this->toArray();
     }
+
+    public function getStylesheets(): array
+    {
+        return Arr::get($this->assets, 'css', []);
+    }
+
+    public function getHeadScripts(): array
+    {
+        $headScripts = [];
+        $scripts = Arr::get($this->assets, 'js', []);
+        foreach ($scripts as $path => $attributes) {
+            $head = Arr::get($attributes, 'head', false);
+            if ($head) {
+                $headScripts[$path] = Arr::except($attributes, ['head']);
+            }
+        }
+        return $headScripts;
+    }
+
+    public function getFooterScripts(): array
+    {
+        $footerScripts = [];
+        $scripts = Arr::get($this->assets, 'js', []);
+        foreach ($scripts as $path => $attributes) {
+            $head = Arr::get($attributes, 'head', false);
+            if (!$head) {
+                $footerScripts[$path] = Arr::except($attributes, ['head']);
+            }
+        }
+        return $footerScripts;
+    }
 }

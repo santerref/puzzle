@@ -1,0 +1,6 @@
+services:
+    component.event_subscriber.component_assets:
+        class: Puzzle\component\EventSubscriber\ComponentAssets
+        tags: [ 'event.event_subscriber' ]
+        arguments:
+            - '@component_registry'

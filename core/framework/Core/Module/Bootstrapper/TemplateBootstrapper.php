@@ -20,6 +20,7 @@ class TemplateBootstrapper implements ModuleBootstrapperInterface
         $assetsDirectory = $module->getPath() . '/assets';
         if (is_dir($assetsDirectory)) {
             $packages = $container->get('asset.packages');
+            //@TODO: What about contrib modules (extend)?
             $modulePackage = new ViteAssetPackage('/core/modules/' . $module->getName() . '/assets');
             $packages->addPackage('module_' . $module->getName(), $modulePackage);
         }

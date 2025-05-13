@@ -18,17 +18,24 @@ class PageController
 
     public function show(string $slug): Response
     {
-        $pagePreloadEvent = new PagePreloadEvent();
+        $page = Page::where('slug', $slug)->with([
+            'components' => function ($query) {
+                $query->whereNull('parent')->orderBy('weight');
+            }
+        ])->first();
+
+        $components = $page->components->flatMap(function ($component) {
+            return collect([$component])->merge($component->children);
+        });
+        $componentTypes = $components->pluck('component_type')->unique()->toArray();
+
+        $pagePreloadEvent = new PagePreloadEvent($componentTypes);
         $this->eventDispatcher->dispatch($pagePreloadEvent, PagePreloadEvent::NAME);
 
         return $this->responseFactory->createTwigTemplateResponse(
             '@module_page/page.html.twig',
             [
-                'page' => Page::where('slug', $slug)->with([
-                    'components' => function ($query) {
-                        $query->whereNull('parent')->orderBy('weight');
-                    }
-                ])->first(),
+                'page' => $page,
                 'css_variables' => $pagePreloadEvent->getCssVariables(),
                 'head_assets' => [
                     'links' => $pagePreloadEvent->getLinks(),
