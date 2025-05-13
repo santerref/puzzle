@@ -4,12 +4,3 @@ services:
         tags: [ 'event.event_subscriber' ]
         arguments:
             - '@palette_registry'
-    palette.event_subscriber.css_variables:
-        class: Puzzle\palette\EventSubscriber\CssVariables
-        tags: [ 'event.event_subscriber' ]
-        arguments:
-            - '@palette_registry'
-    palette.css_variables:
-        class: Puzzle\palette\CssVariables
-        arguments:
-            - '@palette_registry'

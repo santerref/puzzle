@@ -1,9 +1,6 @@
 name: Container
 version: 0.1.0
 template: templates/container.html.twig
-assets:
-    css:
-        assets/css/container.scss: { }
 settings:
     container: true
     hidden: true

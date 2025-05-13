@@ -1,6 +1,9 @@
 name: Section
 version: 0.1.0
 template: templates/section.html.twig
+assets:
+    css:
+        assets/css/section.scss: { }
 settings:
     root: true
     placeholder: true
