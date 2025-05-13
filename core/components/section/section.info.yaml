@@ -10,15 +10,15 @@ settings:
     css:
         variables:
             container:
-                standard: 'container m-auto'
-                narrow: 'max-w-screen-md m-auto'
+                standard: 'section__container'
+                narrow: 'section__container-narrow'
             vertical_spacing:
-                small: 'py-4'
-                standard: 'py-8'
-                large: 'py-12'
+                small: 'spacing-sm'
+                standard: 'spacing-md'
+                large: 'spacing-lg'
             background_color:
                 white: 'bg-white'
-                light_brown: 'bg-stone-200'
+                light_brown: 'bg-light-brown'
     default_position: col_1
     positions:
         col_1:

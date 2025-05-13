@@ -2,9 +2,9 @@
     css.variables.container[component.fields.container],
 ]|css %}
 {# @TODO: Server side, provide default values if they do not exist, don't use ??. #}
-{% set vertical_spacing_class = css.variables.vertical_spacing[(vertical_spacing ?? 'standard')] %}
-{% set background_color_class = css.variables.background_color[(component.fields.background_color ?? 'white')] %}
-<div class="px-4 {{ [vertical_spacing_class, background_color_class]|css }}">
+{% set vertical_spacing_class = 'section--' ~ css.variables.vertical_spacing[(vertical_spacing ?? 'standard')] %}
+{% set background_color_class = 'section--' ~ css.variables.background_color[(component.fields.background_color ?? 'white')] %}
+<div class="component component--section section {{ [vertical_spacing_class, background_color_class]|css }}">
     <div class="{{ container_class }}">
         <div class="grid gap-4 {{ 'grid-cols-' ~ component.fields.columns }}">
             {% for column in 1..component.fields.columns %}

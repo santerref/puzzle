@@ -1,0 +1,51 @@
+.section {
+    padding: 0 1rem;
+
+    &--spacing-sm {
+
+    }
+
+    &--spacing-md {
+
+    }
+
+    &--spacing-lg {
+
+    }
+
+    &--bg-white {
+        background-color: white;
+    }
+
+    &--bg-light-brown {
+        background-color: oklch(92.3% 0.003 48.717);
+    }
+
+    &__container,
+    &__container-narrow {
+        margin: auto;
+    }
+
+    &__container {
+        width: 100%;
+        @media (width >= 40rem) {
+            max-width: 40rem;
+        }
+        @media (width >= 48rem) {
+            max-width: 48rem;
+        }
+        @media (width >= 64rem) {
+            max-width: 64rem;
+        }
+        @media (width >= 80rem) {
+            max-width: 80rem;
+        }
+        @media (width >= 96rem) {
+            max-width: 96rem;
+        }
+    }
+
+    &__container-narrow {
+        // @TODO
+    }
+}

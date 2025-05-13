@@ -24,9 +24,12 @@ class PageController
             }
         ])->first();
 
-        $components = $page->components->flatMap(function ($component) {
-            return collect([$component])->merge($component->children);
-        });
+        $flatten = function ($components) use (&$flatten) {
+            return $components->flatMap(function ($component) use (&$flatten) {
+                return collect([$component])->merge($flatten($component->children));
+            });
+        };
+        $components = $flatten($page->components);
         $componentTypes = $components->pluck('component_type')->unique()->toArray();
 
         $pagePreloadEvent = new PagePreloadEvent($componentTypes);
