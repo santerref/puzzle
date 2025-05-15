@@ -15,7 +15,7 @@
     {%- include '@module_page/links.html.twig' with {links: head_assets.stylesheets} -%}
     {%- include '@module_page/scripts.html.twig' with {scripts: head_assets.scripts} -%}
 </head>
-<body>
+<body class="tw:antialiased">
 {% for component in page.components.whereNull('parent').sortBy('weight') %}
     {% if component.parent is empty %}
         {% if component.children %}

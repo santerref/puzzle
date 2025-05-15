@@ -9,24 +9,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 
-    <link href="{{ asset('css/tailwind.css', 'module_core') }}" rel="stylesheet">
+    <link href="{{ asset('css/tailwind.css', 'module_admin') }}" rel="stylesheet">
 </head>
-<body class="bg-indigo-100 antialiased">
-<div class="min-h-screen flex flex-col justify-center align-middle">
+<body class="tw:bg-indigo-100 tw:antialiased">
+<div class="tw:min-h-screen tw:flex tw:flex-col tw:justify-center tw:align-middle">
     <div>
-        <img src="{{ asset('img/logo.svg', 'module_core') }}" width="260" class="m-auto mb-4" alt="Puzzle">
-        <div class="w-[500px] max-w-full rounded-lg p-8 shadow m-auto bg-white">
+        <img src="{{ asset('img/logo.svg', 'module_core') }}" width="260" class="tw:m-auto tw:mb-4" alt="Puzzle">
+        <div class="tw:w-[500px] tw:max-w-full tw:rounded-lg tw:p-8 tw:shadow tw:m-auto tw:bg-white">
             <form method="post" action="/login">
-                <div class="mb-4 space-y-4">
+                <div class="tw:mb-4 tw:space-y-4">
                     <div>
-                        {% include '@module_core/admin/partials/input-text.html.twig' with {
+                        {% include '@module_admin/partials/input-text.html.twig' with {
                             label: 'Email',
                             input_name: 'email',
                             input_value: not production ? 'john.doe@example.com' : ''
                         } %}
                     </div>
                     <div>
-                        {% include '@module_core/admin/partials/input-text.html.twig' with {
+                        {% include '@module_admin/partials/input-text.html.twig' with {
                             label: 'Password',
                             input_name: 'password',
                             input_type: 'password',
@@ -34,8 +34,8 @@
                         } %}
                     </div>
                 </div>
-                {% include '@module_core/admin/partials/button.html.twig' with {title: 'Login'} %}
-                {% include '@module_core/admin/partials/csrf-token.html.twig' %}
+                {% include '@module_admin/partials/button.html.twig' with {title: 'Login'} %}
+                {% include '@module_admin/partials/csrf-token.html.twig' %}
             </form>
         </div>
     </div>

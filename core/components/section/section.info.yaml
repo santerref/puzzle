@@ -1,24 +1,21 @@
 name: Section
 version: 0.1.0
 template: templates/section.html.twig
-assets:
-    css:
-        assets/css/section.scss: { }
 settings:
     root: true
     placeholder: true
     css:
         variables:
             container:
-                standard: 'section__container'
-                narrow: 'section__container-narrow'
+                standard: 'tw:container tw:m-auto'
+                narrow: 'tw:max-w-screen-md tw:m-auto'
             vertical_spacing:
-                small: 'spacing-sm'
-                standard: 'spacing-md'
-                large: 'spacing-lg'
+                small: 'tw:py-4'
+                standard: 'tw:py-8'
+                large: 'tw:py-12'
             background_color:
-                white: 'bg-white'
-                light_brown: 'bg-light-brown'
+                white: 'tw:bg-white'
+                light_brown: 'tw:bg-stone-200'
     default_position: col_1
     positions:
         col_1:

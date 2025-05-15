@@ -2,7 +2,7 @@
     <!-- eslint-disable vue/no-v-html -->
     <div
         ref="componentBox"
-        class="relative min-h-full flex flex-col cursor-default"
+        class="tw:relative tw:min-h-full tw:flex tw:flex-col tw:cursor-default"
         @mouseenter.stop="pageBuilder.setComponentHover(component)"
         @mouseleave.stop="pageBuilder.setComponentHover(null)"
         @click.prevent="setCurrentTarget"
@@ -19,12 +19,12 @@
 
         <div
             v-if="isCurrentHover && !componentType.settings.container"
-            class="absolute -inset-0.5 z-30 border pointer-events-none rounded"
-            :class="{'border-indigo-500':!placeholder,'border-indigo-500 border-dashed':placeholder}"
+            class="tw:absolute tw:-inset-0.5 tw:z-30 tw:border tw:pointer-events-none tw:rounded"
+            :class="{'tw:border-indigo-500':!placeholder,'tw:border-indigo-500 tw:border-dashed':placeholder}"
         >
             <div
                 v-if="componentType"
-                class="absolute bg-indigo-500 text-white lowercase font-bold -translate-y-full left-2 rounded-tl rounded-tr text-xs px-1 py-0.5"
+                class="tw:absolute tw:bg-indigo-500 tw:text-white tw:lowercase tw:font-bold tw:-translate-y-full tw:left-2 tw:rounded-tl tw:rounded-tr tw:text-xs tw:px-1 tw:py-0.5"
             >
                 {{ componentType.name }}
             </div>

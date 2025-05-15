@@ -1,0 +1,14 @@
+@import "tailwindcss" prefix(tw);
+
+@source "../../../../components";
+
+@theme inline {
+    --color-*: initial;
+    --color-primary: var(--palette-color-primary);
+    --color-secondary: var(--palette-color-secondary);
+    --font-sans: var(--palette-font-family), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+html, body {
+    @apply tw:font-sans;
+}

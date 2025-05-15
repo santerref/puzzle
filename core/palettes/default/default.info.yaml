@@ -1,6 +1,8 @@
 name: Default
 version: 0.1.0
 dark_mode: false
+parent: false
+tailwind: true
 
 colors:
     primary:
@@ -14,12 +16,14 @@ colors:
         code: '#FFFFFF'
 
 fonts:
+    -   name: "Share Tech"
+        url: "https://fonts.googleapis.com/css2?family=Share+Tech&display=swap"
     -   name: "Inter"
         url: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     -   name: "Roboto Mono"
         url: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
 
 settings:
-    font-family: "Inter"
+    font-family: "Share Tech"
     mono-font-family: "Roboto Mono"
     button-radius: "6px"

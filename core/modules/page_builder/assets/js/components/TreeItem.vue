@@ -1,11 +1,11 @@
 <template>
     <li v-if="mounted">
-        <div class="flex justify-between py-0.5 px-2 hover:bg-stone-100">
+        <div class="tw:flex tw:justify-between tw:py-0.5 tw:px-2 tw:hover:bg-stone-100">
             <div>
                 <button
                     v-if="componentType.settings.container"
-                    :class="{'bg-stone-200':pageBuilder.currentTargetIs(component)}"
-                    class="cursor-pointer text-indigo-500 underline"
+                    :class="{'tw:bg-stone-200':pageBuilder.currentTargetIs(component)}"
+                    class="tw:cursor-pointer tw:text-indigo-500 tw:underline"
                     @click.prevent="pageBuilder.setTarget(component, component.position)"
                 >
                     {{ componentType.name }}
@@ -17,13 +17,13 @@
             <div>
                 <i
                     v-if="hasFields"
-                    class="pi pi-cog hover:cursor-pointer"
+                    class="pi pi-cog tw:hover:cursor-pointer"
                     @click.prevent="pageBuilder.openSettings(component)"
                 />
             </div>
         </div>
         <ul
-            class="pl-2"
+            class="tw:pl-2"
         >
             <TreeItem
                 v-for="child in component.children"

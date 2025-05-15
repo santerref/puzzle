@@ -1,15 +1,15 @@
-{% embed '@module_core/admin/partials/form.html.twig' %}
+{% embed '@module_admin/partials/form.html.twig' %}
     {% block body %}
-        <div class="mb-4 space-y-4">
+        <div class="tw:mb-4 tw:space-y-4">
             <div>
-                {% include '@module_core/admin/partials/input-text.html.twig' with {
+                {% include '@module_admin/partials/input-text.html.twig' with {
                     label: 'Page title',
                     input_name: 'title',
                     input_value: page.title
                 } %}
             </div>
             <div>
-                {% include '@module_core/admin/partials/input-text.html.twig' with {
+                {% include '@module_admin/partials/input-text.html.twig' with {
                     label: 'Slug',
                     input_name: 'slug',
                     input_value: page.slug
@@ -18,6 +18,6 @@
         </div>
     {% endblock %}
     {% block actions %}
-        {% include '@module_core/admin/partials/button.html.twig' with {title: submit_button_title} %}
+        {% include '@module_admin/partials/button.html.twig' with {title: submit_button_title} %}
     {% endblock %}
 {% endembed %}

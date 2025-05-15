@@ -1,18 +1,16 @@
 name: Title
 version: 0.1.0
 template: templates/title.html.twig
-assets:
-    css:
-        assets/css/title.scss: { }
 settings:
     css:
         variables:
-            h1: 'h1'
-            h2: 'h2'
-            h3: 'h3'
-            h4: 'h4'
-            h5: 'h5'
-            h6: 'h6'
+            text: 'tw:font-medium'
+            h1: 'tw:text-3xl tw:mb-6'
+            h2: 'tw:text-2xl tw:mb-4'
+            h3: 'tw:text-xl tw:mb-4'
+            h4: 'tw:text-lg tw:mb-3'
+            h5: 'tw:text-normal tw:mb-2'
+            h6: 'tw:text-sm tw:mb-2'
 fields:
     text:
         label: Title

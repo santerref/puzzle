@@ -6,9 +6,9 @@
         :selected="selected"
         @close="setSelectedMedia"
     >
-        <label class="font-medium mb-2 block">Media</label>
+        <label class="tw:font-medium tw:mb-2 tw:block">Media</label>
         <button
-            class="border-2 border-stone-300 text-stone-600 px-4 cursor-pointer py-2 text-sm uppercase font-bold"
+            class="tw:border-2 tw:border-stone-300 tw:text-stone-600 tw:px-4 tw:cursor-pointer tw:py-2 tw:text-sm tw:uppercase tw:font-bold"
             @click.prevent="open"
         >
             Select media
@@ -16,12 +16,12 @@
     </media-library>
     <div
         v-if="media.length"
-        class="space-y-4"
+        class="tw:space-y-4"
     >
         <img
             v-for="image in media"
             :key="image.id"
-            class="rounded-md"
+            class="tw:rounded-md"
             :src="`/admin/files/${image.id}/355x200/${image.filename}`"
             width="355"
             height="200"

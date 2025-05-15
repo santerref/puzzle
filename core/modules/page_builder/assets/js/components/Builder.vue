@@ -1,8 +1,8 @@
 <template>
     <template v-if="!pageBuilder.loading">
-        <div class="w-full p-3 flex gap-4 justify-end">
+        <div class="tw:w-full tw:p-3 tw:flex tw:gap-4 tw:justify-end">
             <a
-                class="text-white bg-stone-600 px-4 py-2 font-medium"
+                class="tw:text-white tw:bg-stone-600 tw:px-4 tw:py-2 tw:font-medium"
                 target="_blank"
                 :href="`/${pageBuilder.page.slug}`"
             >
@@ -10,33 +10,33 @@
             </a>
             <button
                 :class="{
-                    'cursor-not-allowed opacity-50': !pageBuilder.saveRequired,
-                    'cursor-pointer': pageBuilder.saveRequired,
+                    'tw:cursor-not-allowed tw:opacity-50': !pageBuilder.saveRequired,
+                    'tw:cursor-pointer': pageBuilder.saveRequired,
                 }"
                 :disabled="!pageBuilder.saveRequired"
-                class="text-white bg-stone-600 px-4 py-2 font-medium"
+                class="tw:text-white tw:bg-stone-600 tw:px-4 tw:py-2 tw:font-medium"
                 @click.prevent="pageBuilder.save"
             >
                 Save
             </button>
         </div>
-        <div class="grid grid-cols-12">
-            <div class="col-span-3">
-                <div class="mx-4 shadow-lg rounded px-4 py-6 max-w-full w-[400px] border border-stone-200">
-                    <div class="mb-4 bg-white px-5">
-                        <p class="font-semibold mb-2">
+        <div class="tw:grid tw:grid-cols-12">
+            <div class="tw:col-span-3">
+                <div class="tw:mx-4 tw:shadow-lg tw:rounded tw:px-4 tw:py-6 tw:max-w-full tw:w-[400px] tw:border tw:border-stone-200">
+                    <div class="tw:mb-4 tw:bg-white tw:px-5">
+                        <p class="tw:font-semibold tw:mb-2">
                             Components Tree
                         </p>
-                        <ul class="mt-2 text-sm">
+                        <ul class="tw:mt-2 tw:text-sm">
                             <li>
                                 <button
-                                    class="cursor-pointer text-indigo-500 underline"
-                                    :class="{'bg-stone-200':!pageBuilder.hasTarget()}"
+                                    class="tw:cursor-pointer tw:text-indigo-500 tw:underline"
+                                    :class="{'tw:bg-stone-200':!pageBuilder.hasTarget()}"
                                     @click.prevent="pageBuilder.unsetTarget()"
                                 >
                                     Root
                                 </button>
-                                <ul class="pl-2">
+                                <ul class="tw:pl-2">
                                     <TreeItem
                                         v-for="component in pageBuilder.components"
                                         :key="component.id"
@@ -47,13 +47,13 @@
                         </ul>
                     </div>
 
-                    <ul class="grid grid-cols-2 gap-4">
+                    <ul class="tw:grid tw:grid-cols-2 tw:gap-4">
                         <li
                             v-for="componentType in pageBuilder.availableComponentTypes"
                             :key="componentType.id"
                         >
                             <button
-                                class=" bg-white border border-stone-100 text-stone-600 text-sm font-medium uppercase rounded shadow block w-full py-2 px-4 cursor-pointer min-h-[100px]"
+                                class="tw:bg-white tw:border tw:border-stone-100 tw:text-stone-600 tw:text-sm tw:font-medium tw:uppercase tw:rounded tw:shadow tw:block tw:w-full tw:py-2 tw:px-4 tw:cursor-pointer tw:min-h-[100px]"
                                 @click.prevent="pageBuilder.createComponent(componentType.id)"
                             >
                                 {{ componentType.name }}
@@ -62,8 +62,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-span-9">
-                <div class="container m-auto">
+            <div class="tw:col-span-9">
+                <div class="tw:container tw:m-auto">
                     <div>
                         <shadow-container
                             v-if="pageBuilder.components.length"
@@ -71,9 +71,9 @@
                         />
                         <div
                             v-else
-                            class="flex items-center py-8"
+                            class="tw:flex tw:items-center tw:py-8"
                         >
-                            <p class="text-center px-6 py-4 rounded text-stone-600 font-medium m-auto d-block bg-stone-100">
+                            <p class="tw:text-center tw:px-6 tw:py-4 tw:rounded tw:text-stone-600 tw:font-medium tw:m-auto tw:d-block tw:bg-stone-100">
                                 Add a section to start building your page
                             </p>
                         </div>

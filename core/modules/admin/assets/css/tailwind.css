@@ -1,6 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss" prefix(tw);
 
-@source "../../../..";
+@source "../../..";
 
 @theme {
     --font-sans: "Manrope", "sans-serif";

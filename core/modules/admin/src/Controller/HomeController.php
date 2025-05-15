@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\core\Controller;
+namespace Puzzle\admin\Controller;
 
 use Puzzle\Http\ResponseFactory;
 use Symfony\Component\HttpFoundation\Response;

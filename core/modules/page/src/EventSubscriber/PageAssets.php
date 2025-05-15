@@ -17,6 +17,6 @@ class PageAssets implements EventSubscriberInterface
 
     public function onPagePreload(PagePreloadEvent $event): void
     {
-        $event->addStylesheet(new Stylesheet('css/reset.scss', [], 'module_page'));
+        $event->addStylesheet(new Stylesheet('css/tailwind.css', [], 'module_page'));
     }
 }

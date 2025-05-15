@@ -1,11 +1,11 @@
 <template>
-    <div class="fixed z-30 top-0 right-0 bottom-0 w-[450px] shadow-lg p-5 bg-stone-50 max-h-full overflow-auto">
-        <div class="flex flex-col min-h-full">
-            <div class="flex-grow">
-                <h1 class="text-lg mb-4">
+    <div class="tw:fixed tw:z-30 tw:top-0 tw:right-0 tw:bottom-0 tw:w-[450px] tw:shadow-lg tw:p-5 tw:bg-stone-50 tw:max-h-full tw:overflow-auto">
+        <div class="tw:flex tw:flex-col tw:min-h-full">
+            <div class="tw:flex-grow">
+                <h1 class="tw:text-lg tw:mb-4">
                     Edit <strong>{{ componentType.name }}</strong>
                 </h1>
-                <div class="space-y-4">
+                <div class="tw:space-y-4">
                     <component
                         :is="pascalCase(field.field_type)"
                         v-for="field in sortedFields"
@@ -16,15 +16,15 @@
                     />
                 </div>
             </div>
-            <div class="flex gap-4 mt-4 flex-shrink-0">
+            <div class="tw:flex tw:gap-4 tw:mt-4 tw:flex-shrink-0">
                 <button
-                    class="bg-black cursor-pointer text-white px-4 py-2 font-bold"
+                    class="tw:bg-black tw:cursor-pointer tw:text-white tw:px-4 tw:py-2 tw:font-bold"
                     @click.prevent="save"
                 >
                     Save
                 </button>
                 <button
-                    class="bg-gray-300 cursor-pointer px-4 py-2 font-bold"
+                    class="tw:bg-gray-300 tw:cursor-pointer tw:px-4 tw:py-2 tw:font-bold"
                     @click.prevent="pageBuilder.closeSettings()"
                 >
                     Cancel

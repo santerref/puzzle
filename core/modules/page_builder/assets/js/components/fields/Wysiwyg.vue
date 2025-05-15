@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label class="font-medium mb-2 block">{{ fieldType.label }}</label>
+        <label class="tw:font-medium tw:mb-2 tw:block">{{ fieldType.label }}</label>
         <ckeditor
             v-if="editor"
             v-model="model"

@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\core\EventSubscriber;
+namespace Puzzle\admin\EventSubscriber;
 
 use Puzzle\Event\KernelRequest;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

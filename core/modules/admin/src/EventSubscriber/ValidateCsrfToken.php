@@ -1,8 +1,8 @@
 <?php
 
-namespace Puzzle\core\EventSubscriber;
+namespace Puzzle\admin\EventSubscriber;
 
-use Puzzle\core\Exceptions\InvalideCsrfTokenException;
+use Puzzle\admin\Exceptions\InvalideCsrfTokenException;
 use Puzzle\Event\KernelRequest;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;

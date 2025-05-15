@@ -1,24 +1,24 @@
-{% extends '@module_core/admin/layout.html.twig' %}
+{% extends '@module_admin/layout.html.twig' %}
 {% block content %}
     <div>
         {% for page in pages %}
-            <div class="flex justify-between">
+            <div class="tw:flex tw:justify-between">
                 {{ page.title }}
 
                 <div>
-                    {% embed '@module_core/admin/partials/form.html.twig' with { method: 'DELETE', action: '/admin/pages/' ~ page.id } %}
+                    {% embed '@module_admin/partials/form.html.twig' with { method: 'DELETE', action: '/admin/pages/' ~ page.id } %}
                         {% block actions %}
-                            <button class="underline text-indigo-500 cursor-pointer">Delete</button>
+                            <button class="tw:underline tw:text-indigo-500 tw:cursor-pointer">Delete</button>
                         {% endblock %}
                     {% endembed %}
-                    <a class="underline text-indigo-500" href="{{ route('page.admin.edit', {page: page.id}) }}">Edit</a>
-                    <a class="underline text-indigo-500" href="{{ route('page_builder.admin.launch', {uuid: page.id}) }}">Builder</a>
-                    <a class="underline text-indigo-500" target="_blank"
+                    <a class="tw:underline tw:text-indigo-500" href="{{ route('page.admin.edit', {page: page.id}) }}">Edit</a>
+                    <a class="tw:underline tw:text-indigo-500" href="{{ route('page_builder.admin.launch', {uuid: page.id}) }}">Builder</a>
+                    <a class="tw:underline tw:text-indigo-500" target="_blank"
                        href="{{ route('page.show', {slug: page.slug}) }}">Show</a>
                 </div>
             </div>
         {% endfor %}
     </div>
 
-    <a href="/admin/pages/create" class="underline text-indigo-500">Add new page</a>
+    <a href="/admin/pages/create" class="tw:underline tw:text-indigo-500">Add new page</a>
 {% endblock %}

@@ -3,16 +3,16 @@
         <slot :open="open"/>
         <div v-if="showMediaSelector">
             <div
-                class="fixed w-full max-w-screen-lg max-h-full overflow-auto bg-white shadow-lg z-30 p-8 left-1/2 top-8 -translate-x-1/2 bottom-8"
+                class="tw:fixed tw:w-full tw:max-w-screen-lg tw:max-h-full tw:overflow-auto tw:bg-white tw:shadow-lg tw:z-30 tw:p-8 tw:left-1/2 tw:top-8 tw:-translate-x-1/2 tw:bottom-8"
             >
-                <h2 class="text-xl font-bold border-b border-stone-200">
+                <h2 class="tw:text-xl tw:font-bold tw:border-b tw:border-stone-200">
                     Media
                 </h2>
-                <div class="my-4">
-                    <div class="flex items-center space-x-2">
+                <div class="tw:my-4">
+                    <div class="tw:flex tw:items-center tw:space-x-2">
                         <label
                             for="file"
-                            class="cursor-pointer bg-stone-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-stone-700"
+                            class="tw:cursor-pointer tw:bg-stone-600 tw:text-white tw:px-4 tw:py-2 tw:rounded-lg tw:shadow-md tw:hover:bg-stone-700"
                         >
                             <!-- @TODO: If current file, set to cancel and cancel the upload. -->
                             Choose File
@@ -23,7 +23,7 @@
                             ref="file"
                             type="file"
                             accept=".png, .jpg, .jpeg, .gif"
-                            class="hidden"
+                            class="tw:hidden"
                             @change="uploadFile"
                         >
                         <input
@@ -31,79 +31,79 @@
                             id="file"
                             ref="file"
                             type="file"
-                            class="hidden"
+                            class="tw:hidden"
                             @change="uploadFile"
                         >
                         <span
                             v-if="!currentFile"
                             id="file-name"
-                            class="text-gray-700"
+                            class="tw:text-gray-700"
                         >
                             No file chosen
                         </span>
                         <span
                             v-else
                             id="file-name"
-                            class="text-gray-700"
+                            class="tw:text-gray-700"
                         >
                             {{ currentFile.filename }}
                         </span>
                     </div>
                 </div>
 
-                <div class="my-4">
+                <div class="tw:my-4">
                     <div
                         v-if="isImage && currentFile"
-                        class="cursor-crosshair relative"
+                        class="tw:cursor-crosshair tw:relative"
                     >
                         <div
-                            class="relative inline-flex"
+                            class="tw:relative tw:inline-flex"
                             @click="defineFocalPoint"
                         >
                             <img
                                 ref="image"
                                 :src="`https://puzzle.ddev.site${currentFile.path.replace('public/','')}`"
-                                class="rounded-md max-h-[200px] max-w-[355px]"
+                                class="tw:rounded-md tw:max-h-[200px] tw:max-w-[355px]"
                                 height="200"
                                 alt=""
                             >
                             <i
-                                class="w-[20px] h-[20px] rounded-full bg-white/30 shadow border border-white/80 backdrop-invert backdrop-opacity-60 absolute -translate-x-1/2 -translate-y-1/2"
+                                class="tw:w-[20px] tw:h-[20px] tw:rounded-full tw:bg-white/30 tw:shadow tw:border tw:border-white/80 tw:backdrop-invert tw:backdrop-opacity-60 tw:absolute tw:-translate-x-1/2 tw:-translate-y-1/2"
                                 :style="{ top: `${focalPoint.y}%`, left: `${focalPoint.x}%` }"
                             />
                         </div>
-                        <p class="text-sm text-stone-600 max-w-[400px]">
+                        <p class="tw:text-sm tw:text-stone-600 tw:max-w-[400px]">
                             You can click on the image to define a focal point. By default, it's the center.
                         </p>
                     </div>
                     <div
                         v-if="currentFile && currentFile.is_image"
-                        class="my-4"
+                        class="tw:my-4"
                     >
-                        <label class="font-medium mb-2 block">
+                        <label class="tw:font-medium tw:mb-2 tw:block">
                             Alternate text (alt attribute)
                         </label>
                         <div>
                             <input
                                 v-model="alt"
-                                class="border shadow w-full p-2 bg-white border-grey-400"
+                                class="tw:border tw:shadow tw:w-full tw:p-2 tw:bg-white tw:border-grey-400"
                                 type="text"
                             >
                         </div>
                     </div>
                     <div
                         v-if="currentFile"
-                        class="my-4"
+                        class="tw:my-4"
                     >
-                        <label class="font-medium mb-2 block">Title</label>
+                        <label class="tw:font-medium tw:mb-2 tw:block">Title</label>
                         <div>
                             <input
                                 v-model="title"
-                                class="border shadow w-full p-2 bg-white border-grey-400"
+                                class="tw:border tw:shadow tw:w-full tw:p-2 tw:bg-white tw:border-grey-400"
                                 type="text"
                             >
                         </div>
-                        <p class="text-sm mt-1 text-stone-600 max-w-[400px]">
+                        <p class="tw:text-sm tw:mt-1 tw:text-stone-600 tw:max-w-[400px]">
                             The title is an alternative to the file name when displaying a download link. It's also used
                             by the media library.
                         </p>
@@ -112,13 +112,13 @@
 
                 <button
                     v-if="currentFile"
-                    class="cursor-pointer bg-stone-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-stone-700"
+                    class="tw:cursor-pointer tw:bg-stone-600 tw:text-white tw:px-4 tw:py-2 tw:rounded-lg tw:shadow-md tw:hover:bg-stone-700"
                     @click.prevent="save"
                 >
                     Add
                 </button>
 
-                <div class="my-4">
+                <div class="tw:my-4">
                     <div
                         v-for="file in mediaStore.media"
                         :key="file.id"
@@ -132,7 +132,7 @@
                                 @change="toggleSelection(file.id)"
                             >
                             <img
-                                class="rounded-md"
+                                class="tw:rounded-md"
                                 :src="`/admin/files/${file.id}/50x50/${file.filename}`"
                                 :alt="file.alt ?? ''"
                                 width="50"
@@ -145,14 +145,14 @@
 
                 <button
                     v-if="selectedMedia.length"
-                    class="cursor-pointer bg-stone-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-stone-700"
+                    class="tw:cursor-pointer tw:bg-stone-600 tw:text-white tw:px-4 tw:py-2 tw:rounded-lg tw:shadow-md tw:hover:bg-stone-700"
                     @click.prevent="close"
                 >
                     Select
                 </button>
             </div>
             <div
-                class="z-20 bg-black/60 fixed inset-0"
+                class="tw:z-20 tw:bg-black/60 tw:fixed tw:inset-0"
                 @click.prevent="close"
             />
         </div>

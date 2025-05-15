@@ -1,6 +1,6 @@
 {% set wrapper_class = [
-    'flex',
-    css.variables[component.fields.position] ?? 'align-items-start'
+    'tw:flex',
+    css.variables[component.fields.position] ?? 'tw:align-items-start'
 ] %}
 <div class="{{ wrapper_class|css }}">
     {% if component.fields.image is not empty %}

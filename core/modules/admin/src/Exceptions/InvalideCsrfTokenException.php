@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\core\Exceptions;
+namespace Puzzle\admin\Exceptions;
 
 class InvalideCsrfTokenException extends \Exception
 {

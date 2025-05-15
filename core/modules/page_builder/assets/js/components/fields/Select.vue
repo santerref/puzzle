@@ -1,10 +1,10 @@
 <template>
     <div>
-        <label class="font-medium mb-2 block">{{ fieldType.label }}</label>
+        <label class="tw:font-medium tw:mb-2 tw:block">{{ fieldType.label }}</label>
         <div>
             <select
                 v-model="model"
-                class="border shadow w-full p-2 bg-white border-grey-400"
+                class="tw:border tw:shadow tw:w-full tw:p-2 tw:bg-white tw:border-grey-400"
             >
                 <option
                     v-for="(option, value) in fieldType.settings?.options"

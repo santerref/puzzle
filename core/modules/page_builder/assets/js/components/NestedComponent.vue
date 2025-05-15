@@ -3,13 +3,13 @@
         v-model="draggableComponents"
         :item-key="itemKey"
         :group="group"
-        :class="{'min-h-[100px] space-y-0!':empty}"
+        :class="{'tw:min-h-[100px] tw:space-y-0!':empty}"
         @change="updateParent"
         @start="hover.lock"
         @end="endDrag"
     >
         <template #item="{element}">
-            <div class="relative">
+            <div class="tw:relative">
                 <item
                     :id="element.id"
                     :data-uuid="element.id"
@@ -21,12 +21,12 @@
         <template #footer>
             <div
                 v-if="empty"
-                class="absolute -inset-1 border-2 bg-indigo-50 opacity-50 pointer-events-none border-dashed border-indigo-300"
+                class="tw:absolute tw:-inset-1 tw:border-2 tw:bg-indigo-50 tw:opacity-50 tw:pointer-events-none tw:border-dashed tw:border-indigo-300"
             >
                 <svg
                     width="50"
                     height="50"
-                    class="fill-indigo-300 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+                    class="tw:fill-indigo-300 tw:absolute tw:top-1/2 tw:left-1/2 tw:-translate-y-1/2 tw:-translate-x-1/2"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                 >

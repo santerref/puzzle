@@ -4,9 +4,9 @@ template: templates/image.html.twig
 settings:
     css:
         variables:
-            left: 'justify-start'
-            center: 'justify-center'
-            right: 'justify-end'
+            left: 'tw:justify-start'
+            center: 'tw:justify-center'
+            right: 'tw:justify-end'
 fields:
     image:
         label: Image

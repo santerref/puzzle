@@ -5,6 +5,6 @@
     {% block actions %}{% endblock %}
     {% if is_post %}
         <input type="hidden" name="_method" value="{{ method }}">
-        {% include '@module_core/admin/partials/csrf-token.html.twig' %}
+        {% include '@module_admin/partials/csrf-token.html.twig' %}
     {% endif %}
 </form>

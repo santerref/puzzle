@@ -9,24 +9,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 
-    <link href="{{ asset('css/tailwind.css', 'module_core') }}" rel="stylesheet">
+    <link href="{{ asset('css/tailwind.css', 'module_admin') }}" rel="stylesheet">
 
     {% block before_head_close %}{% endblock %}
 </head>
-<body>
-<div class="bg-indigo-800 px-4">
-    <div class="container m-auto flex justify-between">
-        <nav class="flex">
-            <a href="/admin/pages" class="py-3 px-5 hover:bg-[#4E5A7E] text-[#EFF1F5]">Pages</a>
+<body class="tw:antialiased">
+<div class="tw:bg-indigo-800 tw:px-4">
+    <div class="tw:container tw:m-auto tw:flex tw:justify-between">
+        <nav class="tw:flex">
+            <a href="/admin/pages" class="tw:py-3 tw:px-5 tw:hover:bg-[#4E5A7E] tw:text-[#EFF1F5]">Pages</a>
         </nav>
-        <nav class="flex">
-            <a href="/logout" class="py-3 px-5 hover:bg-[#4E5A7E] text-[#EFF1F5]">Logout</a>
+        <nav class="tw:flex">
+            <a href="/logout" class="tw:py-3 tw:px-5 tw:hover:bg-[#4E5A7E] tw:text-[#EFF1F5]">Logout</a>
         </nav>
     </div>
 </div>
 {% block before_content %}{% endblock %}
-<div class="px-4">
-    <div class="container m-auto py-5">
+<div class="tw:px-4">
+    <div class="tw:container tw:m-auto tw:py-5">
         {% block content %}{% endblock %}
     </div>
 </div>

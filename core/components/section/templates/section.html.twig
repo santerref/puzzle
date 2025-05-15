@@ -2,19 +2,19 @@
     css.variables.container[component.fields.container],
 ]|css %}
 {# @TODO: Server side, provide default values if they do not exist, don't use ??. #}
-{% set vertical_spacing_class = 'section--' ~ css.variables.vertical_spacing[(vertical_spacing ?? 'standard')] %}
-{% set background_color_class = 'section--' ~ css.variables.background_color[(component.fields.background_color ?? 'white')] %}
-<div class="component component--section section {{ [vertical_spacing_class, background_color_class]|css }}">
+{% set vertical_spacing_class = css.variables.vertical_spacing[(vertical_spacing ?? 'standard')] %}
+{% set background_color_class = css.variables.background_color[(component.fields.background_color ?? 'white')] %}
+<div class="tw:px-4 {{ [vertical_spacing_class, background_color_class]|css }}">
     <div class="{{ container_class }}">
-        <div class="grid gap-4 {{ 'grid-cols-' ~ component.fields.columns }}">
+        <div class="tw:grid tw:gap-4 {{ 'tw:grid-cols-' ~ component.fields.columns }}">
             {% for column in 1..component.fields.columns %}
                 {% include '@module_page_builder/placeholder.html.twig' with {
                     position: 'col_' ~ column,
                     component_type: 'container',
                     weight: column-1,
                     component_uuid: component.id,
-                    css_class: 'space-y-4 flex-grow',
-                    children_prefix: '<div class="space-y-4">',
+                    css_class: 'tw:space-y-4 tw:flex-grow',
+                    children_prefix: '<div class="tw:space-y-4">',
                     children_suffix: '</div>',
                     locked: true
                 } %}
