@@ -1,6 +1,6 @@
 {% extends '@module_admin/layout.html.twig' %}
 {% block before_head_close %}
-    {% include '@module_core/script.html.twig' with { src: asset('js/page.ts', 'module_page') } %}
+    {% include '@module_admin/script.html.twig' with { src: asset('js/page.ts', 'module_page') } %}
 {% endblock %}
 {% block content %}
     {% include '@module_page/admin/partials/form.html.twig' with {

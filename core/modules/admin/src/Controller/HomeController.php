@@ -13,6 +13,6 @@ class HomeController
 
     public function welcome(): Response
     {
-        return $this->responseFactory->createTwigTemplateResponse('@module_core/welcome.html.twig');
+        return $this->responseFactory->createTwigTemplateResponse('@module_admin/welcome.html.twig');
     }
 }
