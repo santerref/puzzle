@@ -22,7 +22,9 @@
         </div>
         <div class="tw:grid tw:grid-cols-12">
             <div class="tw:col-span-3">
-                <div class="tw:mx-4 tw:shadow-lg tw:rounded tw:px-4 tw:py-6 tw:max-w-full tw:w-[400px] tw:border tw:border-stone-200">
+                <div
+                    class="tw:mx-4 tw:shadow-lg tw:rounded tw:px-4 tw:py-6 tw:max-w-full tw:w-[400px] tw:border tw:border-stone-200"
+                >
                     <div class="tw:mb-4 tw:bg-white tw:px-5">
                         <p class="tw:font-semibold tw:mb-2">
                             Components Tree
@@ -86,6 +88,7 @@
             v-model="pageBuilder.currentComponentSettings"
         />
         <contextual-menu/>
+        <hover-outline/>
     </template>
 </template>
 
@@ -95,6 +98,7 @@ import TreeItem from '@modules/page_builder/assets/js/components/TreeItem.vue';
 import Editor from '@modules/page_builder/assets/js/components/Editor.vue';
 import ContextualMenu from '@modules/page_builder/assets/js/components/ContextualMenu.vue';
 import ShadowContainer from '@modules/page_builder/assets/js/components/ShadowContainer.vue';
+import HoverOutline from '@modules/page_builder/assets/js/components/HoverOutline.vue';
 
 const pageBuilder = usePageBuilderStore();
 pageBuilder.initialize();

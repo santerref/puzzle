@@ -1,5 +1,7 @@
 <template>
-    <div class="tw:fixed tw:z-30 tw:top-0 tw:right-0 tw:bottom-0 tw:w-[450px] tw:shadow-lg tw:p-5 tw:bg-stone-50 tw:max-h-full tw:overflow-auto">
+    <div
+        class="tw:fixed tw:z-50 tw:top-0 tw:right-0 tw:bottom-0 tw:w-[450px] tw:shadow-lg tw:p-5 tw:bg-stone-50 tw:max-h-full tw:overflow-auto"
+    >
         <div class="tw:flex tw:flex-col tw:min-h-full">
             <div class="tw:flex-grow">
                 <h1 class="tw:text-lg tw:mb-4">

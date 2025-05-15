@@ -16,19 +16,6 @@
             ref="html"
             v-html="component.rendered_html"
         />
-
-        <div
-            v-if="isCurrentHover && !componentType.settings.container"
-            class="tw:absolute tw:-inset-0.5 tw:z-30 tw:border tw:pointer-events-none tw:rounded"
-            :class="{'tw:border-indigo-500':!placeholder,'tw:border-indigo-500 tw:border-dashed':placeholder}"
-        >
-            <div
-                v-if="componentType"
-                class="tw:absolute tw:bg-indigo-500 tw:text-white tw:lowercase tw:font-bold tw:-translate-y-full tw:left-2 tw:rounded-tl tw:rounded-tr tw:text-xs tw:px-1 tw:py-0.5"
-            >
-                {{ componentType.name }}
-            </div>
-        </div>
     </div>
 </template>
 
@@ -58,10 +45,7 @@ const hover = useHoverStore();
 
 const componentType = computed(() => pageBuilder.getComponentType(props.component.component_type));
 const componentBox = ref();
-const placeholder = computed(() => componentType.value.settings.placeholder);
 const isHovering = useElementHover(componentBox);
-
-const isCurrentHover = computed(() => hover.currentHover === props.component.id);
 
 watch(isHovering, (hovered) => {
     if (componentType.value.settings.container) {
@@ -74,7 +58,6 @@ watch(isHovering, (hovered) => {
         hover.popHover(props.component.id);
     }
 });
-
 
 const instances = new Map<HTMLElement, any>();
 

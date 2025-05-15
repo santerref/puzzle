@@ -1,5 +1,8 @@
 <template>
-    <div ref="host"/>
+    <div
+        id="shadow-root"
+        ref="host"
+    />
 </template>
 
 <script lang="ts" setup>

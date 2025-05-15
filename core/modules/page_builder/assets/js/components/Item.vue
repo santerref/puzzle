@@ -3,6 +3,7 @@
         v-if="component"
         :id="component.id"
         :key="component.id"
+        :data-uuid="component.id"
         :component="component"
         :component-count="componentCount"
     >
